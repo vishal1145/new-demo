@@ -1,0 +1,43 @@
+<div class="main-account-page">
+<div class="account-page-middle">
+
+<div class="account-signin-form clearfix">
+
+<div class="account-form-l account-signin-left">
+    <form class="form-signin">
+        <!--<img class="mb-4" src="https://getbootstrap.com/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">-->
+        <h1>Login to your account</h1>
+        
+        <div class="signin-form-desc">
+        <p>Lorem ipsum dolor sit amet, consectetuer</p>
+        </div>
+        
+        <div class="form-sigin-details">
+          <div class="signin-form-fields clearfix"><label for="inputEmail" class="sr-only">Email address</label><i class="fa fa-envelope-o"></i><input type="text" id="inputEmail" name="username" [(ngModel)]="username" (ngModelChange)=UserNameCheck() class="form-control" placeholder="Email address/ Phone No." autocomplete="off"></div>
+          <p style="color:red;margin-top: -25px;" *ngIf="!userNameSelect">Please Enter Email</p>
+          <div class="signin-form-fields clearfix"><label for="inputPassword" class="sr-only">Password</label><i class="fa fa-lock"></i><input type="password" id="inputPassword" name="password" [(ngModel)]="password" (ngModelChange)=UserPasswordCheck() class="form-control" placeholder="Password" autocomplete="off"></div>
+          <p style="color:red;margin-top: -25px;" *ngIf="checkPassword">Please Enter Password</p>
+          <p style="color:red;margin-top: -25px;" *ngIf="userNameWrong">Wrong username and password</p>
+
+          <div class="signin-form-button"><button class="btn btn-lg btn-primary btn-block" type="submit" (click)="login()">Sign in</button></div>
+
+          <div class="dont-have-account">Don't Have an account..? <a style="cursor:pointer;" (click)="gotoRegister()">Register Here</a></div>
+
+        </div>        
+    </form>
+    </div>
+    
+    <div class="account-form-r account-signin-right">
+    <h1>Welcome To Frontend</h1>
+    <div class="signin-form-desc">
+        <p>Lorem ipsum dolor sit amet, consectetuer</p>
+        </div>
+        
+        <div class="signin-doctor-avtar"></div>
+    </div>
+    
+    </div>
+   
+       
+ </div>   
+</div>

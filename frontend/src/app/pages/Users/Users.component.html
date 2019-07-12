@@ -1,0 +1,99 @@
+<style>
+  .libutton a, button {
+    box-shadow: none !important;
+    background-color: white;
+    border: none;
+    padding: 10px;
+    text-transform: capitalize;
+  }
+
+  .loader {
+    border: 5px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 5px solid #1e1f1f;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    z-index: 1;
+    top: 200px;
+    left: 48%;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @-webkit-keyframes spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+
+
+<h2  style="position:relative;color:white;">Users</h2>
+<div class="row" >
+
+  <div class="col-md-8"></div>
+  <div class="col-md-2" style="position:relative;top:30px;display:none; ">
+    <div class="dropdown">
+      <button class="form-control" data-toggle="dropdown" style="width: 86%;height:42px;">
+        <b>
+          OPTIONS
+        </b>
+      </button>
+      <ul class="dropdown-menu">
+        <li class="libutton"><a  style="cursor:pointer;" (click)="generateExcel()">Download Excel</a></li>
+        <li class="libutton"><angular2csv [data]="CSVData" filename="clients.csv" [options]="options">CSV</angular2csv></li>
+        <!--<li><a style="cursor:pointer;" (click)="generateCSV()">CSV1</a></li>-->
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-2" style="position:relative;top:30px;display:none; ">
+      <button (click)="gotoAddClient()" class=" form-control " type="button"  style="width: 79%;height:42px;background: #01d3d5;">
+        <b style="color:white;">NEW CLIENT</b>
+      </button>
+  </div>
+
+
+</div>
+<div class="row"  *ngIf="!getData" style="position:relative;left:50%;display:none;">
+  <div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+
+</div>
+<table  id="table_id" class="table table-striped display mt-2 " >
+  <thead>
+    <tr>
+      <th>NAME</th>
+      <th>MOBILE NO</th>
+      <th>EMAIL </th>
+      <th>ROLE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="cursor:pointer;" *ngFor="let user of allUsers">
+      <td style="text-transform:capitalize;">{{user.username}} </td>
+      <td>{{user.phone}}</td>
+      <td>{{user.email}}</td>
+      <td style="text-transform:capitalize;">{{user.role}}</td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
