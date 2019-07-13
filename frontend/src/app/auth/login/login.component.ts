@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
   loader = false;
   username = null;
   password = null;
+  checkvalue: boolean = false;
   correctEmail: boolean = true;
   checkValidation: boolean = false;
   userNameSelect: boolean = false;
@@ -28,7 +29,6 @@ export class LoginComponent implements OnInit {
   ngOnInit() { }
 
   UserNameCheck() {
-    debugger
     this.correctEmail = true
     this.checkValidation = false
     this.userNameSelect = false
@@ -45,8 +45,15 @@ export class LoginComponent implements OnInit {
         this.emailColor = "#5c6873";
       }
     } else {
-      if ((this.username).toString().length == 10) {
+      debugger
+      if ((this.username).toString().length > 10) {
+        var username = (this.username).substring(0, 10);// (this.username).substring(0, (this.username).toString().length - 1)
+        this.username = username
+        return false;
+      }
+      else if ((this.username).toString().length == 10) {
         this.emailColor = "#5c6873";
+        this.checkvalue = true
       } else {
         this.emailColor = "red";
       }
