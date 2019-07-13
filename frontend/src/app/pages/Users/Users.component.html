@@ -55,41 +55,36 @@
         </b>
       </button>
       <ul class="dropdown-menu">
-        <li class="libutton"><a  style="cursor:pointer;" (click)="generateExcel()">Download Excel</a></li>
-        <li class="libutton"><angular2csv [data]="CSVData" filename="clients.csv" [options]="options">CSV</angular2csv></li>
+       
         <!--<li><a style="cursor:pointer;" (click)="generateCSV()">CSV1</a></li>-->
       </ul>
     </div>
   </div>
   <div class="col-md-2" style="position:relative;top:30px;display:none; ">
-      <button (click)="gotoAddClient()" class=" form-control " type="button"  style="width: 79%;height:42px;background: #01d3d5;">
-        <b style="color:white;">NEW CLIENT</b>
-      </button>
+      
   </div>
 
 
 </div>
-<div class="row"  *ngIf="!getData" style="position:relative;left:50%;display:none;">
+<!--<div class="row"  *ngIf="!getData" style="position:relative;left:50%;display:none;">
   <div class="spinner-border" role="status">
     <span class="sr-only">Loading...</span>
   </div>
 
-</div>
+</div>-->
 <table  id="table_id" class="table table-striped display mt-2 " >
   <thead>
     <tr>
-      <th>NAME</th>
-      <th>MOBILE NO</th>
-      <th>EMAIL </th>
       <th>ROLE</th>
+      <th>EMAIL </th>
+      <th>MOBILE NO</th>
     </tr>
   </thead>
   <tbody>
     <tr style="cursor:pointer;" *ngFor="let user of allUsers">
-      <td style="text-transform:capitalize;">{{user.username}} </td>
-      <td>{{user.phone}}</td>
-      <td>{{user.email}}</td>
       <td style="text-transform:capitalize;">{{user.role}}</td>
+      <td>{{user.email}}</td>
+      <td>{{user.phone}}</td>
     </tr>
   </tbody>
 </table>

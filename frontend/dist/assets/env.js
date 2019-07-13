@@ -1,6 +1,6 @@
 (function() {
     app_environment = {};
-    app_environment.deployment = 'prod';
+    app_environment.deployment = 'dev';
     app_environment.constants = {
         dev: {
             isLive: false,

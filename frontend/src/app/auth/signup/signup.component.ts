@@ -11,7 +11,13 @@ declare var ithours_client: any;
 export class SignUpComponent implements OnInit {
   mobileColor = "red";
   emailColor = "red";
+  allfieldsCheck: boolean = false;
+  emailIdExist: boolean = false;
+  phoneNumberExist: boolean = false;
   roleSelect: boolean = true;
+  passwordCheck: boolean = false;
+  emailCheck: boolean = false;
+  mobilenumberCheck: boolean = false;
   loader = false;
   role: any;
   user_name: any = '';
@@ -39,7 +45,14 @@ export class SignUpComponent implements OnInit {
     this.role = role
     this.roleSelect = false
   }
+  passwordValiadtion() {
+    this.allfieldsCheck = false
+    this.passwordCheck = false
+  }
   emailValiadtion() {
+    this.emailCheck = false
+    this.allfieldsCheck = false
+    this.emailIdExist = false
     this.emailColor = "red";
     if (this.regex.test(this.user_name)) {
       this.emailColor = "#5c6873";
@@ -49,6 +62,9 @@ export class SignUpComponent implements OnInit {
   }
 
   mobileNumberCheck(mobile) {
+    this.mobilenumberCheck = false
+    this.allfieldsCheck = false
+    this.phoneNumberExist = false
     this.mobile_no = mobile
     if ((this.mobile_no).toString().length == 10) {
       this.mobileColor = "#5c6873";
@@ -89,17 +105,43 @@ export class SignUpComponent implements OnInit {
         }
       }
       else if (checkEmailTest) {
-        this.toastr.error("This email Id already exist . Please enter other email Id")
+        this.emailIdExist = true
+        //this.toastr.error("This email Id already exist . Please enter other email Id")
       }
       else if (checkMobileNo) {
-        this.toastr.error("This Mobile No already exist . Please enter other mobile No")
+        this.phoneNumberExist = true
+        //this.toastr.error("This Mobile No already exist . Please enter other mobile No")
       }
       //else {
       //  this.toastr.error("You have already registered")
       //}
     }
+    else if (this.mobile_no && this.user_name) {
+      this.passwordCheck = true
+    }
+    else if (this.mobile_no && this.password) {
+      this.emailCheck = true
+    }
+    else if (this.user_name && this.password){
+      this.mobilenumberCheck = true
+    }
+    else if (this.mobile_no) {
+      this.passwordCheck = true
+      this.emailCheck = true
+    }
+    else if (this.user_name) {
+      this.passwordCheck = true
+      this.mobilenumberCheck = true
+    }
+    else if (this.password) {
+      this.mobilenumberCheck = true
+      this.emailCheck = true
+    }
     else {
-      this.toastr.error("",'All fields are mandatory')
+      this.mobilenumberCheck = true
+      this.emailCheck = true
+      this.passwordCheck = true
+      //this.toastr.error("",'All fields are mandatory')
     }
 
   }

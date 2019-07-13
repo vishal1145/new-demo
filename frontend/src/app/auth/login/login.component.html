@@ -1,10 +1,10 @@
 <div class="main-account-page">
-<div class="account-page-middle">
+<div class="">
 
-<div class="account-signin-form clearfix">
+<div class="account-signin-form clearfix" style="margin-top: -60px;">
 
-<div class="account-form-l account-signin-left">
-    <form class="form-signin">
+<div class="account-form-l account-signin-left" style="position:relative;height: 627px;">
+    <form class="form-signin" style="position:relative;top:65px;">
         <!--<img class="mb-4" src="https://getbootstrap.com/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">-->
         <h1>Login to your account</h1>
         
@@ -14,9 +14,9 @@
         
         <div class="form-sigin-details">
           <div class="signin-form-fields clearfix"><label for="inputEmail" class="sr-only">Email address</label><i class="fa fa-envelope-o"></i><input type="text" id="inputEmail" name="username" [(ngModel)]="username" (ngModelChange)=UserNameCheck() class="form-control" placeholder="Email address/ Phone No." autocomplete="off"></div>
-          <p style="color:red;margin-top: -25px;" *ngIf="!userNameSelect">Please Enter Email</p>
+          <p style="color:red;margin-top: -25px;" *ngIf="!correctEmail">Please enter your correct email address</p>
           <div class="signin-form-fields clearfix"><label for="inputPassword" class="sr-only">Password</label><i class="fa fa-lock"></i><input type="password" id="inputPassword" name="password" [(ngModel)]="password" (ngModelChange)=UserPasswordCheck() class="form-control" placeholder="Password" autocomplete="off"></div>
-          <p style="color:red;margin-top: -25px;" *ngIf="checkPassword">Please Enter Password</p>
+          <p style="color:red;margin-top: -25px;" *ngIf="checkValidation">Please enter username and password</p>
           <p style="color:red;margin-top: -25px;" *ngIf="userNameWrong">Wrong username and password</p>
 
           <div class="signin-form-button"><button class="btn btn-lg btn-primary btn-block" type="submit" (click)="login()">Sign in</button></div>
@@ -27,13 +27,13 @@
     </form>
     </div>
     
-    <div class="account-form-r account-signin-right">
-    <h1>Welcome To Frontend</h1>
+    <div class="account-form-r account-signin-right" style="position:relative;top:65px;">
+      <h1>Welcome To Application</h1>
     <div class="signin-form-desc">
         <p>Lorem ipsum dolor sit amet, consectetuer</p>
         </div>
         
-        <div class="signin-doctor-avtar"></div>
+        <div class="signin-doctor-avtar" style="margin: 22px auto auto !important;"></div>
     </div>
     
     </div>

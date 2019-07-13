@@ -1,37 +1,37 @@
 <style>
   .modal-width{
     position: absolute;
-    margin: auto;
+    /*margin: auto;*/
     top: 0;
     bottom: 0;
-    background: rgba(0,0,0,0.5);
+    /*background: rgba(0,0,0,0.5);*/
     left: 0;
     right: 0;
-    z-index: 999;
+    /*z-index: 999;*/
   }
   .inner-modal {
-    background: #fff;
+    /*background: #fff;*/
     width: 80%;
     margin: 0 auto;
     position: absolute;
-    margin: auto;
+    /*margin: auto;*/
     left: 0;
     right: 0;
     height: 140px;
     top: 0;
     bottom: 0;
-    z-index: 999;
+    /*z-index: 999;*/
     
   }
   </style>
 
 <div class="main-account-page">
-<div class="account-page-middle">
+<div class="">
 
-<div class="account-signin-form clearfix">
+<div class="account-signin-form clearfix" style="margin-top: -60px;">
 
-<div class="account-form-l account-signin-left" style="position:relative">
-    <form class="form-signin">
+<div class="account-form-l account-signin-left" style="position:relative;height: 627px;">
+    <form class="form-signin" style="position:relative;top:65px;">
         <!--<img class="mb-4" src="https://getbootstrap.com/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">-->
         <h1>Create your account</h1>
         
@@ -39,46 +39,55 @@
         <p>Lorem ipsum dolor sit amet, consectetuer</p>
         </div>
         
-        <div class="form-sigin-details" >
-          <div class="modal-width" *ngIf="roleSelect" >
-          <div class="row p-5 inner-modal">
-            <div class="col-6">
-              <div class="card bg-dark text-white" style="text-align: left;">
-                <div class="card-body" style="cursor:pointer;" (click)="SelctRole('BUSINESS')">
-                  <p class="card-text">Business</p>
-                </div>
-              </div>
+        <div class="form-sigin-details">
+          <div class=" clearfix">
+            <div *ngIf="roleSelect">
+              <div class="row pb-4 ">
+                <div class="col-6">
+                  <div class="card bg-dark text-white" style="text-align: left;">
+                    <div class="card-body" style="cursor:pointer;border: 1px solid white;" (click)="SelctRole('BUSINESS')">
+                      <p class="card-text">Business</p>
+                    </div>
+                  </div>
 
-            </div>
-            <div class="col-6">
-              <div class="card bg-dark text-white" style="text-align: left;">
-                <div class="card-body" style="cursor:pointer;" (click)="SelctRole('CUSTOMER')">
-                  <p class="card-text">Customer</p>
                 </div>
-              </div>
+                <div class="col-6">
+                  <div class="card bg-dark text-white" style="text-align: left;">
+                    <div class="card-body" style="cursor:pointer;border: 1px solid white;" (click)="SelctRole('CUSTOMER')">
+                      <p class="card-text">Customer</p>
+                    </div>
+                  </div>
 
-            </div>
+                </div>
+
+
+              </div>
             </div>
           </div>
           <!--<p style="color:white;margin-bottom:0">sdgdfgbfh</p>-->
           <div class="signin-form-fields clearfix"><label for="inputEmail" class="sr-only">Email Id</label><i class="fa fa-envelope-o"></i><input type="text" id="inputEmail" [ngStyle]="{ color: emailColor}" name="username" [(ngModel)]="user_name" (ngModelChange)=emailValiadtion() class="form-control" placeholder="Email Id" autocomplete="off"></div>
           <!--<p style="color:white;margin-bottom:0">sdgdfgbfh</p>-->
-          <div class="signin-form-fields clearfix"><label for="inputMobileNo" class="sr-only">Mobile No.</label><i class="fa fa-phone"></i><input type="number" id="inputMobileNo" [ngStyle]="{ color: mobileColor}" name="mobileNo" [(ngModel)]="mobile_no" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" (ngModelChange)=mobileNumberCheck(mobile_no) class="form-control" placeholder="Mobile Number" autocomplete="off"></div>
-          <div class="signin-form-fields clearfix"><label for="inputPassword" class="sr-only">Password</label><i class="fa fa-lock"></i><input type="password" id="inputPassword" name="password" [(ngModel)]="password" class="form-control" placeholder="Password" autocomplete="off"></div>
+          <p *ngIf="emailCheck" style="color:red;margin-top: -25px;">Email is mandatory</p>
+          <p *ngIf="emailIdExist" style="color:red;margin-top: -25px;">This email Id already exist . Please enter other email Id</p>
+          <div class="signin-form-fields clearfix"><label for="inputMobileNo" class="sr-only">Mobile No.</label><i class="fa fa-phone"></i><input type="text" id="inputMobileNo" [ngStyle]="{ color: mobileColor}" name="mobileNo" [(ngModel)]="mobile_no" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" (ngModelChange)=mobileNumberCheck(mobile_no) class="form-control" placeholder="Mobile Number" autocomplete="off"></div>
+          <p *ngIf="phoneNumberExist" style="color:red;margin-top: -25px;">This Mobile No already exist . Please enter other mobile No</p>
+          <p *ngIf="mobilenumberCheck" style="color:red;margin-top: -25px;">Mobile No is mandatory</p>
+          <div class="signin-form-fields clearfix"><label for="inputPassword" class="sr-only">Password</label><i class="fa fa-lock"></i><input type="password" id="inputPassword" name="password" [(ngModel)]="password" class="form-control" placeholder="Password" (ngModelChange)=passwordValiadtion() autocomplete="off"></div>
+          <p *ngIf="passwordCheck" style="color:red;margin-top: -25px;">Password is Mandatory</p>
           <div class="signin-form-button"><button class="btn btn-lg btn-primary btn-block" type="button" (click)="register()">Register</button></div>
           <div class="dont-have-account" style="cursor:pointer;"> <a (click)="gotoLogin()">Login Here</a></div>
 
-        </div>        
-    </form>
+        </div>
+</form>
     </div>
     
-    <div class="account-form-r account-signin-right">
-    <h1>Welcome To Frontend</h1>
+    <div class="account-form-r account-signin-right" style="position:relative;top:65px;">
+    <h1>Welcome To Application</h1>
     <div class="signin-form-desc">
         <p>Lorem ipsum dolor sit amet, consectetuer</p>
         </div>
         
-        <div class="signin-doctor-avtar"></div>
+        <div class="signin-doctor-avtar" style="margin: 22px auto auto !important;"></div>
     </div>
     
     </div>

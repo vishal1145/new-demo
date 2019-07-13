@@ -12,6 +12,8 @@ export class LoginComponent implements OnInit {
   loader = false;
   username = null;
   password = null;
+  correctEmail: boolean = true;
+  checkValidation: boolean = false;
   userNameSelect: boolean = true;
   userNameWrong: boolean = false;
   checkPassword: boolean = false;
@@ -25,11 +27,14 @@ export class LoginComponent implements OnInit {
   ngOnInit() { }
 
   UserNameCheck() {
+    this.correctEmail = true
+    this.checkValidation = false
     this.userNameSelect = true
     this.userNameWrong = false
     this.checkPassword = false
   }
   UserPasswordCheck() {
+    this.checkValidation = false
     this.userNameSelect = true
     this.userNameWrong = false
     this.checkPassword = false
@@ -55,7 +60,8 @@ export class LoginComponent implements OnInit {
       if (!this.phoneNumber.test(this.username)) {
         var checkEamil = this.emailRegex.test(this.username)
         if (!checkEamil) {
-          return  this.toastr.error("", "Please enter your correct email address")
+          return this.correctEmail = false
+          //return  this.toastr.error("", "Please enter your correct email address")
         }
       }
       let getUser = await ithours_client.get('User', { email: this.username, password: this.password })
@@ -65,7 +71,6 @@ export class LoginComponent implements OnInit {
       }
       if (getUser.apidata && getUser.apidata.Data && getUser.apidata.Data.length > 0) {
         window.localStorage.setItem('USER', JSON.stringify(getUser.apidata.Data[0]))
-        debugger
         if (getUser.apidata.Data[0].role == 'ADMIN') {
         this.router.navigate(["/pages/users"])
         }
@@ -83,6 +88,7 @@ export class LoginComponent implements OnInit {
       }
     }
     else {
+      this.checkValidation = true;
       if (this.username && !this.password) {
         this.checkPassword = true
          //this.toastr.error("", "Please Enter Password")
