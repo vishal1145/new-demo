@@ -40,10 +40,22 @@ export class SignUpComponent implements OnInit {
     }
 
   }
+  gotoContinue() {
+    this.roleSelect = false
+  }
 
   SelctRole(role) {
+    $("#busibess").removeClass("selectRole");
+    $("#customer").removeClass("selectRole");
+    if (role == 'BUSINESS') {
+      $("#busibess").addClass("selectRole");
+
+    } else if (role == 'CUSTOMER'){
+      $("#customer").addClass("selectRole");
+    }
+   
     this.role = role
-    this.roleSelect = false
+    //this.roleSelect = false
   }
   passwordValiadtion() {
     this.allfieldsCheck = false

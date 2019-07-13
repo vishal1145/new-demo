@@ -9,15 +9,16 @@ declare var ithours_client: any;
   templateUrl: "./login.component.html"
 })
 export class LoginComponent implements OnInit {
+  emailColor = "red"
   loader = false;
   username = null;
   password = null;
   correctEmail: boolean = true;
   checkValidation: boolean = false;
-  userNameSelect: boolean = true;
+  userNameSelect: boolean = false;
   userNameWrong: boolean = false;
   checkPassword: boolean = false;
-  emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,4}))$/
+  regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,4}))$/;
   phoneNumber = new RegExp(/^[0-9]+$/);
 
   constructor(private router: Router, 
@@ -27,15 +28,34 @@ export class LoginComponent implements OnInit {
   ngOnInit() { }
 
   UserNameCheck() {
+    debugger
     this.correctEmail = true
     this.checkValidation = false
-    this.userNameSelect = true
+    this.userNameSelect = false
     this.userNameWrong = false
     this.checkPassword = false
+    this.emailColor = "red";
+    if (!this.phoneNumber.test(this.username)) {
+      //this.emailColor = "#5c6873";
+      var checkeamil = this.regex.test(this.username)
+      if (!checkeamil) {
+        this.emailColor = "red";
+      }
+      else {
+        this.emailColor = "#5c6873";
+      }
+    } else {
+      if ((this.username).toString().length == 10) {
+        this.emailColor = "#5c6873";
+      } else {
+        this.emailColor = "red";
+      }
+      //this.emailColor = "red";
+    }
   }
   UserPasswordCheck() {
     this.checkValidation = false
-    this.userNameSelect = true
+    this.userNameSelect = false
     this.userNameWrong = false
     this.checkPassword = false
   }
@@ -51,19 +71,15 @@ export class LoginComponent implements OnInit {
   }
 
   async login() {
-    // localStorage.setItem("USER", JSON.stringify({_id:"sdsadsa"}))
-    // this.router.navigate(["/pages/staffing"]);
-
+    
     if (this.username && this.password) {
       this.loader = true
-
-      if (!this.phoneNumber.test(this.username)) {
-        var checkEamil = this.emailRegex.test(this.username)
-        if (!checkEamil) {
-          return this.correctEmail = false
-          //return  this.toastr.error("", "Please enter your correct email address")
-        }
-      }
+      //if (!this.phonenumber.test(this.username)) {
+      //  var checkeamil = this.emailregex.test(this.username)
+      //  if (!checkeamil) {
+      //    return this.correctemail = false
+      //  }
+      //}
       let getUser = await ithours_client.get('User', { email: this.username, password: this.password })
       if (getUser.apidata.Data && getUser.apidata.Data.length == 0) {
         let getUser1 = await ithours_client.get('User', { phone: Number(this.username), password: this.password })
@@ -88,13 +104,17 @@ export class LoginComponent implements OnInit {
       }
     }
     else {
-      this.checkValidation = true;
-      if (this.username && !this.password) {
+      //this.checkValidation = true;
+      if (this.username) {
         this.checkPassword = true
          //this.toastr.error("", "Please Enter Password")
       }
+      else if (this.password) {
+        this.userNameSelect = true
+      }
       else {
-        this.userNameSelect = false
+        this.checkPassword = true
+        this.userNameSelect = true
          //this.toastr.error("", "Please Enter Email / Phone No. and Password")
       }
     }
