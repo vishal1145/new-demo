@@ -14,7 +14,8 @@ export class SignUpComponent implements OnInit {
   allfieldsCheck: boolean = false;
   emailIdExist: boolean = false;
   phoneNumberExist: boolean = false;
-  roleSelect: boolean = true;
+  roleSelect: String = "step1";
+  isotp: boolean  = false;
   passwordCheck: boolean = false;
   emailCheck: boolean = false;
   mobilenumberCheck: boolean = false;
@@ -41,7 +42,7 @@ export class SignUpComponent implements OnInit {
 
   }
   gotoContinue() {
-    this.roleSelect = false
+    this.roleSelect = "step2"
   }
 
   checkNumberDigit(mobileNo) {
@@ -112,8 +113,11 @@ export class SignUpComponent implements OnInit {
         let getSignUpData = await ithours_client.add("User", signupData);
         debugger
         if (getSignUpData.apidata && getSignUpData.apidata.Data) {
-          this.toastr.success("", 'Create account successfully');
-          window.location.href = "/auth/login";
+          //this.toastr.success("", 'Create account successfully');
+          
+          //window.location.href = "/auth/login";
+
+          this.roleSelect = "step3";
           //this.mobile_no = ''
           //this.user_name = ''
           //this.password = ''
