@@ -5,7 +5,7 @@
         dev: {
             isLive: false,
             production: false,
-            apiBaseURL: "http://localhost:3000/"
+            apiBaseURL: "http://localhost:1100/"
         },
         uat: {
             isLive: false,
