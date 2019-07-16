@@ -228,9 +228,7 @@ if(isotpsend.issuccess){
       this.mobilenumberCheck = true
       this.passwordCheck = true
     }
-    else if (this.user_name == ''){
-      this.emailCheck = true
-    }
+   
     else if (this.user_name == '' && this.mobile_no == '') {
       this.emailCheck = true
       this.mobilenumberCheck = true
@@ -239,14 +237,18 @@ if(isotpsend.issuccess){
       this.emailCheck = true
       this.passwordCheck = true
     }
-
-    else if (this.mobile_no == '') {
-      this.mobilenumberCheck = true
+    else if (this.user_name == '') {
+      this.emailCheck = true
     }
     else if (this.mobile_no == '' && this.password == '') {
       this.mobilenumberCheck = true
       this.passwordCheck = true
     }
+
+    else if (this.mobile_no == '') {
+      this.mobilenumberCheck = true
+    }
+    
 
     else if (this.password == '') {
       this.passwordCheck = true
