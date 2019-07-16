@@ -45,11 +45,6 @@ export class SignUpComponent implements OnInit {
     this.roleSelect = "step2"
   }
 
-  checkNumberDigit(mobileNo) {
-    if (mobileNo.toString().length > 10) {
-      return false;
-    }
-  }
 
   SelctRole(role) {
     $("#busibess").removeClass("selectRole");
