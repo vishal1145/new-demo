@@ -14,13 +14,13 @@
         
         <div class="form-sigin-details">
           <div class="signin-form-fields clearfix"><label for="inputEmail" class="sr-only">Email address</label><i class="fa fa-envelope-o"></i><input type="text" id="inputEmail" [ngStyle]="{ color: emailColor}" name="username" [(ngModel)]="username" (ngModelChange)=UserNameCheck() class="form-control" placeholder="Email address/ Phone No." autocomplete="off"></div>
-          <p style="color:red;margin-top: -25px;" *ngIf="userNameSelect">Email address / Phone No mandatory</p>
+          <p style="color:red;margin-top: -25px;" *ngIf="userNameSelect">Email address / Phone No required</p>
           <p style="color:red;margin-top: -25px;" *ngIf="usernameCheck">Email address / Phone No worng</p>
           <p style="color:red;margin-top: -25px;" *ngIf="!correctEmail">Please enter your correct email address</p>
           <div class="signin-form-fields clearfix"><label for="inputPassword" class="sr-only">Password</label><i class="fa fa-lock"></i><input type="password" id="inputPassword" name="password" [(ngModel)]="password" (ngModelChange)=UserPasswordCheck() class="form-control" placeholder="Password" autocomplete="off"></div>
           <p style="color:red;margin-top: -25px;" *ngIf="checkValidation">Please enter username and password</p>
           <p style="color:red;margin-top: 3px;text-align: center;" *ngIf="userNameWrong">Wrong username and password</p>
-          <p style="color:red;margin-top: -25px;" *ngIf="checkPassword">Password mandatory</p>
+          <p style="color:red;margin-top: -25px;" *ngIf="checkPassword">Password required</p>
 
           <div class="signin-form-button"><button class="btn btn-lg btn-primary btn-block" type="submit" (click)="login()">Sign in</button></div>
 

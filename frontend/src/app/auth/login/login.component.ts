@@ -11,8 +11,8 @@ declare var ithours_client: any;
 export class LoginComponent implements OnInit {
   emailColor = "red"
   loader = false;
-  username = null;
-  password = null;
+  username: any = '';
+  password : any = '';
   checkvalue: boolean = false;
   correctEmail: boolean = true;
   usernameCheck: boolean = false;
@@ -77,8 +77,8 @@ export class LoginComponent implements OnInit {
   }
 
   async login() {
-    
-    if (this.username && this.password && this.emailColor == "#5c6873") {
+    debugger
+    if (this.username !== '' && this.password !== '' && this.emailColor == "#5c6873") {
       this.loader = true
       //if (!this.phonenumber.test(this.username)) {
       //  var checkeamil = this.emailregex.test(this.username)
@@ -111,21 +111,51 @@ export class LoginComponent implements OnInit {
     }
     else {
       //this.checkValidation = true;
-      if (this.username && this.emailColor !== "red") {
+      if (this.username == '' && this.password == '') {
+        this.userNameSelect = true
         this.checkPassword = true
-         //this.toastr.error("", "Please Enter Password")
       }
-      else if (this.password && this.emailColor !== "red") {
+      else if (this.username == '') {
         this.userNameSelect = true
       }
-      else if (this.emailColor == "red") {
+      else if (this.password == '') {
+        this.checkPassword = true
+      }
+      else if (this.username !== '' && this.emailColor == "red") {
         this.usernameCheck = true
       }
+     
       else {
         this.checkPassword = true
         this.userNameSelect = true
-         //this.toastr.error("", "Please Enter Email / Phone No. and Password")
       }
+
+      //if (this.username == '' && this.emailColor !== "red") {
+      //  this.userNameSelect = true
+      //   //this.toastr.error("", "Please Enter Password")
+      //}
+      //if (this.username !== '' && this.emailColor !== "red") {
+      //  this.usernameCheck = true
+      //  //this.toastr.error("", "Please Enter Password")
+      //}
+      //if (this.username == '' && this.emailColor == "red") {
+      //  this.userNameSelect = true
+      //  //this.toastr.error("", "Please Enter Password")
+      //}
+      //else if (this.password == '' ) {
+      //  this.checkPassword = true
+      //}
+      //else if (this.password !== '' ) {
+      //  this.userNameSelect = true
+      //}
+      //else if (this.emailColor == "red" ) {
+      //  this.usernameCheck = true
+      //}
+      //else {
+      //  this.checkPassword = true
+      //  this.userNameSelect = true
+      //   //this.toastr.error("", "Please Enter Email / Phone No. and Password")
+      //}
     }
   }
 

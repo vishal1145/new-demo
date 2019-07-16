@@ -166,7 +166,7 @@ export class SignUpComponent implements OnInit {
   signupData:any ={};
   otpcode = 99999999999999999999999;
   async register() {
-    if (this.mobile_no && this.user_name && this.password && this.emailColor !== "red" && this.mobileColor !== "red") {
+    if (this.mobile_no !== '' && this.user_name !== '' && this.password !== '' && this.emailColor !== "red" && this.mobileColor !== "red") {
       var checkEmailTest = false
       var checkMobileNo = false
       for (var checkEmail = 0; checkEmail < this.allUsersData.length; checkEmail++) {
@@ -222,48 +222,46 @@ if(isotpsend.issuccess){
       //  this.toastr.error("You have already registered")
       //}
     }
-    else if (this.mobile_no && this.user_name && this.emailColor !== "red" && this.mobileColor !== "red") {
+
+    if (this.user_name == '' && this.mobile_no == '' && this.password == '') {
+      this.emailCheck = true
+      this.mobilenumberCheck = true
       this.passwordCheck = true
     }
-    else if (this.mobile_no && this.password && this.emailColor !== "red" && this.mobileColor !== "red") {
+    else if (this.user_name == ''){
       this.emailCheck = true
     }
-    else if (this.user_name && this.password && this.emailColor !== "red" && this.mobileColor !== "red"){
+    else if (this.user_name == '' && this.mobile_no == '') {
+      this.emailCheck = true
       this.mobilenumberCheck = true
     }
-    else if (this.mobile_no && this.emailColor !== "red" && this.mobileColor !== "red") {
+    else if (this.user_name == '' && this.password == '') {
+      this.emailCheck = true
       this.passwordCheck = true
-      this.emailCheck = true
     }
-    else if (this.user_name && this.emailColor !== "red" && this.mobileColor !== "red") {
+
+    else if (this.mobile_no == '') {
+      this.mobilenumberCheck = true
+    }
+    else if (this.mobile_no == '' && this.password == '') {
+      this.mobilenumberCheck = true
       this.passwordCheck = true
-      this.mobilenumberCheck = true
     }
-    else if (this.password && this.emailColor !== "red" && this.mobileColor !== "red") {
-      this.mobilenumberCheck = true
-      this.emailCheck = true
+
+    else if (this.password == '') {
+      this.passwordCheck = true
     }
-    else if (this.emailColor == "red" && this.mobileColor !== "red") {
+    else if (this.emailColor == "red" && this.mobileColor == "red"){
       this.wrongEmail = true
-    }
-    else if (this.emailColor == "red" &&  this.mobileColor == "red"){
-      this.wrongMobileNo = true
-      this.wrongEmail = true
-    }
-    else if (this.mobileColor == "red" && this.emailColor !== "red"){
       this.wrongMobileNo = true
     }
+
     else if (this.emailColor == "red"){
       this.wrongEmail = true
     }
+
     else if (this.mobileColor == "red") {
       this.wrongMobileNo = true
-    }
-    else {
-      this.mobilenumberCheck = true
-      this.emailCheck = true
-      this.passwordCheck = true
-      //this.toastr.error("",'All fields are mandatory')
     }
 
   }
