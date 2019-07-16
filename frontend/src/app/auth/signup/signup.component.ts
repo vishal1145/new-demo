@@ -79,6 +79,19 @@ export class SignUpComponent implements OnInit {
       this.emailColor = "red";
     }
   }
+  otpColor=''
+
+  OTP_VALUE = 99999999999999999999;
+  otpValiadtion(){
+    debugger;
+    this.otpWrong =false;
+    this.optCheck =false;
+    if ((this.user_otp).toString().length == 4) {
+      this.otpColor = "#5c6873";
+    } else {
+      this.otpColor = "red";
+    }
+  }
 
   mobileNumberCheck(mobile) {
     this.mobilenumberCheck = false
@@ -91,6 +104,67 @@ export class SignUpComponent implements OnInit {
       this.mobileColor = "red";
     }
   }
+
+  user_otp='';
+  optCheck=false;
+  otpWrong =false;
+
+
+  sendOTP(moobileno){
+    // moobileno = 9953813100;
+    var url = (window as any).APIBASE + "sendotp/"+moobileno;
+    return new Promise((resolve, reject) => {
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": url,
+      "method": "GET",
+      "headers": {}
+    }
+    
+    $.ajax(settings).done(function (response) {
+      resolve(response);
+    }).catch((err) => {
+      resolve({issuccess : false});
+    });
+  })
+  }
+  async verify(){
+    
+    this.otpWrong =false;
+    this.optCheck =false;
+    if (this.user_otp) {
+      if(this.user_otp == this.otpcode.toString()){
+
+        let getSignUpData = await ithours_client.add("User", this.signupData);
+        debugger
+        if (getSignUpData.apidata && getSignUpData.apidata.Data) {
+          this.toastr.success("", 'Create account successfully, please login with admin to verify registration');
+          
+          setTimeout(() => {
+            window.location.href = "/auth/login";  
+          }, 3000);
+          
+          //this.roleSelect = "step1";
+          this.mobile_no = ''
+          this.user_name = ''
+          this.password = ''
+        }
+        else {
+          this.toastr.error("", 'Something went to wrong');
+        }
+
+      }else
+      {
+        this.otpWrong =true;
+      }
+    }
+    else {
+      this.optCheck = true;
+    }
+  }
+  signupData:any ={};
+  otpcode = 99999999999999999999999;
   async register() {
     if (this.mobile_no && this.user_name && this.password) {
       var checkEmailTest = false
@@ -104,27 +178,37 @@ export class SignUpComponent implements OnInit {
         }
       }
       if (!checkEmailTest && !checkMobileNo) {
-        var signupData = {
+        this.signupData = {
           phone: this.mobile_no,
           email: this.user_name,
           password: this.password,
           role: this.role
         }
-        let getSignUpData = await ithours_client.add("User", signupData);
-        debugger
-        if (getSignUpData.apidata && getSignUpData.apidata.Data) {
-          //this.toastr.success("", 'Create account successfully');
+        // let getSignUpData = await ithours_client.add("User", signupData);
+        // debugger
+        // if (getSignUpData.apidata && getSignUpData.apidata.Data) {
+        //   //this.toastr.success("", 'Create account successfully');
           
-          //window.location.href = "/auth/login";
+        //   //window.location.href = "/auth/login";
 
-          this.roleSelect = "step3";
-          //this.mobile_no = ''
-          //this.user_name = ''
-          //this.password = ''
-        }
-        else {
-          this.toastr.error("", 'Something went to wrong');
-        }
+        //   this.roleSelect = "step3";
+        //   //this.mobile_no = ''
+        //   //this.user_name = ''
+        //   //this.password = ''
+        // }
+        // else {
+        //   this.toastr.error("", 'Something went to wrong');
+        // }
+      
+
+        var isotpsend:any = await this.sendOTP(this.mobile_no);
+if(isotpsend.issuccess){
+  this.otpcode = isotpsend.otp;
+  this.roleSelect = "step3";
+}else {
+  this.toastr.error("", 'Something went to wrong');
+}
+
       }
       else if (checkEmailTest) {
         this.emailIdExist = true

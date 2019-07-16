@@ -89,16 +89,21 @@
          
           <div *ngIf="roleSelect == 'step3'">
             <!--<p style="color:white;margin-bottom:0">sdgdfgbfh</p>-->
-            <div class="signin-form-fields clearfix"><label for="inputEmail" class="sr-only">Email Id</label><i class="fa fa-envelope-o"></i><input type="text" id="inputEmail" [ngStyle]="{ color: emailColor}" name="username" [(ngModel)]="user_name" (ngModelChange)=emailValiadtion() class="form-control" placeholder="Email Id" autocomplete="off"></div>
-            <!--<p style="color:white;margin-bottom:0">sdgdfgbfh</p>-->
-            <p *ngIf="emailCheck" style="color:red;margin-top: -25px;">Email is mandatory</p>
-            <p *ngIf="emailIdExist" style="color:red;margin-top: -25px;">This email Id already exist . Please enter other email Id</p>
-            <div class="signin-form-fields clearfix"><label for="inputMobileNo" class="sr-only">Mobile No.</label><i class="fa fa-phone"></i><input type="text" id="inputMobileNo" maxlength="10" [ngStyle]="{ color: mobileColor}" name="mobileNo" [(ngModel)]="mobile_no" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || checkNumberDigit(mobile_no)" (ngModelChange)=mobileNumberCheck(mobile_no) class="form-control" placeholder="Mobile Number" autocomplete="off"></div>
-            <p *ngIf="phoneNumberExist" style="color:red;margin-top: -25px;">This Mobile No already exist . Please enter other mobile No</p>
-            <p *ngIf="mobilenumberCheck" style="color:red;margin-top: -25px;">Mobile No is mandatory</p>
-            <div class="signin-form-fields clearfix"><label for="inputPassword" class="sr-only">Password</label><i class="fa fa-lock"></i><input type="password" id="inputPassword" name="password" [(ngModel)]="password" class="form-control" placeholder="Password" (ngModelChange)=passwordValiadtion() autocomplete="off"></div>
-            <p *ngIf="passwordCheck" style="color:red;margin-top: -25px;">Password is Mandatory</p>
-            <div class="signin-form-button"><button class="btn btn-lg btn-primary btn-block" type="button" (click)="register()">Register</button></div>
+            <div class="signin-form-fields clearfix">
+              <label for="inputEmail" class="sr-only">Email Id</label>
+              <i class="fa fa-envelope-o"></i>
+              <input type="text" id="inputOTP" [ngStyle]="{ color: otpColor}" name="userotp" 
+              [(ngModel)]="user_otp" (ngModelChange)=otpValiadtion() 
+              class="form-control" placeholder="Email Id" autocomplete="off"></div>
+
+            <p *ngIf="optCheck" style="color:red;margin-top: -25px;">OTP is mandatory</p>
+            <p *ngIf="otpWrong" style="color:red;margin-top: -25px;">Wrong OTP</p>
+            
+            <div class="signin-form-button">
+              
+              <button class="btn btn-lg btn-primary btn-block" type="button" (click)="verify()">Verify</button></div>
+
+
             <div class="dont-have-account" style="cursor:pointer;"> <a (click)="gotoLogin()">Login Here</a></div>
 
           </div>

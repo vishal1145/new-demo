@@ -27,8 +27,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
     <script src="assets/env.js "></script>
 
-     <!--<script src="http://localhost:1100/ithours-client-base" api-url="http://localhost:1100/"></script>--> 
+    <script>
+      var url = app_environment.getEnvValueByKey('apiBaseURL');
+      window.APIBASE = url;
+    </script>
+    
+    <!--<script src="http://localhost:1100/ithours-client-base" api-url="http://localhost:1100/"></script>--> 
     <script src="http://api.demo-nipunait.tk/ithours-client-base" api-url="http://api.demo-nipunait.tk/"></script>
+    
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />

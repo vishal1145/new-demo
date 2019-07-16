@@ -1,6 +1,6 @@
 (function() {
     app_environment = {};
-    app_environment.deployment = 'prod';
+    app_environment.deployment = 'uat';
     app_environment.constants = {
         dev: {
             isLive: false,
@@ -10,7 +10,7 @@
         uat: {
             isLive: false,
             production: true,
-            apiBaseURL: "http://localhost:3000/"
+            apiBaseURL: "http://api.demo-nipunait.tk/"
         },
         prod: {
             isLive: true,

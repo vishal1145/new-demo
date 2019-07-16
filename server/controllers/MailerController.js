@@ -4,4 +4,13 @@ module.exports = function() {
         return { send: "here" };
 
     }
+
+
+    // this.SENDOTP = async function(data, options) {
+
+    //     console.log(data)
+    //     return { send: "here" };
+
+    // }
+
 }
