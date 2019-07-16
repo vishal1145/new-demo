@@ -75,11 +75,11 @@
             <!--<p style="color:white;margin-bottom:0">sdgdfgbfh</p>-->
             <div class="signin-form-fields clearfix"><label for="inputEmail" class="sr-only">Email Id</label><i class="fa fa-envelope-o"></i><input type="text" id="inputEmail" [ngStyle]="{ color: emailColor}" name="username" [(ngModel)]="user_name" (ngModelChange)=emailValiadtion() class="form-control" placeholder="Email Id" autocomplete="off"></div>
             <!--<p style="color:white;margin-bottom:0">sdgdfgbfh</p>-->
-            <p *ngIf="wrongEmail" style="color:red;margin-top: -25px;">wrong Email</p>
+            <p *ngIf="wrongEmail" style="color:red;margin-top: -25px;">Email incorrect.</p>
             <p *ngIf="emailCheck" style="color:red;margin-top: -25px;">Email is required</p>
             <p *ngIf="emailIdExist" style="color:red;margin-top: -25px;">This email Id already exist . Please enter other email Id</p>
             <div class="signin-form-fields clearfix"><label for="inputMobileNo" class="sr-only">Mobile No.</label><i class="fa fa-phone"></i><input type="text" id="inputMobileNo" maxlength="10" [ngStyle]="{ color: mobileColor}" name="mobileNo" [(ngModel)]="mobile_no" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) " (ngModelChange)=mobileNumberCheck(mobile_no) class="form-control" placeholder="Mobile Number" autocomplete="off"></div>
-            <p *ngIf="wrongMobileNo" style="color:red;margin-top: -25px;">Wrong Mobile No</p>
+            <p *ngIf="wrongMobileNo" style="color:red;margin-top: -25px;">Mobile No incorrect.</p>
             <p *ngIf="phoneNumberExist" style="color:red;margin-top: -25px;">This Mobile No already exist . Please enter other mobile No</p>
             <p *ngIf="mobilenumberCheck" style="color:red;margin-top: -25px;">Mobile No is required</p>
             <div class="signin-form-fields clearfix"><label for="inputPassword" class="sr-only">Password</label><i class="fa fa-lock"></i><input type="password" id="inputPassword" name="password" [(ngModel)]="password" class="form-control" placeholder="Password" (ngModelChange)=passwordValiadtion() autocomplete="off"></div>
