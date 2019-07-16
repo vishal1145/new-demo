@@ -76,6 +76,7 @@
       <th>ROLE</th>
       <th>EMAIL </th>
       <th>MOBILE NO</th>
+      <th>Registration date</th>
       <th>ACTION</th>
     </tr>
   </thead>
@@ -84,10 +85,11 @@
       <td style="text-transform:capitalize;">{{user.role}}</td>
       <td>{{user.email}}</td>
       <td>{{user.phone}}</td>
+      <td>{{user.created_at | date}}</td>
       <td>
         <span>
-          <i class="far fa-edit mr-1" title="Edit" (click)="openModelforEdituser(user)"  style="font-size:18px;cursor:pointer;color:#377bc1;"></i>
-          <i class="fas fa-trash-alt ml- 1" title="Delete" (click)="openModalDeleteUser(user)"  style="font-size:18px;cursor:pointer;color:#a4303b;"></i>
+          <i class="far fa-edit mr-1" title="Edit" (click)="openModelforEdituser(user)" style="font-size:18px;cursor:pointer;color:#377bc1;"></i>
+          <i class="fas fa-trash-alt ml- 1" title="Delete" (click)="openModalDeleteUser(user)" style="font-size:18px;cursor:pointer;color:#a4303b;"></i>
         </span>
       </td>
     </tr>

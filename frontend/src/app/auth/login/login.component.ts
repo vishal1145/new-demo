@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
   password = null;
   checkvalue: boolean = false;
   correctEmail: boolean = true;
+  usernameCheck: boolean = false;
   checkValidation: boolean = false;
   userNameSelect: boolean = false;
   userNameWrong: boolean = false;
@@ -29,6 +30,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() { }
 
   UserNameCheck() {
+    this.usernameCheck = false
     this.correctEmail = true
     this.checkValidation = false
     this.userNameSelect = false
@@ -45,7 +47,6 @@ export class LoginComponent implements OnInit {
         this.emailColor = "#5c6873";
       }
     } else {
-      debugger
       if ((this.username).toString().length > 10) {
         var username = (this.username).substring(0, 10);// (this.username).substring(0, (this.username).toString().length - 1)
         this.username = username
@@ -73,13 +74,11 @@ export class LoginComponent implements OnInit {
       password:'1234'
     }
     let staffData = await ithours_client.add("User", signupData);
-    debugger
-
   }
 
   async login() {
     
-    if (this.username && this.password) {
+    if (this.username && this.password && this.emailColor == "#5c6873") {
       this.loader = true
       //if (!this.phonenumber.test(this.username)) {
       //  var checkeamil = this.emailregex.test(this.username)
@@ -112,12 +111,15 @@ export class LoginComponent implements OnInit {
     }
     else {
       //this.checkValidation = true;
-      if (this.username) {
+      if (this.username && this.emailColor !== "red") {
         this.checkPassword = true
          //this.toastr.error("", "Please Enter Password")
       }
-      else if (this.password) {
+      else if (this.password && this.emailColor !== "red") {
         this.userNameSelect = true
+      }
+      else if (this.emailColor == "red") {
+        this.usernameCheck = true
       }
       else {
         this.checkPassword = true
@@ -128,7 +130,6 @@ export class LoginComponent implements OnInit {
   }
 
   gotoRegister() {
-    debugger
     //var self = this
     //self.router.navigate[("auth/signup")]
     window.location.href = "/auth/signup";
