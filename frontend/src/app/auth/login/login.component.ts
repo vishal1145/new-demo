@@ -77,6 +77,9 @@ export class LoginComponent implements OnInit {
   }
 
   async login() {
+    this.userNameSelect = false
+    this.usernameCheck = false
+    this.checkPassword = false
     debugger
     if (this.username !== '' && this.password !== '' && this.emailColor == "#5c6873") {
       this.loader = true
@@ -115,20 +118,25 @@ export class LoginComponent implements OnInit {
         this.userNameSelect = true
         this.checkPassword = true
       }
-      else if (this.username == '') {
-        this.userNameSelect = true
-      }
-      else if (this.password == '') {
+     
+      else if (this.username !== '' && this.emailColor == "red" && this.password == '') {
+        this.usernameCheck = true
         this.checkPassword = true
       }
-      else if (this.username !== '' && this.emailColor == "red") {
+      else if (this.username !== '' && this.emailColor == "red" && this.password !== '') {
         this.usernameCheck = true
       }
-     
-      else {
-        this.checkPassword = true
+      else if (this.username == '' && this.password !== '') {
         this.userNameSelect = true
       }
+      else if (this.password == '' && this.username == '') {
+        this.checkPassword = true
+      }
+     
+      //else {
+      //  this.checkPassword = true
+      //  this.userNameSelect = true
+      //}
 
       //if (this.username == '' && this.emailColor !== "red") {
       //  this.userNameSelect = true
