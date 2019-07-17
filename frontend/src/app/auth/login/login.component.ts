@@ -108,6 +108,8 @@ export class LoginComponent implements OnInit {
       }
       else {
         this.userNameWrong = true
+        this.username = ''
+        this.password = ''
         //this.toastr.error("", 'Wrong username and password');
         this.loader = false
       }
