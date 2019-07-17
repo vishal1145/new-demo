@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
     this.checkValidation = false
     this.userNameSelect = false
     this.userNameWrong = false
-    this.checkPassword = false
+    //this.checkPassword = false
     this.emailColor = "red";
     if (!this.phoneNumber.test(this.username)) {
       //this.emailColor = "#5c6873";
@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
   }
   UserPasswordCheck() {
     this.checkValidation = false
-    this.userNameSelect = false
+    //this.userNameSelect = false
     this.userNameWrong = false
     this.checkPassword = false
   }
@@ -77,9 +77,9 @@ export class LoginComponent implements OnInit {
   }
 
   async login() {
-    this.userNameSelect = false
-    this.usernameCheck = false
-    this.checkPassword = false
+    //this.userNameSelect = false
+    //this.usernameCheck = false
+    //this.checkPassword = false
     debugger
     if (this.username !== '' && this.password !== '' && this.emailColor == "#5c6873") {
       this.loader = true
