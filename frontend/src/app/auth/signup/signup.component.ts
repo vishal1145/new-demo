@@ -228,43 +228,107 @@ if(isotpsend.issuccess){
       this.mobilenumberCheck = true
       this.passwordCheck = true
     }
-   
-    else if (this.user_name == '' && this.mobile_no == '') {
-      this.emailCheck = true
+    else if (this.user_name !== '' && this.mobile_no == '' && this.password == '' && this.emailColor == "red") {
+      this.wrongEmail = true
       this.mobilenumberCheck = true
-    }
-    else if (this.user_name == '' && this.password == '') {
-      this.emailCheck = true
       this.passwordCheck = true
     }
-    else if (this.user_name == '') {
-      this.emailCheck = true
-    }
-    else if (this.mobile_no == '' && this.password == '') {
-      this.mobilenumberCheck = true
+    else if (this.user_name !== '' && this.mobile_no !== '' && this.password == '' && this.emailColor == "red" && this.mobileColor == "red") {
+      this.wrongMobileNo = true
+      this.wrongEmail = true
       this.passwordCheck = true
     }
 
-    else if (this.mobile_no == '') {
-      this.mobilenumberCheck = true
+    else if (this.user_name !== '' && this.mobile_no !== '' && this.password == '' && this.mobileColor == "red") {
+      this.wrongMobileNo = true
+      this.passwordCheck = true
     }
+
+
+    else if (this.user_name !== '' && this.mobile_no !== '' && this.password == '' && this.emailColor == "red") {
+      this.wrongEmail = true
+      this.passwordCheck = true
+    }
+    else if (this.user_name !== '' && this.mobile_no !== '' && this.password !== '' && this.emailColor == "red" && this.mobileColor == "red") {
+      this.wrongEmail = true
+      this.wrongMobileNo = true
+    }
+
+    else if (this.user_name !== '' && this.mobile_no !== '' && this.password !== '' && this.emailColor == "red") {
+      this.wrongEmail = true
+    }
+
+    else if (this.user_name !== '' && this.mobile_no !== '' && this.password !== '' && this.mobileColor == "red") {
+      this.wrongMobileNo = true
+    }
+    else if (this.password == ''){
+      this.passwordCheck = true
+    }
+
+
+
+
+
+
+
+    //else if (this.user_name !== '' && this.mobile_no == '' && this.password == '') {
+    //  this.mobilenumberCheck = true
+    //  this.passwordCheck = true
+    //}
+
+    //else if (this.user_name !== '' && this.mobile_no == '' && this.password !== '') {
+    //  this.mobilenumberCheck = true
+    //}
+
+    //else if (this.user_name !== '' && this.mobile_no !== '' && this.password !== '' && this.mobileColor == "red") {
+    //  this.wrongMobileNo = true
+    //}
+
+
+
+
+
+
+
+
+
+   
+    //else if (this.user_name == '' && this.mobile_no == '') {
+    //  this.emailCheck = true
+    //  this.mobilenumberCheck = true
+    //}
+    //else if (this.user_name == '' && this.password == '') {
+    //  this.emailCheck = true
+    //  this.passwordCheck = true
+    //}
+    //else if (this.user_name == '') {
+    //  this.emailCheck = true
+    //}
+    //else if (this.mobile_no == '' && this.password == '') {
+    //  this.mobilenumberCheck = true
+    //  this.passwordCheck = true
+    //}
+
+    //else if (this.mobile_no == '') {
+    //  this.mobilenumberCheck = true
+    //}
     
 
-    else if (this.password == '') {
-      this.passwordCheck = true
-    }
-    else if (this.emailColor == "red" && this.mobileColor == "red"){
-      this.wrongEmail = true
-      this.wrongMobileNo = true
-    }
+    //else if (this.password == '') {
+    //  this.passwordCheck = true
+    //}
+    //else if (this.emailColor == "red" && this.mobileColor == "red"){
+    //  this.wrongEmail = true
+    //  this.wrongMobileNo = true
+    //}
 
-    else if (this.emailColor == "red"){
-      this.wrongEmail = true
-    }
+    //else if (this.emailColor == "red"){
+    //  this.wrongEmail = true
+    //}
 
-    else if (this.mobileColor == "red") {
-      this.wrongMobileNo = true
-    }
+    //else if (this.mobileColor == "red") {
+    //  this.wrongMobileNo = true
+    //}
 
   }
 
