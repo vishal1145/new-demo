@@ -27,6 +27,9 @@ export class SignUpComponent implements OnInit {
   mobile_no: any = '';
   password: any = '';
   allUsersData: any = [];
+  emailerror: any = ''
+  mobileerror: any = ''
+  passworderror: any = ''
   regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,4}))$/;
   //phoneNumber = new regex(/^[0-9]+$/);
 
@@ -63,10 +66,12 @@ export class SignUpComponent implements OnInit {
     this.roleSelect = "step2"
   }
   passwordValiadtion() {
+    this.passworderror = ''
     this.allfieldsCheck = false
     this.passwordCheck = false
   }
   emailValiadtion() {
+    this.emailerror = ''
     this.wrongEmail = false
     this.emailCheck = false
     this.allfieldsCheck = false
@@ -93,6 +98,7 @@ export class SignUpComponent implements OnInit {
   }
 
   mobileNumberCheck(mobile) {
+    this.mobileerror = ''
     this.wrongMobileNo = false
     this.mobilenumberCheck = false
     this.allfieldsCheck = false
@@ -166,6 +172,41 @@ export class SignUpComponent implements OnInit {
   signupData:any ={};
   otpcode = 99999999999999999999999;
   async register() {
+    let isError = false;
+    if (this.user_name) {
+      if (!this.regex.test(this.user_name)) {
+        isError = true;
+        this.emailerror = "Email is incorrect";
+      }
+    } else {
+      isError = true;
+      this.emailerror = "Email is required";
+    }
+
+    if (this.mobile_no) {
+      if ((this.mobile_no).toString().length !== 10) {
+        isError = true;
+        this.mobileerror = "Mobile is incorrect";
+      }
+    } else {
+      isError = true;
+      this.mobileerror = "Mobile is required";
+    }
+
+
+    if (this.password) {
+
+    } else {
+      isError = true;
+      this.passworderror = "Password is required";
+    }
+
+    if (isError) return;
+
+
+
+
+
     if (this.mobile_no !== '' && this.user_name !== '' && this.password !== '' && this.emailColor !== "red" && this.mobileColor !== "red") {
       var checkEmailTest = false
       var checkMobileNo = false
@@ -222,64 +263,7 @@ if(isotpsend.issuccess){
       //  this.toastr.error("You have already registered")
       //}
     }
-    if (this.user_name == '' && this.mobile_no == '' && this.password == '') {
-      this.emailCheck = true
-      this.mobilenumberCheck = true
-      this.passwordCheck = true
-    }
-
-    else if (this.user_name == '' && this.mobile_no == '' && this.password !== '') {
-      this.emailCheck = true
-      this.mobilenumberCheck = true
-    }
-
-    else if (this.user_name == '' && this.mobile_no !== '' && this.password !== '' && this.mobileColor == "red") {
-      this.emailCheck = true
-      this.wrongMobileNo = true
-    }
    
-
-    else if (this.user_name !== '' && this.mobile_no == '' && this.password == '' && this.emailColor == "red") {
-      this.wrongEmail = true
-      this.mobilenumberCheck = true
-      this.passwordCheck = true
-    }
-
-    else if (this.user_name !== '' && this.mobile_no == '' && this.password !== '' && this.emailColor == "red") {
-      this.wrongEmail = true
-      this.mobilenumberCheck = true
-    }
-    else if (this.user_name !== '' && this.mobile_no !== '' && this.password == '' && this.emailColor == "red" && this.mobileColor == "red") {
-      this.wrongMobileNo = true
-      this.wrongEmail = true
-      this.passwordCheck = true
-    }
-
-    else if (this.user_name !== '' && this.mobile_no !== '' && this.password == '' && this.mobileColor == "red") {
-      this.wrongMobileNo = true
-      this.passwordCheck = true
-    }
-
-
-    else if (this.user_name !== '' && this.mobile_no !== '' && this.password == '' && this.emailColor == "red") {
-      this.wrongEmail = true
-      this.passwordCheck = true
-    }
-    else if (this.user_name !== '' && this.mobile_no !== '' && this.password !== '' && this.emailColor == "red" && this.mobileColor == "red") {
-      this.wrongEmail = true
-      this.wrongMobileNo = true
-    }
-
-    else if (this.user_name !== '' && this.mobile_no !== '' && this.password !== '' && this.emailColor == "red") {
-      this.wrongEmail = true
-    }
-
-    else if (this.user_name !== '' && this.mobile_no !== '' && this.password !== '' && this.mobileColor == "red") {
-      this.wrongMobileNo = true
-    }
-    else if (this.password == ''){
-      this.passwordCheck = true
-    }
 
 
    

@@ -113,17 +113,17 @@
 
         <div class="row">
           <input type="text" class="form-control" placeholder="EmailId" (ngModelChange)=emailValiadtion(emailId) [ngStyle]="{ color: emailColor}" name="EmailId" [(ngModel)]="emailId" style="border-radius:0px;width: 100%;margin-bottom: 16px;" />
-          <p class="errors-message">{{emailerror}}</p>
+          <p style="color: red ! important;">{{emailerror}}</p>
         </div>
         <div class="row">
           <input type="text" class="form-control" placeholder="Phone Number" name="mobileNo" [(ngModel)]="mobileNo" (ngModelChange)=mobileNumberCheck(mobileNo) maxlength="10" [ngStyle]="{ color: mobileColor}" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" style="border-radius:0px;width: 100%;" />
-          <p class="errors-message">{{mobileerror}}</p>
+          <p style="color: red ! important;">{{mobileerror}}</p>
         </div>
 
         <div class="row">
           <div class="col-md-12">
             <input type="text" class="form-control" placeholder="Password" name="password" [(ngModel)]="password" (ngModelChange)=passwordCheck(password) style="border-radius:0px;width: 100%;" />
-            <p class="errors-message">{{passworderror}}</p>
+            <p style="color: red ! important;">{{passworderror}}</p>
           </div>
         </div>
         <div slot="modal-footer" style="width:100%">
