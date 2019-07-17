@@ -36,6 +36,9 @@ export class LoginComponent implements OnInit {
     this.userNameSelect = false
     this.userNameWrong = false
     //this.checkPassword = false
+    if (this.username == '') {
+      this.userNameSelect = true
+    }
     this.emailColor = "red";
     if (!this.phoneNumber.test(this.username)) {
       //this.emailColor = "#5c6873";
@@ -63,6 +66,9 @@ export class LoginComponent implements OnInit {
   }
   UserPasswordCheck() {
     this.checkValidation = false
+    if (this.password == '') {
+      this.checkPassword = true
+    }
     //this.userNameSelect = false
     this.userNameWrong = false
     this.checkPassword = false
