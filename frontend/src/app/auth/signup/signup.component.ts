@@ -222,16 +222,32 @@ if(isotpsend.issuccess){
       //  this.toastr.error("You have already registered")
       //}
     }
-
     if (this.user_name == '' && this.mobile_no == '' && this.password == '') {
       this.emailCheck = true
       this.mobilenumberCheck = true
       this.passwordCheck = true
     }
+
+    else if (this.user_name == '' && this.mobile_no == '' && this.password !== '') {
+      this.emailCheck = true
+      this.mobilenumberCheck = true
+    }
+
+    else if (this.user_name == '' && this.mobile_no !== '' && this.password !== '' && this.mobileColor == "red") {
+      this.emailCheck = true
+      this.wrongMobileNo = true
+    }
+   
+
     else if (this.user_name !== '' && this.mobile_no == '' && this.password == '' && this.emailColor == "red") {
       this.wrongEmail = true
       this.mobilenumberCheck = true
       this.passwordCheck = true
+    }
+
+    else if (this.user_name !== '' && this.mobile_no == '' && this.password !== '' && this.emailColor == "red") {
+      this.wrongEmail = true
+      this.mobilenumberCheck = true
     }
     else if (this.user_name !== '' && this.mobile_no !== '' && this.password == '' && this.emailColor == "red" && this.mobileColor == "red") {
       this.wrongMobileNo = true
@@ -266,7 +282,8 @@ if(isotpsend.issuccess){
     }
 
 
-
+   
+    
 
 
 

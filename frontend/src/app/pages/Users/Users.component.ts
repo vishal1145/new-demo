@@ -56,6 +56,9 @@ export class UsersComponent implements OnInit {
   }
 
   openModelforEdituser(userData) {
+    this.emailerror = ''
+    this.mobileerror = ''
+    this.passworderror = ''
     this.mobileNo = userData.phone
     this.emailId = userData.email
     this.password = userData.password
@@ -64,7 +67,45 @@ export class UsersComponent implements OnInit {
     this.UserId = userData._id
     $('#editUser').modal('show')
   }
+
+  validateData
+  emailerror = '';
+  mobileerror = '';
+  passworderror = '';
   async updateUserDetails() {
+    debugger
+    let isError = false;
+    if (this.emailId) {
+      if (!this.regex.test(this.emailId)) {
+        isError = true;
+        this.emailerror = "Email is incorrect";
+      }
+    } else {
+      isError = true;
+      this.emailerror = "Email is required";
+    }
+
+    if (this.mobileNo) {
+      if ((this.mobileNo).toString().length !== 10) {
+        isError = true;
+        this.mobileerror = "Mobile is incorrect";
+      }
+    } else {
+      isError = true;
+      this.mobileerror = "Mobile is required";
+    }
+
+
+    if (this.password) {
+      
+    } else {
+      isError = true;
+      this.passworderror = "Password is required";
+    }
+
+    if (isError) return;
+
+
     if (this.mobileNo && this.emailId && this.password) {
       let adduser = await ithours_client.update(
         "User",
@@ -87,6 +128,7 @@ export class UsersComponent implements OnInit {
       }
     }
     else {
+      
       this.toastr.error("", 'Something went to wrong');
     }
   }
@@ -109,16 +151,29 @@ export class UsersComponent implements OnInit {
   hideModal() {
     $('#editUser').modal('hide')
   }
-  emailValiadtion() {
+  emailValiadtion(emailId) {
+    this.emailerror = ''
     this.emailColor = "red";
+   
     if (this.regex.test(this.emailId)) {
       this.emailColor = "#5c6873";
     } else {
       this.emailColor = "red";
     }
   }
+
+  passwordCheck(password) {
+    this.passworderror = ''
+    if (password == ''){
+      this.passworderror = "Password is required"
+    }
+  }
   mobileNumberCheck(mobile) {
+    this.mobileerror = ''
     this.mobileNo = mobile
+    if (mobile == '') {
+      this.mobileerror = "Mobile is required"
+    }
     if ((this.mobileNo).toString().length == 10) {
       this.mobileColor = "#5c6873";
     } else {
