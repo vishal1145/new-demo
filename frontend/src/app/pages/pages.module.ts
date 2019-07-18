@@ -9,6 +9,7 @@ import { RlTagInputModule } from 'angular2-tag-input';
 import { UsersComponent } from './Users/Users.component';
 import { CustomerComponent } from './Customer/Customer.component';
 import { BusinessComponent } from './Business/Business.component';
+import { AddCustomerComponent } from './AddCustomer/AddCustomer.component';
 import { Angular2CsvModule } from 'angular2-csv';
 
 
@@ -24,7 +25,8 @@ import { Angular2CsvModule } from 'angular2-csv';
   declarations: [
     UsersComponent,
     BusinessComponent,
-    CustomerComponent
+    CustomerComponent,
+    AddCustomerComponent
   ],
   exports: [
   ]

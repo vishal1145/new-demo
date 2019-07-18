@@ -10,7 +10,7 @@ var UserSchema = new mongoose.Schema({
     flat_no: String,
     landmark: String,
     city: String,
-    consumption: String,
+    consumption: [],
     created_at: {
         type: Date,
         default: new Date()

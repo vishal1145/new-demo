@@ -1,0 +1,294 @@
+<style>
+  .input-group {
+    position: relative;
+    margin: 10px 0 20px;
+  }
+
+  input {
+    font-size: 15px;
+    padding: 10px 10px 10px 5px;
+    display: block;
+    width: 300px;
+    border: none;
+    border-bottom: 1px solid #757575;
+  }
+
+    input:focus {
+      outline: none;
+    }
+
+  label {
+    color: #999;
+    font-size: 15px;
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    left: 5px;
+    top: 10px;
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+  }
+
+  input:focus ~ label,
+  input:valid ~ label {
+    top: -20px;
+    font-size: 14px;
+    color: #999;
+  }
+
+  .bar {
+    position: relative;
+    display: block;
+    width: 315px;
+  }
+
+    .bar:before,
+    .bar:after {
+      content: '';
+      height: 2px;
+      width: 0;
+      bottom: 1px;
+      position: absolute;
+      background: #4285f4;
+      transition: 0.2s ease all;
+      -moz-transition: 0.2s ease all;
+      -webkit-transition: 0.2s ease all;
+    }
+
+    .bar:before {
+      left: 50%;
+    }
+
+    .bar:after {
+      right: 50%;
+    }
+
+  input:focus ~ .bar:before,
+  input:focus ~ .bar:after {
+    width: 50%;
+  }
+
+  .highlight {
+    position: absolute;
+    height: 60%;
+    width: 100px;
+    top: 25%;
+    left: 0;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  input:focus ~ .highlight {
+    -webkit-animation: inputHighlighter 0.3s ease;
+    -moz-animation: inputHighlighter 0.3s ease;
+    animation: inputHighlighter 0.3s ease;
+  }
+
+  /* animations */
+  @-webkit-keyframes inputHighlighter {
+    from {
+      background: #4285f4;
+    }
+
+    to {
+      width: 0;
+      background: transparent;
+    }
+  }
+
+  @-moz-keyframes inputHighlighter {
+    from {
+      background: #4285f4;
+    }
+
+    to {
+      width: 0;
+      background: transparent;
+    }
+  }
+
+  @keyframes inputHighlighter {
+    from {
+      background: #4285f4;
+    }
+
+    to {
+      width: 0;
+      background: transparent;
+    }
+  }
+  #map {
+    height: 100%;
+  }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  .agm-map {
+    height: 300px;
+  }
+  .libutton a, button {
+    box-shadow: none !important;
+    background-color: white;
+    border: none;
+    padding: 10px;
+    text-transform: capitalize;
+  }
+
+  .loader {
+    border: 5px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 5px solid #1e1f1f;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    z-index: 1;
+    top: 200px;
+    left: 48%;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @-webkit-keyframes spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+
+
+<h2  style="position:relative;color:white;">Add Customer</h2>
+<div class="row" style="position:relative;top:28px;display:none;">
+  <p style="margin-left: 20px;">Coming Soon</p>
+ </div>
+<div class="row" style="position:relative;top:15px;">
+  <div class="col-md-8">
+    <div style="position:relative">
+      <div id="gmap" style="height:540px;position:relative"> </div>
+      <div class="modal-content" style="width:50%;position:absolute;z-index:9999999;left:0px;bottom:0">
+
+        <div class="modal-body">
+          <!--<label>New Customer</label>-->
+          <div class="row" style="margin-top: 34px ! important;">
+            <div class="input-group">
+              <input type="text" [(ngModel)]="username" required>
+              <span class="highlight"></span>
+              <span class="bar"></span>
+              <label>Name</label>
+            </div>
+            <div class="input-group">
+              <input type="text" [(ngModel)]="location" required>
+              <span class="highlight"></span>
+              <span class="bar"></span>
+              <label>Enter Location </label>
+            </div>
+            <div class="input-group">
+              <input type="text" [(ngModel)]="flatNo" required>
+              <span class="highlight"></span>
+              <span class="bar"></span>
+              <label>Flat no / Building name / Street name </label>
+            </div>
+            <div class="input-group">
+              <input type="text" [(ngModel)]="landmark" required>
+              <span class="highlight"></span>
+              <span class="bar"></span>
+              <label>Landmark (optional)</label>
+            </div>
+            <div class="input-group">
+              <input type="text" [(ngModel)]="city" required>
+              <span class="highlight"></span>
+              <span class="bar"></span>
+              <label>City</label>
+            </div>
+
+            <div class="input-group">
+              <input type="text" [(ngModel)]="mobileNo" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" [ngStyle]="{ color: mobileColor}" maxlength="10" (ngModelChange)=mobileNumberCheck(mobileNo) required>
+              <span class="highlight"></span>
+              <span class="bar"></span>
+              <label>Mobile No</label>
+            </div>
+            <button type="button" class="btn btn-danger" (click)="saveCustomer()" style="background:red;color:white;width:96%;"><b></b>Add</button>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+  </div>
+
+  <div class="col-md-4">
+    <label>Consumption</label>
+    <div class="row" style="position:relative;top:40px;">
+      <div class="col-3">
+        <div class="form-group">
+          <!--<label for="usr">Brand</label>-->
+          <input type="text" [(ngModel)]="brand" placeholder="Brand" style="border: 1px solid #757575;width: 142%;" class="form-control" id="usr">
+        </div>
+
+
+      </div>
+      <div class="col-3">
+        <div class="form-group">
+          <!--<label for="usr">Prize</label>-->
+          <input type="text" [(ngModel)]="prize" placeholder="Prize" style="border: 1px solid #757575;width: 142%;" class="form-control" id="usr">
+        </div>
+
+
+      </div>
+      <div class="col-3">
+        <div class="form-group">
+          <!--<label for="usr">Quantity</label>-->
+          <input type="text" [(ngModel)]="quantity" placeholder="Quantity" style="border: 1px solid #757575;width: 142%;" class="form-control" id="usr">
+        </div>
+
+
+      </div>
+      <div class="col-3">
+        <i class="fa fa-plus" style="color:blue;font-size: 19px;cursor:pointer;margin-top: 10px;margin-left: 20px;" (click)="addCunsuption()"></i>
+      </div>
+    </div>
+    <div class="row" *ngFor="let data of cunsuptionData;let index = index" style="position:relative;top:40px;">
+      <div class="col-3">
+        <p style="font-size: 16px;">{{data.brand}}</p>
+      </div>
+      <div class="col-3">
+        <p style="font-size: 16px;">{{data.prize}}</p>
+      </div>
+      <div class="col-3">
+        <p style="font-size: 16px;">{{data.quantity}}</p>
+      </div>
+      <div class="col-3">
+        <i class="fa fa-trash" style="color:red;font-size: 19px;cursor:pointer;" (click)="deleteCunsuption(index,data)"></i>
+      </div>
+    </div>
+   
+
+
+
+  </div>
+  
+</div>
+ 
+
+
+
+

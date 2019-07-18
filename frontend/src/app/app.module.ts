@@ -1,5 +1,5 @@
 import { BrowserModule } from "@angular/platform-browser";
-import { NgModule } from "@angular/core";
+import { NgModule, Component } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { AppComponent } from "./app.component";
 import { FormsModule } from "@angular/forms";
@@ -14,6 +14,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { RlTagInputModule } from 'angular2-tag-input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Angular2CsvModule } from 'angular2-csv';
+import { AgmCoreModule } from '@agm/core';
+
 
 @NgModule({
   declarations: [
@@ -25,6 +27,9 @@ import { Angular2CsvModule } from 'angular2-csv';
   imports: [
     HttpModule,
     BrowserModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyCa6ozCIbcApFNdHrp3KYLFb8zoc6ZktcA&libraries=places'
+    }),
     FormsModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(AppRoutes),
