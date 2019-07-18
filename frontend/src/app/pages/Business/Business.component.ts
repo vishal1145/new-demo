@@ -19,16 +19,38 @@ declare var encodeURI: any;
 export class BusinessComponent implements OnInit {
   userData: any;
   allUsers: any = [];
-
+  showloader=true
   constructor(private http: Http, private router: Router,
     private route: ActivatedRoute, public toastr: ToastrService) {
-    this.userData = JSON.parse(localStorage.getItem("USER"));
+    this.userData = JSON.parse(localStorage.getItem("USER"))
+    this.getAllUsers()
   }
 
   ngOnInit() {
     
   }
-
   
+
+  async getAllUsers() {
+    this.allUsers = [];
+    let getUser = await ithours_client.get('User', {})
+    debugger
+    if (getUser.apidata.Data) {
+      //this.allUsers = getUser.apidata.Data
+      for (var checkUser = 0; checkUser < getUser.apidata.Data.length; checkUser++){
+        if (getUser.apidata.Data[checkUser].role == 'CUSTOMER'){
+          this.allUsers.push(getUser.apidata.Data[checkUser])
+          this.showloader=false;
+
+    }
+    
+  }
+}
+else
+    {
+      this.toastr.error("No Data Found");
+            }
+  }
+   
 
 }
