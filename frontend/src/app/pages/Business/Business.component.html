@@ -76,7 +76,7 @@
 <h2 style="position:relative;color:white;"></h2>
 <div class="row" style="position:relative;top:28px;justify-content: flex-end; ">
   <div>
-    <a href="#" style="float:right; margin-right: 20px" class="btn btn-primary forcolor">Add Customers</a>
+    <a  style="float:right; margin-right: 20px" class="btn btn-primary forcolor" (click)="addCustomer()">Add Customers</a>
   </div>
 </div>
 <div class="row" *ngIf="showloader">
@@ -101,8 +101,8 @@
       </div>
       <hr>
       <div>
-        <a href="#" class="card-link" style="padding-left:20px">Edit</a>
-        <a href="#" class="card-link" style=padding-left:390px>Delete</a>
+        <a  class="card-link" style="padding-left:20px">Edit</a>
+        <a  class="card-link" style=padding-left:390px>Delete</a>
 
       </div>
 

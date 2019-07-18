@@ -54,5 +54,7 @@ else
             }
   }
    
-
+  addCustomer() {
+    this.router.navigate(["/pages/add-customer/" + '-1'])
+  }
 }
