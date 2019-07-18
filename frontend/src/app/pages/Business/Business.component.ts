@@ -19,7 +19,7 @@ declare var encodeURI: any;
 export class BusinessComponent implements OnInit {
   userData: any;
   allUsers: any = [];
-  showloader=true
+  showloader:boolean = true;
   constructor(private http: Http, private router: Router,
     private route: ActivatedRoute, public toastr: ToastrService) {
     this.userData = JSON.parse(localStorage.getItem("USER"))
@@ -32,6 +32,7 @@ export class BusinessComponent implements OnInit {
   
 
   async getAllUsers() {
+    this.showloader=true
     this.allUsers = [];
     let getUser = await ithours_client.get('User', {})
     debugger
@@ -45,6 +46,7 @@ export class BusinessComponent implements OnInit {
     }
     
   }
+  this.showloader = false
 }
 else
     {

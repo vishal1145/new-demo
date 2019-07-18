@@ -39,11 +39,12 @@
     padding-bottom:20px;
   }
   .loader {
-  border: 16px solid #f3f3f3;
-  border-radius: 50%;
+  border: 8px solid #f3f3f3;
+  border-radius: 40%;
   border-top: 16px solid #3498db;
-  width: 90px;
-  height: 90px;
+  width: 40px;
+  height: 40px;
+  top: 140px;
   /* -webkit-animation: spin 2s linear infinite; /* Safari */
   /* animation: spin 2s linear infinite;  */
 }
@@ -78,8 +79,13 @@
     <a href="#" style="float:right; margin-right: 20px" class="btn btn-primary forcolor">Add Customers</a>
   </div>
 </div>
-<div class="loader" *ngIf="showloader"></div>
-<div class="row">
+<div class="row" *ngIf="showloader">
+    <div class="spinner-border" style="margin-top:140px;" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+</div>
+
+<div class="row" *ngIf="!showloader">
     <div class="col-md-6 card-padding" *ngFor="let user of allUsers"  >
   <div class="card" >
     
