@@ -48,6 +48,8 @@ export class AddCustomerComponent implements OnInit {
   userNameError: any;
   mobileError: any;
   cunsuptionError: any;
+  join: any;
+
 
 
   constructor(private http: Http, private router: Router,
@@ -97,7 +99,9 @@ export class AddCustomerComponent implements OnInit {
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     var map = new google.maps.Map(document.getElementById("gmap"), mapProp);
+
   }
+
 
   addCunsuption() {
     this.cunsuptionError =''
@@ -153,7 +157,7 @@ export class AddCustomerComponent implements OnInit {
     }
     if (isError) return;
   
-      if (this.username && this.location && this.flatNo && this.landmark && this.city && this.mobileNo) {
+      if (this.username  && this.flatNo  && this.mobileNo) {
         var data = {
           name: this.username,
           location: this.location,
@@ -234,7 +238,7 @@ export class AddCustomerComponent implements OnInit {
     }
     if (isError) return;
    
-      if (this.username && this.mobileNo && this.location) {
+    if (this.username && this.mobileNo && this.flatNo) {
         let adduser = await ithours_client.update(
           "User",
           {

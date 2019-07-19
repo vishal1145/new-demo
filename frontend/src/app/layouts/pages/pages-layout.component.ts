@@ -34,4 +34,8 @@ export class PagesLayoutComponent implements OnInit {
     gotoUsers() {
       this.router.navigate(["/pages/users"])
     }
+
+    gotoCustomer() {
+      this.router.navigate(["/pages/business"])
+    }
 }
