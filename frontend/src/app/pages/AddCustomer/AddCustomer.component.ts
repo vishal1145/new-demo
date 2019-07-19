@@ -108,6 +108,7 @@ export class AddCustomerComponent implements OnInit {
       var autocomplete = new google.maps.places.Autocomplete(input);
       autocomplete.addListener('place_changed', function () {
         var place = autocomplete.getPlace();
+        self.cityError = ''
         console.log(place);
         for (var checklocation = 0; checklocation < place.address_components.length; checklocation++){
           if (place.address_components[checklocation].types[0] == "locality") {
