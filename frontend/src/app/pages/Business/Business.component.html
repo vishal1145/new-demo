@@ -95,6 +95,9 @@ table {
         margin-right: 0px; cursor:pointer;" aria-hidden="true"></i> Add Customers</a>
   </div>
 </div>
+
+<p style="font-size: 20px;text-align: center"*ngIf="noDataAvailable"><b>No Data Available</b></p>
+
 <div class="row" *ngIf="showloader">
     <div class="spinner-border" style="margin-top:140px" role="status">
         <span class="sr-only">Loading...</span>

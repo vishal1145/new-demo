@@ -21,9 +21,10 @@ export class BusinessComponent implements OnInit {
   allUsers: any = [];
   customerId: any;
   cunsumptionData: any = [];
+  noDataAvailable =false
 
 
-  showloader:boolean = true;
+  showloader: boolean = true;
   constructor(private http: Http, private router: Router,
     private route: ActivatedRoute, public toastr: ToastrService) {
     this.userData = JSON.parse(localStorage.getItem("USER"))
@@ -31,44 +32,44 @@ export class BusinessComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+
   }
-  
+
 
   async getAllUsers() {
-    this.showloader=true
+    this.showloader = true
     this.allUsers = [];
     let getUser = await ithours_client.get('User', {})
     debugger
     if (getUser.apidata.Data) {
       //this.allUsers = getUser.apidata.Data
-      for (var checkUser = 0; checkUser < getUser.apidata.Data.length; checkUser++){
-        if (getUser.apidata.Data[checkUser].role == 'CUSTOMER'){
+      for (var checkUser = 0; checkUser < getUser.apidata.Data.length; checkUser++) {
+        if (getUser.apidata.Data[checkUser].role == 'CUSTOMER') {
           this.allUsers.push(getUser.apidata.Data[checkUser])
-          this.showloader=false;
-
+          this.showloader = false;
+        }
+      }
+      if(this.allUsers &&  this.allUsers.length == 0){
+        this.noDataAvailable =true
+      }
+      this.showloader = false
     }
-    
-  }
-  this.showloader = false
-}
-else
-    {
+    else {
       this.toastr.error("No Data Found");
-            }
+    }
   }
-   
+
   addCustomer() {
     this.router.navigate(["/pages/add-customer/" + '-1'])
   }
 
   gotoEditCustomer(data) {
-   debugger
+    debugger
     this.router.navigate(["/pages/add-customer/" + data._id])
   }
 
   openModalDeleteCustomer(data) {
-    this.customerId = data._id 
+    this.customerId = data._id
     $('#deleteCustomer').modal('show')
   }
 
@@ -82,13 +83,12 @@ else
       $('#deleteCustomer').modal('hide')
       this.getAllUsers();
     }
-    
+
   }
-  viewconsumption(value)
-  {
+  viewconsumption(value) {
     debugger
-    this.cunsumptionData=value.consumption
+    this.cunsumptionData = value.consumption
     $('#consumptionModal').modal('show')
   }
-  
+
 }
