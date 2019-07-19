@@ -101,8 +101,8 @@
       </div>
       <hr>
       <div>
-        <a  class="card-link" style="padding-left:20px">Edit</a>
-        <a  class="card-link" style=padding-left:390px>Delete</a>
+        <a  class="card-link" style="padding-left:20px" (click)="gotoEditCustomer(user)">Edit</a>
+        <a  class="card-link" style="padding-left:390px" (click)="openModalDeleteCustomer(user)">Delete</a>
 
       </div>
 
@@ -113,3 +113,21 @@
 <!-- <div>
       <a href="#" class="btn btn-primary forcolor" >Proceed To Shipment</a>
      </div>   -->
+
+
+
+<div id="deleteCustomer" class="modal fade" role="dialog">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+
+      <div class="modal-body">
+        <p>Are you sure you want to delete this Customer?</p>
+        <div slot="modal-footer">
+          <button type="button" (click)="deleteUser()" class="btn btn-danger" style="height: 43px;background:red;">
+            <b>Delete</b>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -19,6 +19,9 @@ declare var encodeURI: any;
 export class BusinessComponent implements OnInit {
   userData: any;
   allUsers: any = [];
+  customerId: any;
+
+
   showloader:boolean = true;
   constructor(private http: Http, private router: Router,
     private route: ActivatedRoute, public toastr: ToastrService) {
@@ -56,5 +59,26 @@ else
    
   addCustomer() {
     this.router.navigate(["/pages/add-customer/" + '-1'])
+  }
+
+  gotoEditCustomer(data) {
+    this.router.navigate(["/pages/add-customer/" + data._id])
+  }
+
+  openModalDeleteCustomer(data) {
+    this.customerId = data._id 
+    $('#deleteCustomer').modal('show')
+  }
+
+  async deleteUser() {
+    let getResponse = await ithours_client.delete("User", {
+      id: this.customerId
+    });
+    debugger
+    if (getResponse.apidata.Data) {
+      this.toastr.success("Customer delete successfully")
+      $('#deleteCustomer').modal('hide')
+    }
+    
   }
 }
