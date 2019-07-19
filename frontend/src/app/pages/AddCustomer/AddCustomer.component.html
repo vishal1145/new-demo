@@ -178,10 +178,16 @@
 <div class="row" style="position:relative;top:28px;display:none;">
   <p style="margin-left: 20px;">Coming Soon</p>
  </div>
-<div class="row" style="position:relative;top:15px;">
+<div class="row" *ngIf="showloader" style="display:none;">
+  <div class="spinner-border" style="margin-top:22%;" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+
+<div class="row" ng-show="!showloader" style="position:relative;top:15px;">
   <div class="col-md-8">
     <div style="position:relative">
-      <div id="gmap" style="height:540px;position:relative"> </div>
+      <div id="gmap" style="height:700px;position:relative"> </div>
       <div class="modal-content" style="width:50%;position:absolute;z-index:9999999;left:0px;bottom:0">
 
         <div class="modal-body">
@@ -193,6 +199,7 @@
               <span class="bar"></span>
               <label>Name</label>
             </div>
+            <p style="position:relative;top:-17px;color:red;" *ngIf="userNameError">{{userNameError}}</p>
             <div class="input-group">
               <input type="text" [(ngModel)]="location" required>
               <span class="highlight"></span>
@@ -205,6 +212,7 @@
               <span class="bar"></span>
               <label>Flat no / Building name / Street name </label>
             </div>
+            <p style="position:relative;top:-17px;color:red;" *ngIf="flatNoError">{{flatNoError}}</p>
             <div class="input-group">
               <input type="text" [(ngModel)]="landmark" required>
               <span class="highlight"></span>
@@ -217,14 +225,16 @@
               <span class="bar"></span>
               <label>City</label>
             </div>
-
+            <p style="position:relative;top:-17px;color:red;" *ngIf="cityError">{{cityError}}</p>
             <div class="input-group">
               <input type="text" [(ngModel)]="mobileNo" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" [ngStyle]="{ color: mobileColor}" maxlength="10" (ngModelChange)=mobileNumberCheck(mobileNo) required>
               <span class="highlight"></span>
               <span class="bar"></span>
               <label>Mobile No</label>
             </div>
-            <button type="button" class="btn btn-danger" (click)="saveCustomer()" style="background:red;color:white;width:96%;"><b></b>Add</button>
+            <p style="position:relative;top:-17px;color:red;" *ngIf="mobileError">{{mobileError}}</p>
+            <button type="button" *ngIf="!edit" class="btn btn-danger" (click)="saveCustomer()" style="background:#00b9f5;color:white;width:96%;"><b></b>Add</button>
+            <button type="button" *ngIf="edit" class="btn btn-danger" (click)="updateCustomerDetails()" style="background:#00b9f5;color:white;width:96%;"><b></b>Update</button>
 
           </div>
         </div>
@@ -236,7 +246,7 @@
   </div>
 
   <div class="col-md-4">
-    <label>Consumption</label>
+    <label style="color: black;margin-left: 20px;" ><b>Consumption</b></label>
     <div class="row" style="position:relative;top:40px;">
       <div class="col-3">
         <div class="form-group">
@@ -249,7 +259,7 @@
       <div class="col-3">
         <div class="form-group">
           <!--<label for="usr">Prize</label>-->
-          <input type="text" [(ngModel)]="prize" placeholder="Prize" style="border: 1px solid #757575;width: 142%;" class="form-control" id="usr">
+          <input type="text" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" [(ngModel)]="prize" placeholder="Prize" style="border: 1px solid #757575;width: 142%;" class="form-control" id="usr">
         </div>
 
 
@@ -257,15 +267,17 @@
       <div class="col-3">
         <div class="form-group">
           <!--<label for="usr">Quantity</label>-->
-          <input type="text" [(ngModel)]="quantity" placeholder="Quantity" style="border: 1px solid #757575;width: 142%;" class="form-control" id="usr">
+          <input type="text" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" [(ngModel)]="quantity" placeholder="Quantity" style="border: 1px solid #757575;width: 142%;" class="form-control" id="usr">
         </div>
 
 
       </div>
       <div class="col-3">
-        <i class="fa fa-plus" style="color:blue;font-size: 19px;cursor:pointer;margin-top: 10px;margin-left: 20px;" (click)="addCunsuption()"></i>
+        <i class="fa fa-plus" style="color:#00b9f5;font-size: 19px;cursor:pointer;margin-top: 10px;margin-left: 20px;" (click)="addCunsuption()"></i>
       </div>
     </div>
+
+    <p style="position:relative;color:red;top:29px;left:16px;" *ngIf="cunsuptionError">{{cunsuptionError}}</p>
     <div class="row" *ngFor="let data of cunsuptionData;let index = index" style="position:relative;top:40px;">
       <div class="col-3">
         <p style="font-size: 16px;">{{data.brand}}</p>
@@ -277,10 +289,10 @@
         <p style="font-size: 16px;">{{data.quantity}}</p>
       </div>
       <div class="col-3">
-        <i class="fa fa-trash" style="color:red;font-size: 19px;cursor:pointer;" (click)="deleteCunsuption(index,data)"></i>
+        <i class="fa fa-trash" style="color:red;font-size: 19px;cursor:pointer;margin-left: 20px;" (click)="deleteCunsuption(index,data)"></i>
       </div>
     </div>
-   
+
 
 
 

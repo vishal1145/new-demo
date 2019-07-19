@@ -1,9 +1,10 @@
-import { Component, OnInit, NgModule } from '@angular/core';
+import { Component, OnInit, NgModule, Directive, ElementRef, EventEmitter, Output } from '@angular/core';
 import { BrowserModule } from "@angular/platform-browser";
 import { Http } from "@angular/http";
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from "@angular/router";
+import { NgModel } from '@angular/forms';
 import { RlTagInputModule } from 'angular2-tag-input';
 import { Angular2CsvModule } from 'angular2-csv';
 //import { AgmCoreModule } from '@agm/core';
@@ -38,17 +39,57 @@ export class AddCustomerComponent implements OnInit {
   prize: any;
   quantity: any;
   customerId: any;
+  key: any;
   cunsuptionData: any = [];
+  edit: boolean = false;
+  showloader: boolean = true;
+  cityError: any;
+  flatNoError: any;
+  userNameError: any;
+  mobileError: any;
+  cunsuptionError: any;
+
 
   constructor(private http: Http, private router: Router,
     private route: ActivatedRoute, public toastr: ToastrService) {
     if (this.route) {
       this.route.params.subscribe(params => {
-        this.customerId = params['id']
+        this.key = params['id']
       })
     }
+    debugger
     this.userData = JSON.parse(localStorage.getItem("USER"));
+    if (this.key == '-1') {
+      this.edit = false
+      this.showloader = false
+    }
+    else {
+      this.edit = true
+      this.getCustomerDetails();
+      //this.customerId = this.key
+    }
   
+  }
+
+  async getCustomerDetails() {
+    debugger
+    let customerData = await ithours_client.get("User", { _id: this.key })
+    debugger
+    if (customerData.apidata.Data[0]) {
+      this.username = customerData.apidata.Data[0].name
+      this.location = customerData.apidata.Data[0].location
+      this.flatNo = customerData.apidata.Data[0].flat_no
+      this.landmark = customerData.apidata.Data[0].landmark
+      this.city = customerData.apidata.Data[0].city
+      this.mobileNo = customerData.apidata.Data[0].phone
+      this.mobileColor = "#5c6873";
+      this.cunsuptionData = customerData.apidata.Data[0].consumption
+      this.showloader = false
+    }
+    else {
+      this.showloader = false
+
+    }
   }
 
   ngOnInit() {
@@ -83,6 +124,47 @@ export class AddCustomerComponent implements OnInit {
   }
 
   async saveCustomer() {
+    let isError = false
+    if (this.username) {
+      isError = true
+    }
+    else {
+      isError = false
+      this.userNameError = "Name is mandatory"
+    }
+    if (this.mobileNo) {
+      isError = true
+    }
+    else {
+      isError = false
+      this.mobileError = "Mobile no is mandatory"
+    }
+    if (this.flatNo) {
+      isError = true
+    }
+    else {
+      isError = false
+      this.flatNoError = "Flat No is mandatory"
+    }
+    if (this.cunsuptionData.length !== 0) {
+      isError = true
+    }
+    else {
+      isError = false
+      this.cunsuptionError = "At least one cunsuption is add"
+    }
+    if (this.city) {
+      isError = true
+    }
+    else {
+      isError = false
+      this.cityError = "City is mandatory"
+    }
+    debugger
+    if (isError) return;
+
+
+
     if (this.username && this.location && this.flatNo && this.landmark && this.city && this.mobileNo){
       var data = {
         name: this.username,
@@ -96,6 +178,8 @@ export class AddCustomerComponent implements OnInit {
       }
       let customerData = await ithours_client.add("User", data)
       if (customerData.apidata.Data) {
+        this.toastr.success("", 'Customer added Successfully');
+        this.router.navigate(["/pages/business"])
         this.username = ''
         this.location = ''
         this.flatNo = ''
@@ -115,6 +199,33 @@ export class AddCustomerComponent implements OnInit {
       this.mobileColor = "#5c6873";
     } else {
       this.mobileColor = "red";
+    }
+  }
+
+  async updateCustomerDetails() {
+    if (this.username && this.mobileNo && this.location) {
+      let adduser = await ithours_client.update(
+        "User",
+        {
+          _id: this.key
+        },
+        {
+          $set: {
+            name: this.username,
+            location: this.location,
+            flat_no: this.flatNo,
+            landmark: this.landmark,
+            city: this.city,
+            phone: this.mobileNo,
+            consumption: this.cunsuptionData
+          }
+        }
+      );
+      if (adduser.apidata.Data) {
+        this.toastr.success("", 'Customer updated Successfully');
+        this.router.navigate(["/pages/business"])
+       
+      }
     }
   }
 
