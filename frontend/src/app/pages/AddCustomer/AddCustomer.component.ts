@@ -57,7 +57,7 @@ export class AddCustomerComponent implements OnInit {
         this.key = params['id']
       })
     }
-    debugger
+   
     this.userData = JSON.parse(localStorage.getItem("USER"));
     if (this.key == '-1') {
       this.edit = false
@@ -72,9 +72,7 @@ export class AddCustomerComponent implements OnInit {
   }
 
   async getCustomerDetails() {
-    debugger
     let customerData = await ithours_client.get("User", { _id: this.key })
-    debugger
     if (customerData.apidata.Data[0]) {
       this.username = customerData.apidata.Data[0].name
       this.location = customerData.apidata.Data[0].location
@@ -93,7 +91,6 @@ export class AddCustomerComponent implements OnInit {
   }
 
   ngOnInit() {
-
     var mapProp = {
       center: new google.maps.LatLng(this.lat, this.lng),
       zoom: 5,
@@ -103,7 +100,7 @@ export class AddCustomerComponent implements OnInit {
   }
 
   addCunsuption() {
-    debugger
+    this.cunsuptionError =''
     if (this.quantity && this.prize && this.brand){
       var data = {
         quantity: this.quantity,
@@ -119,81 +116,71 @@ export class AddCustomerComponent implements OnInit {
   }
 
   deleteCunsuption(index, data) {
-    debugger
     this.cunsuptionData.splice(index, 1)
   }
 
   async saveCustomer() {
     let isError = false
     if (this.username) {
-      isError = true
     }
     else {
-      isError = false
+      isError = true
       this.userNameError = "Name is mandatory"
     }
     if (this.mobileNo) {
-      isError = true
+      if ((this.mobileNo).toString().length == 10) {
+      }
+      else {
+        isError = true
+        this.mobileError = "Please enter 10 digit mobile no"
+      }
     }
     else {
-      isError = false
+      isError = true
       this.mobileError = "Mobile no is mandatory"
     }
     if (this.flatNo) {
+    } else {
       isError = true
+      this.flatNoError = 'Flat / Building name / Street name  is mandatory'
     }
-    else {
-      isError = false
-      this.flatNoError = "Flat No is mandatory"
-    }
-    if (this.cunsuptionData.length !== 0) {
+
+    if (this.cunsuptionData.length == 0) {
       isError = true
-    }
-    else {
-      isError = false
       this.cunsuptionError = "At least one cunsuption is add"
     }
-    if (this.city) {
-      isError = true
-    }
     else {
-      isError = false
-      this.cityError = "City is mandatory"
     }
-    debugger
     if (isError) return;
-
-
-
-    if (this.username && this.location && this.flatNo && this.landmark && this.city && this.mobileNo){
-      var data = {
-        name: this.username,
-        location: this.location,
-        flat_no: this.flatNo,
-        landmark: this.landmark,
-        city: this.city,
-        phone: this.mobileNo,
-        role: 'CUSTOMER',
-        consumption: this.cunsuptionData
+  
+      if (this.username && this.location && this.flatNo && this.landmark && this.city && this.mobileNo) {
+        var data = {
+          name: this.username,
+          location: this.location,
+          flat_no: this.flatNo,
+          landmark: this.landmark,
+          city: this.city,
+          phone: this.mobileNo,
+          role: 'CUSTOMER',
+          consumption: this.cunsuptionData
+        }
+        let customerData = await ithours_client.add("User", data)
+        if (customerData.apidata.Data) {
+          this.toastr.success("", 'Customer added Successfully');
+          this.router.navigate(["/pages/business"])
+          this.username = ''
+          this.location = ''
+          this.flatNo = ''
+          this.city = ''
+          this.mobileNo = ''
+          this.landmark = ''
+          this.cunsuptionData = []
+        }
       }
-      let customerData = await ithours_client.add("User", data)
-      if (customerData.apidata.Data) {
-        this.toastr.success("", 'Customer added Successfully');
-        this.router.navigate(["/pages/business"])
-        this.username = ''
-        this.location = ''
-        this.flatNo = ''
-        this.city = ''
-        this.mobileNo = ''
-        this.landmark = ''
-        this.cunsuptionData = []
-      }
-    }
-    
   }
 
   mobileNumberCheck(mobile) {      
-  
+    this.mobileError = ''
     this.mobileNo = mobile
     if ((this.mobileNo).toString().length == 10) {
       this.mobileColor = "#5c6873";
@@ -202,34 +189,76 @@ export class AddCustomerComponent implements OnInit {
     }
   }
 
-  async updateCustomerDetails() {
-    if (this.username && this.mobileNo && this.location) {
-      let adduser = await ithours_client.update(
-        "User",
-        {
-          _id: this.key
-        },
-        {
-          $set: {
-            name: this.username,
-            location: this.location,
-            flat_no: this.flatNo,
-            landmark: this.landmark,
-            city: this.city,
-            phone: this.mobileNo,
-            consumption: this.cunsuptionData
-          }
-        }
-      );
-      if (adduser.apidata.Data) {
-        this.toastr.success("", 'Customer updated Successfully');
-        this.router.navigate(["/pages/business"])
-       
-      }
-    }
+  changeUserName() {
+    this.userNameError = ''
+  }
+  changeFlatNo() {
+    this.flatNoError = ''
+  }
+ 
+  changeCunsumption() {
+    this.cunsuptionError = ''
   }
 
+  async updateCustomerDetails() {
+    let isError = false
+    if (this.username) {
+    }
+    else {
+      isError = true
+      this.userNameError = "Name is mandatory"
+    }
+    if (this.mobileNo) {
+      if ((this.mobileNo).toString().length == 10) {
+      }
+      else {
+        isError = true
+        this.mobileError = "Please enter 10 digit mobile no"
+      }
+    }
+    else {
+      isError = true
+      this.mobileError = "Mobile no is mandatory"
+    }
+    if (this.flatNo) {
+    } else {
+      isError = true
+      this.flatNoError = 'Flat / Building name / Street name  is mandatory'
+    }
+    
+    if (this.cunsuptionData.length == 0) {
+      isError = true
+      this.cunsuptionError = "At least one cunsuption is add"
+    }
+    else {
+    }
+    if (isError) return;
    
+      if (this.username && this.mobileNo && this.location) {
+        let adduser = await ithours_client.update(
+          "User",
+          {
+            _id: this.key
+          },
+          {
+            $set: {
+              name: this.username,
+              location: this.location,
+              flat_no: this.flatNo,
+              landmark: this.landmark,
+              city: this.city,
+              phone: this.mobileNo,
+              consumption: this.cunsuptionData
+            }
+          }
+        );
+        if (adduser.apidata.Data) {
+          this.toastr.success("", 'Customer updated Successfully');
+          this.router.navigate(["/pages/business"])
+
+        }
+      }
+  }
   }
  
 

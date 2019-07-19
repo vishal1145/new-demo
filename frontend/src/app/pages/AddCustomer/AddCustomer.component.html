@@ -194,7 +194,7 @@
           <!--<label>New Customer</label>-->
           <div class="row" style="margin-top: 34px ! important;">
             <div class="input-group">
-              <input type="text" [(ngModel)]="username" required>
+              <input type="text" [(ngModel)]="username" (ngModelChange)="changeUserName()" required>
               <span class="highlight"></span>
               <span class="bar"></span>
               <label>Name</label>
@@ -207,7 +207,7 @@
               <label>Enter Location </label>
             </div>
             <div class="input-group">
-              <input type="text" [(ngModel)]="flatNo" required>
+              <input type="text" [(ngModel)]="flatNo" (ngModelChange)="changeFlatNo()" required>
               <span class="highlight"></span>
               <span class="bar"></span>
               <label>Flat no / Building name / Street name </label>
@@ -225,7 +225,7 @@
               <span class="bar"></span>
               <label>City</label>
             </div>
-            <p style="position:relative;top:-17px;color:red;" *ngIf="cityError">{{cityError}}</p>
+          
             <div class="input-group">
               <input type="text" [(ngModel)]="mobileNo" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" [ngStyle]="{ color: mobileColor}" maxlength="10" (ngModelChange)=mobileNumberCheck(mobileNo) required>
               <span class="highlight"></span>
@@ -251,7 +251,7 @@
       <div class="col-3">
         <div class="form-group">
           <!--<label for="usr">Brand</label>-->
-          <input type="text" [(ngModel)]="brand" placeholder="Brand" style="border: 1px solid #757575;width: 142%;" class="form-control" id="usr">
+          <input type="text" [(ngModel)]="brand" (ngModelChange)="changeCunsumption()" placeholder="Brand" style="border: 1px solid #757575;width: 142%;" class="form-control" id="usr">
         </div>
 
 
@@ -259,7 +259,7 @@
       <div class="col-3">
         <div class="form-group">
           <!--<label for="usr">Prize</label>-->
-          <input type="text" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" [(ngModel)]="prize" placeholder="Prize" style="border: 1px solid #757575;width: 142%;" class="form-control" id="usr">
+          <input type="text" (ngModelChange)="changeCunsumption()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" [(ngModel)]="prize" placeholder="Prize" style="border: 1px solid #757575;width: 142%;" class="form-control" id="usr">
         </div>
 
 
@@ -267,7 +267,7 @@
       <div class="col-3">
         <div class="form-group">
           <!--<label for="usr">Quantity</label>-->
-          <input type="text" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" [(ngModel)]="quantity" placeholder="Quantity" style="border: 1px solid #757575;width: 142%;" class="form-control" id="usr">
+          <input type="text" (ngModelChange)="changeCunsumption()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" [(ngModel)]="quantity" placeholder="Quantity" style="border: 1px solid #757575;width: 142%;" class="form-control" id="usr">
         </div>
 
 
