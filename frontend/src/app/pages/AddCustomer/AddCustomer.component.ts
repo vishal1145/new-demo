@@ -93,15 +93,65 @@ export class AddCustomerComponent implements OnInit {
   }
 
   ngOnInit() {
-    var mapProp = {
+  
+   var mapProp = {
       center: new google.maps.LatLng(this.lat, this.lng),
-      zoom: 5,
+      zoom: 13,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     var map = new google.maps.Map(document.getElementById("gmap"), mapProp);
+      
+   
+    var self = this;
+   // setTimeout(function () {
+      var input = document.getElementById('autocomplete');
+      var autocomplete = new google.maps.places.Autocomplete(input);
+      autocomplete.addListener('place_changed', function () {
+        var place = autocomplete.getPlace();
+        console.log(place);
+        for (var checklocation = 0; checklocation < place.address_components.length; checklocation++){
+          if (place.address_components[checklocation].types[0] == "locality") {
+            //console.log(place.address_components[checklocation].long_name)
+            self.city = place.address_components[checklocation].long_name
+          }
+        }
+        self.lat = place.geometry.location.lat();
+        self.lng = place.geometry.location.lng();
+        var myLatLng = { lat: self.lat, lng: self.lng };
+        var marker = new google.maps.Marker({
+          position: myLatLng,
+          map: map,
+          title: self.city
+        });
+
+        map.setCenter(myLatLng);
+
+      });
+     
+   // }, 200)
+
+   // this.city ="dsdd"
+
+    debugger
+  //  this.city
+    //autocomplete = new google.maps.places.Autocomplete(
+    //        /** @type {!HTMLInputElement} */(
+    //    document.getElementById('autocomplete')), {
+    //    types: ['(cities)'],
+    //    componentRestrictions: countryRestrict
+    //  });
+    //places = new google.maps.places.PlacesService(map);
 
   }
 
+
+
+ 
+
+ 
+  checkCity() {
+    return true;
+  }
 
   addCunsuption() {
     this.cunsuptionError =''
@@ -124,6 +174,7 @@ export class AddCustomerComponent implements OnInit {
   }
 
   async saveCustomer() {
+    this.location =(<HTMLInputElement>document.getElementById('autocomplete')).value;
     let isError = false
     if (this.username) {
     }
@@ -142,6 +193,13 @@ export class AddCustomerComponent implements OnInit {
     else {
       isError = true
       this.mobileError = "Mobile no is mandatory"
+    }
+
+    if (this.location){
+
+    } else {
+      isError = true
+      this.cityError = 'Location is mandatory'
     }
     if (this.flatNo) {
     } else {
@@ -205,12 +263,19 @@ export class AddCustomerComponent implements OnInit {
   }
 
   async updateCustomerDetails() {
+    this.location = (<HTMLInputElement>document.getElementById('autocomplete')).value
     let isError = false
     if (this.username) {
     }
     else {
       isError = true
       this.userNameError = "Name is mandatory"
+    }
+    if (this.location) {
+
+    } else {
+      isError = true
+      this.cityError = 'Location is mandatory'
     }
     if (this.mobileNo) {
       if ((this.mobileNo).toString().length == 10) {

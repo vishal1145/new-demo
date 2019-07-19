@@ -188,11 +188,11 @@
   <div class="col-md-8">
     <div style="position:relative">
       <div id="gmap" style="height:700px;position:relative"> </div>
-      <div class="modal-content" style="width:50%;position:absolute;z-index:9999999;left:0px;bottom:0">
+      <div class="modal-content-test" style="width:50%;position:absolute;left:0px;top:0">
 
-        <div class="modal-body">
+        <div class="modal-body-test">
           <!--<label>New Customer</label>-->
-          <div class="row" style="margin-top: 34px ! important;">
+          <div class="row">
             <div class="input-group">
               <input type="text" [(ngModel)]="username" (ngModelChange)="changeUserName()" required>
               <span class="highlight"></span>
@@ -200,12 +200,13 @@
               <label>Name</label>
             </div>
             <p style="position:relative;top:-17px;color:red;" *ngIf="userNameError">{{userNameError}}</p>
-            <div class="input-group">
-              <input type="text" [(ngModel)]="location" id="changetype-all" required>
+            <div class="input-group" id="locationField">
+              <input type="text" id="autocomplete" [(ngModel)]="location" required>
               <span class="highlight"></span>
               <span class="bar"></span>
               <label>Enter Location </label>
             </div>
+            <p style="position:relative;top:-17px;color:red;" *ngIf="cityError">{{cityError}}</p>
             <div class="input-group">
               <input type="text" [(ngModel)]="flatNo" (ngModelChange)="changeFlatNo()" required>
               <span class="highlight"></span>
@@ -220,12 +221,12 @@
               <label>Landmark (optional)</label>
             </div>
             <div class="input-group">
-              <input type="text" [(ngModel)]="city" required>
+              <input type="text" [(ngModel)]="city" onkeypress="checkCity()" style="background: white;">
               <span class="highlight"></span>
               <span class="bar"></span>
               <label>City</label>
             </div>
-          
+
             <div class="input-group">
               <input type="text" [(ngModel)]="mobileNo" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" [ngStyle]="{ color: mobileColor}" maxlength="10" (ngModelChange)=mobileNumberCheck(mobileNo) required>
               <span class="highlight"></span>
@@ -246,7 +247,7 @@
   </div>
 
   <div class="col-md-4">
-    <label style="color: black;margin-left: 20px;" ><b>Consumption</b></label>
+    <label style="color: black;margin-left: 20px;"><b>Consumption</b></label>
     <div class="row" style="position:relative;top:40px;">
       <div class="col-3">
         <div class="form-group">
