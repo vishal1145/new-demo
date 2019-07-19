@@ -108,12 +108,12 @@ table {
       <div class="card-body">
         <div class="row">
         <div class="col-9">
-        <h5 class="card-title">{{user.location}}</h5>
+        <h5 class="card-title">{{user.name}} (mobile No:{{user.phone}})</h5>
           <h6 class="card-text">{{user.location}}</h6>
           <h6 class="card-text">{{user.flat_no}}</h6>
           <h6 class="card-text">{{user.landmark}}</h6>
           <h6 class="card-text">{{user.city}}</h6>
-          <h6 class="card-text">Mobile No:{{user.phone}}</h6>
+          <!-- <h6 class="card-text">Mobile No:{{user.phone}}</h6> -->
           </div>
           <div class="col-3">
         
@@ -126,7 +126,7 @@ table {
 
       </div>
       <div >
-        <p style="margin-left:10px;margin-bottom:19px;cursor:pointer;font-size:15px;color:#00b9f5 !important;" (click)="viewconsumption(user)" ><u>Click Here To View the Consumption</u></p>
+        <p style="margin-left:133px;margin-bottom:19px;cursor:pointer;font-size:15px;color:#00b9f5 !important;" (click)="viewconsumption(user)" ><u>Click Here To View the Consumption</u></p>
       </div>
       
     </div>
