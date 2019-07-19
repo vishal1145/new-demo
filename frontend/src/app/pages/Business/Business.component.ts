@@ -20,6 +20,7 @@ export class BusinessComponent implements OnInit {
   userData: any;
   allUsers: any = [];
   customerId: any;
+  cunsumptionData: any = [];
 
 
   showloader:boolean = true;
@@ -62,6 +63,7 @@ else
   }
 
   gotoEditCustomer(data) {
+   debugger
     this.router.navigate(["/pages/add-customer/" + data._id])
   }
 
@@ -78,7 +80,15 @@ else
     if (getResponse.apidata.Data) {
       this.toastr.success("Customer delete successfully")
       $('#deleteCustomer').modal('hide')
+      this.getAllUsers();
     }
     
   }
+  viewconsumption(value)
+  {
+    debugger
+    this.cunsumptionData=value.consumption
+    $('#consumptionModal').modal('show')
+  }
+  
 }
