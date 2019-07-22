@@ -15,6 +15,8 @@ declare var xlsExport: any;
 declare var encodeURI: any;
 declare var google: any;
 
+//declare var geocoder: any;
+
 @Component({
   selector: 'pages-AddCustomer-cmp',
   templateUrl: './AddCustomer.component.html'
@@ -85,6 +87,8 @@ export class AddCustomerComponent implements OnInit {
       this.mobileColor = "#5c6873";
       this.cunsuptionData = customerData.apidata.Data[0].consumption
       this.showloader = false
+      debugger
+      this.getLatLong(this.location);
     }
     else {
       this.showloader = false
@@ -99,8 +103,8 @@ export class AddCustomerComponent implements OnInit {
       zoom: 13,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
-    var map = new google.maps.Map(document.getElementById("gmap"), mapProp);
-      
+   this.map = new google.maps.Map(document.getElementById("gmap"), mapProp);
+      //this.map = map
    
     var self = this;
    // setTimeout(function () {
@@ -121,32 +125,45 @@ export class AddCustomerComponent implements OnInit {
         var myLatLng = { lat: self.lat, lng: self.lng };
         var marker = new google.maps.Marker({
           position: myLatLng,
-          map: map,
+          map: self.map,
           title: self.city
         });
 
-        map.setCenter(myLatLng);
+        self.map.setCenter(myLatLng);
 
       });
-     
-   // }, 200)
-
-   // this.city ="dsdd"
-
     debugger
-  //  this.city
-    //autocomplete = new google.maps.places.Autocomplete(
-    //        /** @type {!HTMLInputElement} */(
-    //    document.getElementById('autocomplete')), {
-    //    types: ['(cities)'],
-    //    componentRestrictions: countryRestrict
-    //  });
-    //places = new google.maps.places.PlacesService(map);
-
   }
 
 
+  getLatLong(address) {
+      address = address || 'Ferrol, Galicia, Spain';
+     var  geocoder = new google.maps.Geocoder();
+     if (geocoder) {
+       var self = this;
+        geocoder.geocode({
+          'address': address
+        }, function (results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+            results[0]
+            debugger
+            self.lat = results[0].geometry.location.lat();
+            self.lng = results[0].geometry.location.lng();
+            var myLatLng = { lat: self.lat, lng: self.lng };
+              var marker = new google.maps.Marker({
+                position: myLatLng,
+                map: self.map,
+                title: address
+              });
+              self.map.setCenter(myLatLng);
+          }
+        });
+     }
 
+
+
+     
+  }
  
 
  
