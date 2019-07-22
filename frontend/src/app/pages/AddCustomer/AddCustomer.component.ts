@@ -70,9 +70,7 @@ export class AddCustomerComponent implements OnInit {
     else {
       this.edit = true
       this.getCustomerDetails();
-      //this.customerId = this.key
     }
-  
   }
 
   async getCustomerDetails() {
@@ -87,27 +85,55 @@ export class AddCustomerComponent implements OnInit {
       this.mobileColor = "#5c6873";
       this.cunsuptionData = customerData.apidata.Data[0].consumption
       this.showloader = false
-      debugger
       this.getLatLong(this.location);
     }
     else {
       this.showloader = false
-
     }
   }
 
+  currentMarker = null;
+  selectLocation(event) {
+    var self = this
+    google.maps.event.addListener(self.map, 'click', function (event) {
+      var geocoder;
+      geocoder = new google.maps.Geocoder();
+      geocoder.geocode(
+        { 'latLng': event.latLng },
+        function (results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+            if (results[0]) {
+              var add = results[0].formatted_address;
+              self.location = add
+              var value = add.split(",");
+              var count = value.length;
+              var country = value[count - 1];
+              var state = value[count - 2];
+              self.city = value[count - 3];
+              if (this.currentMarker) this.currentMarker.setMap(null);
+              this.currentMarker = new google.maps.Marker({
+                position: event.latLng,
+                map: self.map,
+                title: self.city
+              });
+            }
+          }
+       
+        }
+      );
+    });
+
+    
+  }
+
   ngOnInit() {
-  
    var mapProp = {
       center: new google.maps.LatLng(this.lat, this.lng),
       zoom: 13,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
    this.map = new google.maps.Map(document.getElementById("gmap"), mapProp);
-      //this.map = map
-   
     var self = this;
-   // setTimeout(function () {
       var input = document.getElementById('autocomplete');
       var autocomplete = new google.maps.places.Autocomplete(input);
       autocomplete.addListener('place_changed', function () {
@@ -132,12 +158,25 @@ export class AddCustomerComponent implements OnInit {
         self.map.setCenter(myLatLng);
 
       });
-    debugger
+
+
+      google.maps.event.addListener(
+        this.map,
+        'drag',
+        function (event) {
+          //console.log('drag');
+        });
+
+      google.maps.event.addListener(
+        this.map,
+        'dragend',
+        function (event) {
+          //console.log('drag end');
+        });
   }
 
-
   getLatLong(address) {
-      address = address || 'Ferrol, Galicia, Spain';
+      address = address ;
      var  geocoder = new google.maps.Geocoder();
      if (geocoder) {
        var self = this;
@@ -146,11 +185,11 @@ export class AddCustomerComponent implements OnInit {
         }, function (results, status) {
           if (status == google.maps.GeocoderStatus.OK) {
             results[0]
-            debugger
             self.lat = results[0].geometry.location.lat();
             self.lng = results[0].geometry.location.lng();
             var myLatLng = { lat: self.lat, lng: self.lng };
-              var marker = new google.maps.Marker({
+            if (this.currentMarker) this.currentMarker.setMap(null);
+            this.currentMarker = new google.maps.Marker({
                 position: myLatLng,
                 map: self.map,
                 title: address
@@ -164,8 +203,6 @@ export class AddCustomerComponent implements OnInit {
 
      
   }
- 
-
  
   checkCity() {
     return true;
