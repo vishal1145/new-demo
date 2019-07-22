@@ -174,7 +174,8 @@
 </style>
 
 
-<h2  style="position:relative;color:white;">Add Customer</h2>
+<h2  style="position:relative;color:white;"  *ngIf="!edit">Add Customer</h2>
+<h2 style="position:relative;color:white;" *ngIf="edit">Edit Customer Details</h2>
 <div class="row" style="position:relative;top:28px;display:none;">
   <p style="margin-left: 20px;">Coming Soon</p>
  </div>
