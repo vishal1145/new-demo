@@ -11,10 +11,7 @@ var UserSchema = new mongoose.Schema({
     landmark: String,
     city: String,
     consumption: [],
-    user_by: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    },
+    user_by: String,
     created_at: {
         type: Date,
         default: new Date()
@@ -25,4 +22,5 @@ var UserSchema = new mongoose.Schema({
     }
 })
 
+mongoose.model('User', UserSchema)
 mongoose.model('User', UserSchema)

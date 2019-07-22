@@ -44,7 +44,7 @@ export class BusinessComponent implements OnInit {
     if (getUser.apidata.Data) {
       //this.allUsers = getUser.apidata.Data
       for (var checkUser = 0; checkUser < getUser.apidata.Data.length; checkUser++) {
-        if (getUser.apidata.Data[checkUser].role == 'CUSTOMER') {
+        if (getUser.apidata.Data[checkUser].role == 'CUSTOMER' && getUser.apidata.Data[checkUser].user_by == this.userData._id) {
           this.allUsers.push(getUser.apidata.Data[checkUser])
           this.showloader = false;
         }
