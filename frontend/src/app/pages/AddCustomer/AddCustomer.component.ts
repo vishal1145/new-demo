@@ -279,7 +279,8 @@ export class AddCustomerComponent implements OnInit {
           city: this.city,
           phone: this.mobileNo,
           role: 'CUSTOMER',
-          consumption: this.cunsuptionData
+          consumption: this.cunsuptionData,
+          user_by: this.userData._id
         }
         let customerData = await ithours_client.add("User", data)
         if (customerData.apidata.Data) {
