@@ -294,6 +294,16 @@
       </div>
     </div>
 
+    <div class="row" style="position:relative;top:40px;">
+        <!-- <label style="color:black; margin-left: 10px;"><b>Commission</b></label>
+         <input type="number" class="form-control"(ngModelChange)=changeCommision() placeholder="commission" style= "margin-left: 15px; margin-top: 38px;border: 1px solid #757575;width: 38%;" required> -->
+         <div class="form-group">
+            <!--<label for="usr">Prize</label>-->
+            <input type="text" (ngModelChange)="changeCommision()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" [(ngModel)]="commission" placeholder="Commission" style="border: 1px solid #757575;width: 71%;margin-left: 15px;" class="form-control" id="commision">
+          </div>
+        </div>
+        <p style="position:relative;color:red;top:28px;left:16px;" *ngIf="commissionError">{{commissionError}}</p>
+
 
 
 

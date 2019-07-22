@@ -111,7 +111,7 @@ table {
       <div class="card-body">
         <div class="row">
         <div class="col-9">
-        <h5 class="card-title" style="text-transform:capitalize;">{{user.name}} (mobile No:{{user.phone}})</h5>
+        <h5 class="card-title" style="text-transform:capitalize;">{{user.name}} (Mobile No:{{user.phone}})</h5>
           <h6 class="card-text">{{user.location}}</h6>
           <h6 class="card-text">{{user.flat_no}}</h6>
           <h6 class="card-text">{{user.landmark}}</h6>
@@ -173,7 +173,7 @@ table {
         <table >
           <tr>
             <th>Brand</th>
-            <th>Prize</th>
+            <th>Price</th>
            <th>Quantity</th> 
           </tr>
           <tr *ngFor="let data of cunsumptionData" >
@@ -182,7 +182,12 @@ table {
             <td>{{data.quantity}}</td>
          </tr>
         </table>
+        <div> 
+            <label style="margin-top:14px">Commission:</label>
+            
+            </div>
       </div>
+      
       <div class="modal-footer">
         <button type="button"  style="background-color:red"class="btn btn-secondary" data-dismiss="modal">Cancel</button>
       </div>

@@ -39,8 +39,10 @@ export class AddCustomerComponent implements OnInit {
   map: any;
   brand: any;
   prize: any;
+  commission:any;
   quantity: any;
   customerId: any;
+  commissionError: any;
   key: any;
   cunsuptionData: any = [];
   edit: boolean = false;
@@ -82,6 +84,7 @@ export class AddCustomerComponent implements OnInit {
       this.landmark = customerData.apidata.Data[0].landmark
       this.city = customerData.apidata.Data[0].city
       this.mobileNo = customerData.apidata.Data[0].phone
+      this.commission = customerData.apidata.Data[0].commision
       this.mobileColor = "#5c6873";
       this.cunsuptionData = customerData.apidata.Data[0].consumption
       this.showloader = false
@@ -214,18 +217,25 @@ export class AddCustomerComponent implements OnInit {
       var data = {
         quantity: this.quantity,
         prize: this.prize,
-        brand: this.brand
+        brand: this.brand,
+        
       }
       this.cunsuptionData.push(data)
       this.quantity = ''
       this.prize = ''
       this.brand = ''
+  
     }
    
   }
 
   deleteCunsuption(index, data) {
     this.cunsuptionData.splice(index, 1)
+  }
+
+  changeCommision(){
+    debugger
+    this.commissionError = ''
   }
 
   async saveCustomer() {
@@ -236,6 +246,13 @@ export class AddCustomerComponent implements OnInit {
     else {
       isError = true
       this.userNameError = "Name is mandatory"
+    }
+
+    if(this.commission){
+
+    }else{
+      isError = true
+      this.commissionError = "Commission is mandatory"
     }
     if (this.mobileNo) {
       if ((this.mobileNo).toString().length == 10) {
@@ -280,7 +297,8 @@ export class AddCustomerComponent implements OnInit {
           phone: this.mobileNo,
           role: 'CUSTOMER',
           consumption: this.cunsuptionData,
-          user_by: this.userData._id
+          user_by: this.userData._id,
+          commision:this.commission
         }
         let customerData = await ithours_client.add("User", data)
         if (customerData.apidata.Data) {
@@ -373,6 +391,7 @@ export class AddCustomerComponent implements OnInit {
               landmark: this.landmark,
               city: this.city,
               phone: this.mobileNo,
+              commision:this.commission,
               consumption: this.cunsuptionData
             }
           }

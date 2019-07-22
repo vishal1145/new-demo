@@ -12,6 +12,7 @@ var UserSchema = new mongoose.Schema({
     city: String,
     consumption: [],
     user_by: String,
+    commision: String,
     created_at: {
         type: Date,
         default: new Date()
