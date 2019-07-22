@@ -222,10 +222,9 @@
               <label>Landmark (optional)</label>
             </div>
             <div class="input-group">
-              <input type="text" [(ngModel)]="city" onkeypress="checkCity()" style="background: white;">
+              <input type="text" [(ngModel)]="city" [readonly]="true" placeholder="City" onkeypress="checkCity()" style="background: white;">
               <span class="highlight"></span>
-              <span class="bar"></span>
-              <label>City</label>
+              <span class="bar"></span>  
             </div>
 
             <div class="input-group">
