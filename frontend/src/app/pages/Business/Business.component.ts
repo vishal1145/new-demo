@@ -18,6 +18,7 @@ declare var encodeURI: any;
 
 export class BusinessComponent implements OnInit {
   userData: any;
+  commisiion: any;
   allUsers: any = [];
   customerId: any;
   cunsumptionData: any = [];
@@ -87,6 +88,7 @@ export class BusinessComponent implements OnInit {
   }
   viewconsumption(value) {
     debugger
+    this.commisiion = value.commision
     this.cunsumptionData = value.consumption
     $('#consumptionModal').modal('show')
   }
