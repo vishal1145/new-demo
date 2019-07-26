@@ -38,4 +38,8 @@ export class PagesLayoutComponent implements OnInit {
     gotoCustomer() {
       this.router.navigate(["/pages/business"])
     }
+    gotocalendar()
+    {
+      this.router.navigate(["/pages/calendar"])
+    }
 }

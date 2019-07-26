@@ -27,9 +27,23 @@
                   <span data-feather="home" style="color:#00b9f5"></span>My Customer <span class="sr-only">(current)</span>
                 </a>
               </li>
+              <li class="nav-item" *ngIf="userData.role == 'BUSINESS'">
+                  <a class="nav-link active" style="cursor:pointer;" (click)="gotocalendar()">
+                    <span data-feather="home" style="color:#00b9f5"></span> My Calendar  <span class="sr-only">(current)</span>
+                  </a>
+                </li>
 
 
             </ul>
+            <ul class="nav flex-column">
+                <li class="nav-item" *ngIf="userData.role == 'CUSTOMER'">
+                  <a class="nav-link active" style="cursor:pointer;" (click)="gotocalendar()">
+                    <span data-feather="home" style="color:#00b9f5"></span> My Calendar  <span class="sr-only">(current)</span>
+                  </a>
+                </li>
+  
+  
+              </ul>
 
           </div>
         </nav>
