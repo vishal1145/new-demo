@@ -40,8 +40,11 @@ export interface CalendarDate {
 
 export class CalendarComponent implements OnInit, OnChanges {
     status: any;
+    showloader = true
     today: Date;
     complainHide=false;
+   
+   
 
 
 
@@ -64,6 +67,10 @@ export class CalendarComponent implements OnInit, OnChanges {
 
     constructor(private http: Http, private router: Router,
         private route: ActivatedRoute, public toastr: ToastrService) {
+            var self  = this
+            setTimeout(()=>{
+                self.showloader = false
+            }, 500)
         // this.getdate();
         this.today=new Date();
 
@@ -77,6 +84,7 @@ export class CalendarComponent implements OnInit, OnChanges {
     ngOnInit(): void {
 
         this.generateCalendar();
+        
 
     }
     // async getdate() {
@@ -86,6 +94,7 @@ export class CalendarComponent implements OnInit, OnChanges {
 
 
     ngOnChanges(changes: SimpleChanges): void {
+       
 
         if (changes.selectedDates &&
 
@@ -324,9 +333,6 @@ export class CalendarComponent implements OnInit, OnChanges {
     { debugger
         this.complainHide=val
     }
-    statusDelivery()
-    {
-
-    }
+    
 
 }

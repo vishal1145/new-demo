@@ -11,7 +11,13 @@
     color: white
   }
 </style>
-<div class="calendar">
+<div>
+    <div class="row" *ngIf="showloader">
+        <div class="spinner-border" style="margin-top:140px" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+    </div>
+<div class="calendar" *ngIf="!showloader" >
 
   <div class="calendar-navs">
 
@@ -90,6 +96,7 @@
   </div>
 
 </div>
+</div>
 <div id="viewstatus" class="modal fade" role="dialog">
   <div class="modal-dialog ">
     <div class="modal-content">
@@ -137,29 +144,29 @@
           <br />
           <br />
         </div>
-        <div  class="custom-control custom-radio">
-          <input type="radio" (click)="showBox(false)"  style="cursor:pointer;" class="custom-control-input" id="defaultUnchecked1"
-            name="defaultExampleRadios">
+        <div class="custom-control custom-radio">
+          <input type="radio" (click)="showBox(false)" style="cursor:pointer;" class="custom-control-input"
+            id="defaultUnchecked1" name="defaultExampleRadios">
           <label class="custom-control-label" for="defaultUnchecked1">Recieved in Time</label>
         </div>
 
-        <div   class="custom-control custom-radio">
-          <input type="radio" (click)="showBox(false)" style="cursor:pointer;" class="custom-control-input" id="defaultUnchecked2"
-            name="defaultExampleRadios">
+        <div class="custom-control custom-radio">
+          <input type="radio" (click)="showBox(false)" style="cursor:pointer;" class="custom-control-input"
+            id="defaultUnchecked2" name="defaultExampleRadios">
           <label class="custom-control-label" for="defaultUnchecked2">Recieved But Delayed</label>
         </div>
-        <div   class="custom-control custom-radio">
-          <input type="radio" (click)="showBox(false)" style="cursor:pointer;" class="custom-control-input" id="defaultUnchecked3"
-            name="defaultExampleRadios">
+        <div class="custom-control custom-radio">
+          <input type="radio" (click)="showBox(false)" style="cursor:pointer;" class="custom-control-input"
+            id="defaultUnchecked3" name="defaultExampleRadios">
           <label class="custom-control-label" for="defaultUnchecked3">Not Recieved</label>
         </div>
-        <div   class="custom-control custom-radio">
-          <input type="radio" (click)="showBox(true)" style="cursor:pointer;" class="custom-control-input" id="defaultchecked"
-            name="defaultExampleRadios">
+        <div class="custom-control custom-radio">
+          <input type="radio" (click)="showBox(true)" style="cursor:pointer;" class="custom-control-input"
+            id="defaultchecked" name="defaultExampleRadios">
           <label class="custom-control-label" for="defaultchecked">Make a Complaint</label>
         </div>
-         <div class="form-group" *ngIf="complainHide">
-            <textarea class="form-control" rows="3" placeholder="Write your complaint here...."></textarea>
+        <div class="form-group" *ngIf="complainHide">
+          <textarea class="form-control" rows="3" placeholder="Write your complaint here...."></textarea>
         </div>
       </div>
       <div class="modal-footer">
