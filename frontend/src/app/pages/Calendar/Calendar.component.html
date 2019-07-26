@@ -1,0 +1,173 @@
+<style>
+  .weeks span:hover {
+    background-color: #75c51f;
+    border-radius: 49px;
+    color: white
+  }
+
+  .row button:hover {
+    background-color: #75c51f;
+    border-radius: 49px;
+    color: white
+  }
+</style>
+<div class="calendar">
+
+  <div class="calendar-navs">
+
+    <div class="month-nav" style="text-align: center">
+
+      <div class="row" style="width:100%;margin:0px !important;padding:0px !important">
+        <div class="col-md-3">
+          <button style="width:100%;margin: 0px" (click)="prevMonth()" *ngIf="displayprev()">
+            <</button> </div> <div class="col-md-6">
+              <span class="p4" style="width:100%;margin-top: 10px;
+          display: inline-block;">{{ currentDate.format('MMMM') }}
+                {{ currentDate.format('YYYY') }}</span>
+        </div>
+        <div class="col-md-3">
+          <button style="width:100%;margin: 0;" (click)="nextMonth()" *ngIf="displaynext()">></button>
+        </div>
+
+      </div>
+
+
+
+
+
+    </div>
+
+    <!-- <div class="year-nav">
+  
+        <button (click)="prevYear()">&lt;</button>
+  
+        <span>{{ currentDate.format('YYYY') }}</span>
+  
+        <button (click)="nextYear()">&gt;</button>
+  
+      </div> -->
+
+  </div>
+
+  <div class="month-grid">
+
+    <div class="day-names">
+
+      <div *ngFor="let name of dayNames" class="day-name p9">
+
+        {{ name }}
+
+      </div>
+
+    </div>
+
+    <div class="weeks" (click)="openmodal()" style="cursor:pointer;">
+
+      <div *ngFor="let week of weeks;let index of index" class="week">
+
+        <ng-container *ngFor="let day of week">
+
+          <div class="week-date disabled" *ngIf="!isSelectedMonth(day.mDate)">
+
+            <span class="date-text">{{ day.mDate.date() }}</span>
+
+          </div>
+
+          <div class="week-date enabled" *ngIf="isSelectedMonth(day.mDate)" (click)="selectDate(day)"
+            [ngClass]="{ today: day.today, selected: day.selected }">
+
+
+            <span class="date-text">{{ day.mDate.date() }}</span>
+
+          </div>
+
+        </ng-container>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+<div id="viewstatus" class="modal fade" role="dialog">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"> Delivery Status</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="custom-control custom-radio">
+          <input type="radio" style="cursor:pointer;" class="custom-control-input" id="defaultUnchecked"
+            name="defaultExampleRadios">
+          <label class="custom-control-label" for="defaultUnchecked">Delivered</label>
+        </div>
+        <!-- Default checked -->
+        <div class="custom-control custom-radio">
+          <input type="radio" style="cursor:pointer;" class="custom-control-input" id="defaultChecked"
+            name="defaultExampleRadios" checked>
+          <label class="custom-control-label" for="defaultChecked">Not Delivered</label>
+        </div>
+        <div slot="modal-footer" style="text-align: center;cursor:pointer">
+          <button type="button" (click)="Savedetailstatus()" class="btn btn-success"
+            style="height:43px;background-color: #75c51f;;border:none">
+            <b>Save</b>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="exactstatus" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Exact Status</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div style="margin-left: 8px;font-size: 15px">
+          <b> Current Date :{{today| date:'dd-MM-yyyy'}}</b>
+          <br />
+          <br />
+        </div>
+        <div  class="custom-control custom-radio">
+          <input type="radio" (click)="showBox(false)"  style="cursor:pointer;" class="custom-control-input" id="defaultUnchecked1"
+            name="defaultExampleRadios">
+          <label class="custom-control-label" for="defaultUnchecked1">Recieved in Time</label>
+        </div>
+
+        <div   class="custom-control custom-radio">
+          <input type="radio" (click)="showBox(false)" style="cursor:pointer;" class="custom-control-input" id="defaultUnchecked2"
+            name="defaultExampleRadios">
+          <label class="custom-control-label" for="defaultUnchecked2">Recieved But Delayed</label>
+        </div>
+        <div   class="custom-control custom-radio">
+          <input type="radio" (click)="showBox(false)" style="cursor:pointer;" class="custom-control-input" id="defaultUnchecked3"
+            name="defaultExampleRadios">
+          <label class="custom-control-label" for="defaultUnchecked3">Not Recieved</label>
+        </div>
+        <div   class="custom-control custom-radio">
+          <input type="radio" (click)="showBox(true)" style="cursor:pointer;" class="custom-control-input" id="defaultchecked"
+            name="defaultExampleRadios">
+          <label class="custom-control-label" for="defaultchecked">Make a Complaint</label>
+        </div>
+         <div class="form-group" *ngIf="complainHide">
+            <textarea class="form-control" rows="3" placeholder="Write your complaint here...."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="exactstaus()" class="btn btn-primary"
+          style="background-color:#75c51f;border:none;cursor:pointer">Save</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          style="background-color:red;border:none;cursor:pointer">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

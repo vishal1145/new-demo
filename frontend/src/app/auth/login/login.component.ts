@@ -106,7 +106,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(["/pages/users"])
         }
         else if (getUser.apidata.Data[0].role == 'CUSTOMER') {
-          this.router.navigate(["/pages/customer"])
+          this.router.navigate(["/pages/calendar"])
         }
         else if (getUser.apidata.Data[0].role == 'BUSINESS') {
           this.router.navigate(["/pages/business"])
