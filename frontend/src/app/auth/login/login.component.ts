@@ -1,7 +1,6 @@
 import { Component, OnInit, ElementRef, ViewContainerRef } from "@angular/core";
 import { Router } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
-//import { _ } from "underscore";
 declare var $: any;
 declare var ithours_client: any;
 @Component({
@@ -35,13 +34,11 @@ export class LoginComponent implements OnInit {
     this.checkValidation = false
     this.userNameSelect = false
     this.userNameWrong = false
-    //this.checkPassword = false
     if (this.username == '') {
       this.userNameSelect = true
     }
     this.emailColor = "red";
     if (!this.phoneNumber.test(this.username)) {
-      //this.emailColor = "#5c6873";
       var checkeamil = this.regex.test(this.username)
       if (!checkeamil) {
         this.emailColor = "red";
@@ -51,7 +48,7 @@ export class LoginComponent implements OnInit {
       }
     } else {
       if ((this.username).toString().length > 10) {
-        var username = (this.username).substring(0, 10);// (this.username).substring(0, (this.username).toString().length - 1)
+        var username = (this.username).substring(0, 10);
         this.username = username
         return false;
       }
@@ -61,7 +58,6 @@ export class LoginComponent implements OnInit {
       } else {
         this.emailColor = "red";
       }
-      //this.emailColor = "red";
     }
   }
   UserPasswordCheck() {
@@ -69,7 +65,6 @@ export class LoginComponent implements OnInit {
     if (this.password == '') {
       this.checkPassword = true
     }
-    //this.userNameSelect = false
     this.userNameWrong = false
     this.checkPassword = false
   }
@@ -83,18 +78,10 @@ export class LoginComponent implements OnInit {
   }
 
   async login() {
-    //this.userNameSelect = false
-    //this.usernameCheck = false
-    //this.checkPassword = false
     debugger
     if (this.username !== '' && this.password !== '' && this.emailColor == "#5c6873") {
       this.loader = true
-      //if (!this.phonenumber.test(this.username)) {
-      //  var checkeamil = this.emailregex.test(this.username)
-      //  if (!checkeamil) {
-      //    return this.correctemail = false
-      //  }
-      //}
+       
       let getUser = await ithours_client.get('User', { email: this.username, password: this.password })
       if (getUser.apidata.Data && getUser.apidata.Data.length == 0) {
         let getUser1 = await ithours_client.get('User', { phone: Number(this.username), password: this.password })
@@ -116,17 +103,14 @@ export class LoginComponent implements OnInit {
         this.userNameWrong = true
         this.username = ''
         this.password = ''
-        //this.toastr.error("", 'Wrong username and password');
         this.loader = false
       }
     }
     else {
-      //this.checkValidation = true;
       if (this.username == '' && this.password == '') {
         this.userNameSelect = true
         this.checkPassword = true
       }
-     
       else if (this.username !== '' && this.emailColor == "red" && this.password == '') {
         this.usernameCheck = true
         this.checkPassword = true
@@ -140,44 +124,9 @@ export class LoginComponent implements OnInit {
       else if (this.password == '' && this.username == '') {
         this.checkPassword = true
       }
-     
-      //else {
-      //  this.checkPassword = true
-      //  this.userNameSelect = true
-      //}
-
-      //if (this.username == '' && this.emailColor !== "red") {
-      //  this.userNameSelect = true
-      //   //this.toastr.error("", "Please Enter Password")
-      //}
-      //if (this.username !== '' && this.emailColor !== "red") {
-      //  this.usernameCheck = true
-      //  //this.toastr.error("", "Please Enter Password")
-      //}
-      //if (this.username == '' && this.emailColor == "red") {
-      //  this.userNameSelect = true
-      //  //this.toastr.error("", "Please Enter Password")
-      //}
-      //else if (this.password == '' ) {
-      //  this.checkPassword = true
-      //}
-      //else if (this.password !== '' ) {
-      //  this.userNameSelect = true
-      //}
-      //else if (this.emailColor == "red" ) {
-      //  this.usernameCheck = true
-      //}
-      //else {
-      //  this.checkPassword = true
-      //  this.userNameSelect = true
-      //   //this.toastr.error("", "Please Enter Email / Phone No. and Password")
-      //}
     }
   }
-
   gotoRegister() {
-    //var self = this
-    //self.router.navigate[("auth/signup")]
     window.location.href = "/auth/signup";
   }
 } 

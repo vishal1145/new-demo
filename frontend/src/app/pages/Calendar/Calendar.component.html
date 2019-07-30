@@ -10,13 +10,18 @@
     border-radius: 49px;
     color: white
   }
+
+  .advancedorder {
+    text-align: center;
+  }
+
+  .advorderdetails {
+    width: 100px;
+  }
 </style>
 <div class="calendar">
-
   <div class="calendar-navs">
-
     <div class="month-nav" style="text-align: center">
-
       <div class="row" style="width:100%;margin:0px !important;padding:0px !important">
         <div class="col-md-3">
           <button style="width:100%;margin: 0px" (click)="prevMonth()" *ngIf="displayprev()">
@@ -28,68 +33,32 @@
         <div class="col-md-3">
           <button style="width:100%;margin: 0;" (click)="nextMonth()" *ngIf="displaynext()">></button>
         </div>
-
       </div>
-
-
-
-
-
     </div>
-
-    <!-- <div class="year-nav">
-  
-        <button (click)="prevYear()">&lt;</button>
-  
-        <span>{{ currentDate.format('YYYY') }}</span>
-  
-        <button (click)="nextYear()">&gt;</button>
-  
-      </div> -->
-
   </div>
 
   <div class="month-grid">
-
     <div class="day-names">
-
       <div *ngFor="let name of dayNames" class="day-name p9">
-
         {{ name }}
-
       </div>
-
     </div>
-
-    <div class="weeks" (click)="openmodal()" style="cursor:pointer;">
-
+    <div class="weeks">
       <div *ngFor="let week of weeks;let index of index" class="week">
-
         <ng-container *ngFor="let day of week">
-
           <div class="week-date disabled" *ngIf="!isSelectedMonth(day.mDate)">
-
             <span class="date-text">{{ day.mDate.date() }}</span>
-
           </div>
-
           <div class="week-date enabled" *ngIf="isSelectedMonth(day.mDate)" (click)="selectDate(day)"
             [ngClass]="{ today: day.today, selected: day.selected }">
-
-
-            <span class="date-text">{{ day.mDate.date() }}</span>
-
+            <span class="date-text" (click)="openmodal($event)" style="cursor:pointer;">{{ day.mDate.date() }}</span>
           </div>
-
         </ng-container>
-
       </div>
-
     </div>
-
   </div>
-
 </div>
+
 <div id="viewstatus" class="modal fade" role="dialog">
   <div class="modal-dialog ">
     <div class="modal-content">
@@ -99,21 +68,29 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-
       <div class="modal-body">
+          <table class="advancedorder">
+              <tr>
+                <th class="advorderdetails">Name</th>
+                <th class="advorderdetails">Quantity</th>
+              </tr>
+              <tr *ngFor="let data of viewadAllvanccustomeredorder">
+                <td>{{data.User_Id.name}}</td>
+                <td>{{data.Quantity}}</td>
+              </tr>
+            </table>
         <div class="custom-control custom-radio">
           <input type="radio" style="cursor:pointer;" class="custom-control-input" id="defaultUnchecked"
-            name="defaultExampleRadios">
+            name="defaultExampleRadios" value="DELIVERED" [(ngModel)]="choosedeliverystatus">
           <label class="custom-control-label" for="defaultUnchecked">Delivered</label>
         </div>
-        <!-- Default checked -->
         <div class="custom-control custom-radio">
           <input type="radio" style="cursor:pointer;" class="custom-control-input" id="defaultChecked"
-            name="defaultExampleRadios" checked>
+            name="defaultExampleRadios" checked value="dsww" value="NOTDELIVERED" [(ngModel)]="choosedeliverystatus">
           <label class="custom-control-label" for="defaultChecked">Not Delivered</label>
         </div>
         <div slot="modal-footer" style="text-align: center;cursor:pointer">
-          <button type="button" (click)="Savedetailstatus()" class="btn btn-success"
+          <button type="button" (click)="adddeliverystatus()" class="btn btn-success"
             style="height:43px;background-color: #75c51f;;border:none">
             <b>Save</b>
           </button>
@@ -122,6 +99,7 @@
     </div>
   </div>
 </div>
+
 <div id="exactstatus" class="modal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -137,34 +115,145 @@
           <br />
           <br />
         </div>
-        <div  class="custom-control custom-radio">
-          <input type="radio" (click)="showBox(false)"  style="cursor:pointer;" class="custom-control-input" id="defaultUnchecked1"
-            name="defaultExampleRadios">
-          <label class="custom-control-label" for="defaultUnchecked1">Recieved in Time</label>
+        <div class="custom-control custom-radio">
+          <input type="radio" (click)="showBox(false)" style="cursor:pointer;" class="custom-control-input"
+            id="defaultUnchecked1" [checked]='true' name="RECIEVEDINTIME" value="RECIEVEDINTIME"
+            [(ngModel)]="chooseValue" checked="getradio()">
+          <label class="custom-control-label" for="defaultUnchecked1">Recieved in time</label>
         </div>
 
-        <div   class="custom-control custom-radio">
-          <input type="radio" (click)="showBox(false)" style="cursor:pointer;" class="custom-control-input" id="defaultUnchecked2"
-            name="defaultExampleRadios">
-          <label class="custom-control-label" for="defaultUnchecked2">Recieved But Delayed</label>
+        <div class="custom-control custom-radio">
+          <input type="radio" (click)="showBox(false)" style="cursor:pointer;" class="custom-control-input"
+            id="defaultUnchecked2" name="Recieved But Delayed" value="RECIEVEDBUTDELAYD" [(ngModel)]="chooseValue"
+            checked="getradio()">
+          <label class="custom-control-label" for="defaultUnchecked2">Recieved but delayed</label>
         </div>
-        <div   class="custom-control custom-radio">
-          <input type="radio" (click)="showBox(false)" style="cursor:pointer;" class="custom-control-input" id="defaultUnchecked3"
-            name="defaultExampleRadios">
-          <label class="custom-control-label" for="defaultUnchecked3">Not Recieved</label>
+        <div class="custom-control custom-radio">
+          <input type="radio" (click)="showBox(false)" style="cursor:pointer;" class="custom-control-input"
+            id="defaultUnchecked3" name="Not Recieved" value="NOTRECIEVED" [(ngModel)]="chooseValue"
+            checked="getradio()">
+          <label class="custom-control-label" for="defaultUnchecked3">Not recieved</label>
         </div>
-        <div   class="custom-control custom-radio">
-          <input type="radio" (click)="showBox(true)" style="cursor:pointer;" class="custom-control-input" id="defaultchecked"
-            name="defaultExampleRadios">
-          <label class="custom-control-label" for="defaultchecked">Make a Complaint</label>
+        <div class="custom-control custom-radio">
+          <input type="radio" (click)="showBox(true)" style="cursor:pointer;" class="custom-control-input"
+            id="defaultchecked" name="Make a Complaint" value="COMPLAINT" [(ngModel)]="chooseValue"
+            checked="getradio()">
+          <label class="custom-control-label" for="defaultchecked">Complaint</label>
         </div>
-         <div class="form-group" *ngIf="complainHide">
-            <textarea class="form-control" rows="3" placeholder="Write your complaint here...."></textarea>
+        <div class="form-group" *ngIf="complainHide">
+          <textarea class="form-control" id="texcomplain" [(ngModel)]="complainMessage" rows="3"
+            placeholder="Write your complaint here...."></textarea>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" (click)="exactstaus()" class="btn btn-primary"
+
+        <button type="button" name="saveexatstatus" (click)="exactstaus()" class="btn btn-primary"
           style="background-color:#75c51f;border:none;cursor:pointer">Save</button>
+
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          style="background-color:red;border:none;cursor:pointer">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="advancedorder" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Advanced Order</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <br>
+        <div class="row">
+          <div class="custom-control custom-radio">
+            <input type="radio" (click)="showBox(false)" style="cursor:pointer;" class="custom-control-input"
+              id="defaultchecked1" name="ONEDAY" value="ONEDAY" [(ngModel)]="selectday" checked="getradio()">
+            <label class="custom-control-label" for="defaultchecked1">One day </label>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" (click)="showBox(true)" style="cursor:pointer;" class="custom-control-input"
+              id="defaultchecked2" name="MOREDAY" value="MOREDAY" [(ngModel)]="selectday" checked="getradio()">
+            <label class="custom-control-label" for="defaultchecked2">More than one day</label>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="complainHide">
+          <input type="date" values="advancedordercalendar" [(ngModel)]="advancedordercalendar" />
+        </div>
+        <br>
+        <div style="font-size: 15px">
+          Quantity
+          <select [(ngModel)]="qualityOption">
+            <option *ngFor="let quantity of quantitys" id="Quantity" value={{quantity.qua}}>
+              {{quantity.qua}} Ltr
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" name="saveadvancedorder" (click)="addadvancedorder()" class="btn btn-primary"
+          style="background-color:#75c51f;border:none;cursor:pointer">Save</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          style="background-color:red;border:none;cursor:pointer">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="DeliveryStatus" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delivery status: {{today| date:'dd-MMM-yyyy'}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div style="margin-left: 8px;font-size: 15px">
+          <b *ngIf="DeliveryStatusArray && DeliveryStatusArray[0]"> Status: {{DeliveryStatusArray[0].Status}}</b>
+          <b *ngIf="(DeliveryStatusArray && !DeliveryStatusArray[0])">No information </b>
+          <br />
+          <br />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          style="background-color: #75c51f;border:none;cursor:pointer">Ok</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          style="background-color:red;border:none;cursor:pointer">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="advanccustomeredorder" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Advanced Order</h5>
+      </div>
+      <div class="modal-body">
+        <table class="advancedorder">
+          <tr>
+            <th class="advorderdetails">Name</th>
+            <th class="advorderdetails">Quantity</th>
+          </tr>
+          <tr *ngFor="let data of viewadAllvanccustomeredorder">
+            <td>{{data.User_Id.name}}</td>
+            <td>{{data.Quantity}}</td>
+          </tr>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          style="background-color: #75c51f;border:none;cursor:pointer">Ok</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal"
           style="background-color:red;border:none;cursor:pointer">Close</button>
       </div>
