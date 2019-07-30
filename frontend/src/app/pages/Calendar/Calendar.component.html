@@ -58,6 +58,7 @@
     </div>
   </div>
 </div>
+
 <div id="viewstatus" class="modal fade" role="dialog">
   <div class="modal-dialog ">
     <div class="modal-content">
@@ -67,17 +68,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-          <table class="advancedorder">
-              <tr>
-                <th class="advorderdetails">Name</th>
-                <th class="advorderdetails">Quantity</th>
-              </tr>
-              <tr *ngFor="let data of viewadAllvanccustomeredorder">
-                <td>{{data.User_Id.name}}</td>
-                <td>{{data.Quantity}}</td>
-              </tr>
-            </table>
+      <div class="modal-body">        
         <div class="custom-control custom-radio">
           <input type="radio" style="cursor:pointer;" class="custom-control-input" id="defaultUnchecked"
             name="defaultExampleRadios" value="DELIVERED" [(ngModel)]="choosedeliverystatus">
@@ -88,12 +79,17 @@
             name="defaultExampleRadios" checked value="dsww" value="NOTDELIVERED" [(ngModel)]="choosedeliverystatus">
           <label class="custom-control-label" for="defaultChecked">Not Delivered</label>
         </div>
+        <br>
+        <label (click)="viewadvanccustomeredorder()" >Total advancedorder</label>
+
+        <!-- button -->
         <div slot="modal-footer" style="text-align: center;cursor:pointer">
           <button type="button" (click)="adddeliverystatus()" class="btn btn-success"
             style="height:43px;background-color: #75c51f;;border:none">
             <b>Save</b>
           </button>
         </div>
+
       </div>
     </div>
   </div>
@@ -156,7 +152,6 @@
   </div>
 </div>
 
-
 <div id="advancedorder" class="modal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -171,27 +166,27 @@
         <div class="row">
           <div class="custom-control custom-radio">
             <input type="radio" (click)="showBox(false)" style="cursor:pointer;" class="custom-control-input"
-              id="defaultchecked1" name="ONEDAY" value="ONEDAY" [(ngModel)]="selectday" checked="getradio()">
+              id="defaultchecked1" name="radiogroup" value="ONEDAY" [(ngModel)]="selectday" >
             <label class="custom-control-label" for="defaultchecked1">One day </label>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </div>
           <div class="custom-control custom-radio">
             <input type="radio" (click)="showBox(true)" style="cursor:pointer;" class="custom-control-input"
-              id="defaultchecked2" name="MOREDAY" value="MOREDAY" [(ngModel)]="selectday" checked="getradio()">
+              id="defaultchecked2" name="radiogroup" value="MOREDAY" [(ngModel)]="selectday" >
             <label class="custom-control-label" for="defaultchecked2">More than one day</label>
           </div>
         </div>
         <div class="form-group" *ngIf="complainHide">
-          <input type="date" values="advancedordercalendar" [(ngModel)]="advancedordercalendar" />
+          <input type="date" values="advancedordercalendar" [min]="mindate"  [(ngModel)]="advancedordercalendar" />
         </div>
         <br>
         <div style="font-size: 15px">
           Quantity
           <select [(ngModel)]="qualityOption">
-            <option *ngFor="let quantity of quantitys" id="Quantity" value={{quantity.qua}}>
-              {{quantity.qua}} Ltr
+            <option *ngFor="let quantity of quantitys" id="Quantity"  value={{quantity.qua}}>
+              {{quantity.qua}}
             </option>
-          </select>
+          </select>&nbsp; Ltr
         </div>
       </div>
       <div class="modal-footer">
@@ -216,8 +211,8 @@
       <div class="modal-body">
         <div style="margin-left: 8px;font-size: 15px">
           <b *ngIf="DeliveryStatusArray && DeliveryStatusArray[0]"> Status: {{DeliveryStatusArray[0].Status}}</b>
-          <b *ngIf="(DeliveryStatusArray && !DeliveryStatusArray[0])">No information </b>
-          <br />
+          <p *ngIf="(DeliveryStatusArray && !DeliveryStatusArray[0])">There are no information available on this date
+          </p>
           <br />
         </div>
       </div>

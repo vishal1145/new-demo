@@ -28,7 +28,7 @@ export interface CalendarDate {
     styleUrls: ['./Calendar.component.scss'],
 })
 export class CalendarComponent implements OnInit, OnChanges {
-    selectday: any;
+    selectday = 'ONEDAY';
     status: any;
     showloader = true
     today: Date;
@@ -36,25 +36,24 @@ export class CalendarComponent implements OnInit, OnChanges {
     Date: any;
     userstatus: any;
     user_id: any;
+    mindate = moment(new Date()).format('YYYY-MM-DD');
     chooseValue: any;
+    dateCur = new Date();
     quantity: any;
-    // Todate: any;
     radiochecked: any;
-    complainMessage: any;
+    complainMessage: any = "";
     choosedeliverystatus: any;
     viewadAllvanccustomeredorder: any = [];
     DeliveryStatusArray: any = [];
-    // viewadvancedorderondate:any=[];
     addadvancedorder: any;
     getuserstatus: any;
     qua: any;
     advancedordercalendar: any;
-    selectdya: any;
-
+    selectdya: any;    
     getdatestatus: any;
     userdatestatus: any;
     complainHide = false;
-    qualityOption: any;
+    qualityOption = "1";
     currentDate = moment();
 
     quantitys = [
@@ -79,6 +78,7 @@ export class CalendarComponent implements OnInit, OnChanges {
         { qua: '10' },
         { qua: '10.5' }
     ];
+    
 
     dayNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
     weeks: CalendarDate[][] = [];
@@ -227,7 +227,6 @@ export class CalendarComponent implements OnInit, OnChanges {
 
             if (currdateonmonth == clickeddate) {
                 $('#viewstatus').modal('show')
-                this.clickondateviewadvord()
             }
             if (currdateonmonth < clickeddate) {
                 this.viewadvanccustomeredorder()
@@ -241,12 +240,19 @@ export class CalendarComponent implements OnInit, OnChanges {
     async exactstaus() {
         $('#exactstatus').modal('hide')
         if (this.chooseValue) {
-            let saveexatdata = await ithours_client.add("Delivery", { User_Id: this.user._id, Date: new Date(), Status: this.chooseValue, Complaint: this.complainMessage })
-            this.exactstaus = saveexatdata.apidata.Data
-            this.toastr.success('Data Saved Successfully');
+            if (this.chooseValue == 'COMPLAINT') {
+                if (this.complainMessage == "") {
+                    this.toastr.error('Please enter complaint');
+                }
+            }
+            else {
+                let saveexatdata = await ithours_client.add("Delivery", { User_Id: this.user._id, Date: new Date(), Status: this.chooseValue, Complaint: this.complainMessage })
+                this.exactstaus = saveexatdata.apidata.Data
+                this.toastr.success('Data Saved Successfully');
+            }
         }
         else {
-            alert('Please choose exact status')
+            this.toastr.error('Please choose exact status');
             $('#exactstatus').modal('show')
         }
     }
@@ -266,18 +272,10 @@ export class CalendarComponent implements OnInit, OnChanges {
             this.adddeliverystatus = viewstatus1.apidata.Data
             this.toastr.success('Data Saved Successfully');
         }
-        else{
-            alert('Please choose delivery status')
+        else {
+            this.toastr.error('Please choose delivery status');
             $('#viewstatus').modal('show')
         }
-    }
-
-    async clickondateviewadvord() {
-        var today = new Date(this.userdatestatus);
-        var mygtToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0);
-        var mylessToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59);
-        let getadvancedstatus = await ithours_client.get("AdvancedOrder", { ToDate: { $gte: mygtToday } }, 'User_Id')
-        this.viewadAllvanccustomeredorder = getadvancedstatus.apidata.Data        
     }
 
     async viewdeliverystatus() {
