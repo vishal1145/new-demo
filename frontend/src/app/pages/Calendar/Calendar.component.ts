@@ -30,6 +30,7 @@ export interface CalendarDate {
 export class CalendarComponent implements OnInit, OnChanges {
     selectday: any;
     status: any;
+    showloader = true
     today: Date;
     user: any;
     Date: any;
