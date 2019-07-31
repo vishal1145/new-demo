@@ -21,6 +21,8 @@ export interface CalendarDate {
     mDate: moment.Moment;
     selected?: boolean;
     today?: boolean;
+    delivered?: boolean;
+    notdelivered?: boolean;
 }
 @Component({
     selector: 'pages-Calendar-cmp',
@@ -28,12 +30,15 @@ export interface CalendarDate {
     styleUrls: ['./Calendar.component.scss'],
 })
 export class CalendarComponent implements OnInit, OnChanges {
-    selectday = 'ONEDAY';
+    //ExtraMilk = 'Extra';
+    selectday = "ONEDAY";
     status: any;
     showloader = true
     today: Date;
+    AllDeliveries: any;
     user: any;
     Date: any;
+    ExtraMilk: any;
     userstatus: any;
     user_id: any;
     mindate = moment(new Date()).format('YYYY-MM-DD');
@@ -45,14 +50,17 @@ export class CalendarComponent implements OnInit, OnChanges {
     choosedeliverystatus: any;
     viewadAllvanccustomeredorder: any = [];
     DeliveryStatusArray: any = [];
+    GetCostDeliverystatus: any = [];
     addadvancedorder: any;
     getuserstatus: any;
     qua: any;
     advancedordercalendar: any;
-    selectdya: any;    
+    selectdya: any;
     getdatestatus: any;
     userdatestatus: any;
     complainHide = false;
+    displayadvancebox = false;
+    morethanoneday = false;
     qualityOption = "1";
     currentDate = moment();
 
@@ -78,18 +86,23 @@ export class CalendarComponent implements OnInit, OnChanges {
         { qua: '10' },
         { qua: '10.5' }
     ];
-    
 
     dayNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
     weeks: CalendarDate[][] = [];
     sortedDates: CalendarDate[] = [];
     @Input() selectedDates: CalendarDate[] = [];
     @Output() onSelectDate = new EventEmitter<CalendarDate>();
+
+
     constructor(private http: Http, private router: Router,
         private route: ActivatedRoute, public toastr: ToastrService) {
         this.today = new Date();
         this.user = JSON.parse(window.localStorage.getItem('USER'));
+        //this.GetDeliveryStatus();
+        this.GetAllDelivery();
     }
+
+
     ngOnInit(): void {
         this.generateCalendar();
     }
@@ -102,6 +115,7 @@ export class CalendarComponent implements OnInit, OnChanges {
             this.generateCalendar();
         }
     }
+
     // date checkers
     isToday(date: moment.Moment): boolean {
         return moment().isSame(moment(date), 'day');
@@ -125,7 +139,7 @@ export class CalendarComponent implements OnInit, OnChanges {
     displaynext() {
         var prevmonth = new Date().getMonth();
         var nextmonth = this.currentDate.format("M")
-        if ((parseInt(nextmonth) - prevmonth) > 1) {
+        if ((parseInt(nextmonth) - prevmonth) > 2) {
             return false
         }
         else {
@@ -172,20 +186,59 @@ export class CalendarComponent implements OnInit, OnChanges {
     }
 
     fillDates(currentMoment: moment.Moment): CalendarDate[] {
+        var self = this;
+        //var self2 = this;
         const firstOfMonth = moment(currentMoment).startOf('month').day();
         const firstDayOfGrid = moment(currentMoment).startOf('month').subtract(firstOfMonth, 'days');
         const start = firstDayOfGrid.date();
         return _.range(start, start + 42)
             .map((date: number): CalendarDate => {
                 const d = moment(firstDayOfGrid).date(date);
+                var delivered = this.isDelivered(d, self);
+                var notdelivered = this.isnotdelivered(d, self);
                 return {
                     today: this.isToday(d),
                     selected: this.isSelected(d),
                     mDate: d,
+                    delivered: delivered,
+                    notdelivered: notdelivered
                 };
             });
     }
 
+    isDelivered(date, current) {
+        var index = current.AllDeliveries.apidata.Data.findIndex((e) => {
+            return moment(e.Date).format("YYYY-MM-DD") == date.format("YYYY-MM-DD")
+        })
+        if (index > -1) {
+            if (current.AllDeliveries.apidata.Data[index].Status == "DELIVERED") {
+                return true
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+
+    isnotdelivered(date, currentd) {
+        var index = currentd.AllDeliveries.apidata.Data.findIndex((e) => {
+            return moment(e.Date).format("YYYY-MM-DD") == date.format("YYYY-MM-DD")
+        })
+        if (index > -1) {
+            if (currentd.AllDeliveries.apidata.Data[index].Status == "NOTDELIVERED") {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
     openmodal(event) {
         if (this.user.role == 'CUSTOMER') {
             var clickondate = parseInt(event.target.innerHTML)
@@ -203,7 +256,7 @@ export class CalendarComponent implements OnInit, OnChanges {
             var currdateonmonth = currdate + "-" + currentMM1 + "-" + currentYYYY1;
 
             if (currdateonmonth == clickeddate) {
-                $('#exactstatus').modal('show')
+                this.GetCostomerDeliverystatus();
             }
             if (currdateonmonth < clickeddate) {
                 $('#advancedorder').modal('show')
@@ -256,13 +309,34 @@ export class CalendarComponent implements OnInit, OnChanges {
             $('#exactstatus').modal('show')
         }
     }
+
     async GetDeliveryStatus() {
-        var today = new Date(this.userdatestatus);
-        var mygtToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0);
-        var mylessToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59);
+        var todays = new Date(this.userdatestatus);
+        var mygtToday = new Date(todays.getFullYear(), todays.getMonth(), todays.getDate(), 0, 0, 0);
+        var mylessToday = new Date(todays.getFullYear(), todays.getMonth(), todays.getDate(), 23, 59, 59);
         let getstatus = await ithours_client.get("Delivery", { User_Id: this.user._id, Date: { $gte: mygtToday, $lte: mylessToday } })
         this.DeliveryStatusArray = getstatus.apidata.Data
         $('#DeliveryStatus').modal('show')
+    }
+    async  GetAllDelivery() {
+        this.AllDeliveries = await ithours_client.get("Delivery", { User_Id: this.user._id })
+        this.generateCalendar();
+    }
+
+    async  GetCostomerDeliverystatus() {
+        var todays = new Date();
+        var mygtToday = new Date(todays.getFullYear(), todays.getMonth(), todays.getDate(), 0, 0, 0);
+        var mylessToday = new Date(todays.getFullYear(), todays.getMonth(), todays.getDate(), 23, 59, 59);
+        let getstatus1 = await ithours_client.get("Delivery", { User_Id: this.user.user_by, Date: { $gte: mygtToday, $lte: mylessToday } })
+        this.GetCostDeliverystatus = getstatus1.apidata.Data
+
+        if (getstatus1.apidata.Data[0].Status == "DELIVERED") {
+            $('#exactstatus').modal('show')
+            $('#CostomerDeliveryStatus').modal('hide')
+        }
+        if (getstatus1.apidata.Data[0].Status == "NOTDELIVERED") {
+            $('#CostomerDeliveryStatus').modal('show')
+        }
     }
 
     async adddeliverystatus() {
@@ -300,12 +374,18 @@ export class CalendarComponent implements OnInit, OnChanges {
     async advancedorder() {
         $('#advancedorder').modal('hide')
         this.quantity = $('#Quantity').val()
-        let advancedorder1 = await ithours_client.add("AdvancedOrder", { User_Id: this.user._id, Date: new Date(), Quantity: this.qualityOption, OneDay: this.userdatestatus, ToDate: this.advancedordercalendar })
-        this.addadvancedorder = advancedorder1.apidata.Data
+        let advancedorder1 = await ithours_client.add("AdvancedOrder", { User_Id: this.user._id, Date: new Date(), ExtraRequire:this.ExtraMilk, Quantity: this.qualityOption, ToDate: this.advancedordercalendar })
+        this.advancedorder = advancedorder1.apidata.Data
         this.toastr.success('Data Saved Successfully');
     }
 
     showBox(val) {
         this.complainHide = val
+    }
+    showBox1(val) {
+        this.displayadvancebox = val
+    }
+    showBox2(val) {
+        this.morethanoneday = val
     }
 }

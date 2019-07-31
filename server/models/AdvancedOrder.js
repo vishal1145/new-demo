@@ -10,6 +10,11 @@ var AdvancedSchema = new mongoose.Schema({
     FromDate:String,
     ToDate:Date,
     OneDay:Date,
+    ExtraRequire:String
+    // ExtraRequire : {
+    //     type:Boolean,
+    //     default:true
+    // }
 })
 
 mongoose.model("AdvancedOrder",AdvancedSchema)
