@@ -23,6 +23,7 @@ export interface CalendarDate {
     today?: boolean;
     delivered?: boolean;
     notdelivered?: boolean;
+    nextday_Adv_ord?: boolean;
 }
 @Component({
     selector: 'pages-Calendar-cmp',
@@ -37,19 +38,23 @@ export class CalendarComponent implements OnInit, OnChanges {
     today: Date;
     AllDeliveries: any;
     user: any;
+    adddeliverystatus: any;
+    addcusadvancedord: any;
     Date: any;
     ExtraMilk: any;
     userstatus: any;
     user_id: any;
+    Getadvday_order: any;
     mindate = moment(new Date()).format('YYYY-MM-DD');
     chooseValue: any;
     dateCur = new Date();
     quantity: any;
     radiochecked: any;
     complainMessage: any = "";
-    choosedeliverystatus: any;
+    choosedeliverystatus = "DELIVERED";
     viewadAllvanccustomeredorder: any = [];
     DeliveryStatusArray: any = [];
+    CusDeliveryStatusArray: any = [];
     GetCostDeliverystatus: any = [];
     addadvancedorder: any;
     getuserstatus: any;
@@ -58,6 +63,9 @@ export class CalendarComponent implements OnInit, OnChanges {
     selectdya: any;
     getdatestatus: any;
     userdatestatus: any;
+    disablepreday: any;
+    datefordeleivery: any;
+    showdeliveryforadd: any;
     complainHide = false;
     displayadvancebox = false;
     morethanoneday = false;
@@ -93,15 +101,14 @@ export class CalendarComponent implements OnInit, OnChanges {
     @Input() selectedDates: CalendarDate[] = [];
     @Output() onSelectDate = new EventEmitter<CalendarDate>();
 
-
     constructor(private http: Http, private router: Router,
         private route: ActivatedRoute, public toastr: ToastrService) {
         this.today = new Date();
         this.user = JSON.parse(window.localStorage.getItem('USER'));
-        //this.GetDeliveryStatus();
         this.GetAllDelivery();
+        this.Getadv_order();
+        //this.disabdate(day); 
     }
-
 
     ngOnInit(): void {
         this.generateCalendar();
@@ -149,7 +156,7 @@ export class CalendarComponent implements OnInit, OnChanges {
     displayprev() {
         var prevmonth = new Date().getMonth();
         var nextmonth = this.currentDate.format("M")
-        if ((parseInt(nextmonth) - prevmonth) < 2) {
+        if ((parseInt(nextmonth) - prevmonth) < -5) {
             return false;
         }
         else {
@@ -183,11 +190,12 @@ export class CalendarComponent implements OnInit, OnChanges {
             weeks.push(dates.splice(0, 7));
         }
         this.weeks = weeks;
+
     }
 
     fillDates(currentMoment: moment.Moment): CalendarDate[] {
         var self = this;
-        //var self2 = this;
+        var self1 = this;
         const firstOfMonth = moment(currentMoment).startOf('month').day();
         const firstDayOfGrid = moment(currentMoment).startOf('month').subtract(firstOfMonth, 'days');
         const start = firstDayOfGrid.date();
@@ -196,100 +204,123 @@ export class CalendarComponent implements OnInit, OnChanges {
                 const d = moment(firstDayOfGrid).date(date);
                 var delivered = this.isDelivered(d, self);
                 var notdelivered = this.isnotdelivered(d, self);
+                var nextday_Adv_ord = this.isnextday_Adv_ord(d, self1);
                 return {
                     today: this.isToday(d),
                     selected: this.isSelected(d),
                     mDate: d,
                     delivered: delivered,
-                    notdelivered: notdelivered
+                    notdelivered: notdelivered,
+                    nextday_Adv_ord: nextday_Adv_ord
                 };
             });
     }
 
     isDelivered(date, current) {
-        var index = current.AllDeliveries.apidata.Data.findIndex((e) => {
-            return moment(e.Date).format("YYYY-MM-DD") == date.format("YYYY-MM-DD")
-        })
-        if (index > -1) {
-            if (current.AllDeliveries.apidata.Data[index].Status == "DELIVERED") {
-                return true
+        if (current && current.AllDeliveries) {
+            var index = current.AllDeliveries.apidata.Data.findIndex((e) => {
+                return moment(e.Date).format("YYYY-MM-DD") == date.format("YYYY-MM-DD")
+            })
+            if (index > -1) {
+                if (current.AllDeliveries.apidata.Data[index].Status == "DELIVERED") {
+                    return true
+                }
+                else {
+                    return false;
+                }
             }
             else {
                 return false;
             }
-        }
-        else {
-            return false;
-        }
+        } return false;
     }
 
     isnotdelivered(date, currentd) {
-        var index = currentd.AllDeliveries.apidata.Data.findIndex((e) => {
-            return moment(e.Date).format("YYYY-MM-DD") == date.format("YYYY-MM-DD")
-        })
-        if (index > -1) {
-            if (currentd.AllDeliveries.apidata.Data[index].Status == "NOTDELIVERED") {
-                return true;
+        if (currentd && currentd.AllDeliveries) {
+            var index = currentd.AllDeliveries.apidata.Data.findIndex((e) => {
+                return moment(e.Date).format("YYYY-MM-DD") == date.format("YYYY-MM-DD")
+            })
+            if (index > -1) {
+                if (currentd.AllDeliveries.apidata.Data[index].Status == "NOTDELIVERED") {
+                    return true;
+                }
+                else {
+                    return false;
+                }
             }
             else {
                 return false;
             }
-        }
-        else {
-            return false;
-        }
+        } return false;
     }
-    openmodal(event) {
-        if (this.user.role == 'CUSTOMER') {
-            var clickondate = parseInt(event.target.innerHTML)
-            var currdate = parseInt(moment(this.currentDate).format('DD'));
 
-            var selectDD = event.target.innerHTML
-            var currentMM = moment(this.currentDate).format("MM")
-            var currentYYYY = moment(this.currentDate).format("YYYY")
-            this.getdatestatus = currentMM + "-" + selectDD + "-" + currentYYYY;
-            this.userdatestatus = moment(this.getdatestatus).format("MM-DD-YYYY")
-
-            var currentMM1 = parseInt(currentMM);
-            var currentYYYY1 = parseInt(currentYYYY);
-            var clickeddate = clickondate + "-" + currentMM1 + "-" + currentYYYY1;
-            var currdateonmonth = currdate + "-" + currentMM1 + "-" + currentYYYY1;
-
-            if (currdateonmonth == clickeddate) {
-                this.GetCostomerDeliverystatus();
+    isnextday_Adv_ord(date, advancedcurrdate) {
+        if (advancedcurrdate && advancedcurrdate.Getadvday_order) {
+            var index1 = advancedcurrdate.Getadvday_order.findIndex((e) => {
+                return moment(e.ToDate).format("YYYY-MM-DD") == date.format("YYYY-MM-DD")
+            })
+            if (index1 > -1) {
+                if (advancedcurrdate.Getadvday_order[index1].ExtraRequire == "Extra") {
+                    return true;
+                }
+                else {
+                    return false;
+                }
             }
-            if (currdateonmonth < clickeddate) {
+            else {
+                return false;
+            }
+        } return false;
+    }
+
+    async openmodal(day) {
+        var current_cldate = moment(new Date()).format("MM-DD-YYYY")
+        var clickd_date = moment(day.mDate._d).format("MM-DD-YYYY")
+        this.datefordeleivery = moment(clickd_date).format("DD-MMM-YYYY")
+        this.userdatestatus = clickd_date
+        var todays = new Date(this.userdatestatus);
+        var mygtToday = new Date(todays.getFullYear(), todays.getMonth(), todays.getDate(), 0, 0, 0);
+        var mylessToday = new Date(todays.getFullYear(), todays.getMonth(), todays.getDate(), 23, 59, 59);
+        let statusdeli = await ithours_client.get("Delivery", { User_Id: this.user._id, Date: { $gte: mygtToday, $lte: mylessToday } })
+
+        if (this.user.role == 'CUSTOMER') {
+            if (clickd_date == current_cldate) {
+                if (statusdeli.apidata.Data[0] == null) {
+                    $('#exactstatus').modal('show')
+                    this.GetCostomerDeliverystatus();
+                }
+                else {
+                    $('#Cus_U_viewExactstatus').modal('show')
+                }
+            }
+            if (clickd_date > current_cldate) {
                 $('#advancedorder').modal('show')
             }
-            if (currdateonmonth > clickeddate) {
-                this.GetDeliveryStatus()
+            if (clickd_date < current_cldate) {
+                this.GetCusDeliveryStatus()
             }
         }
         if (this.user.role == 'BUSINESS') {
-            var clickondate = parseInt(event.target.innerHTML)
-            var currdate = parseInt(moment(this.currentDate).format('DD'));
-            var selectDD = event.target.innerHTML
-            var currentMM = moment(this.currentDate).format("MM")
-            var currentYYYY = moment(this.currentDate).format("YYYY")
-            this.getdatestatus = currentMM + "-" + selectDD + "-" + currentYYYY;
-            this.userdatestatus = moment(this.getdatestatus).format("MM-DD-YYYY")
-            var currentMM1 = parseInt(currentMM);
-            var currentYYYY1 = parseInt(currentYYYY);
-            var clickeddate = clickondate + "-" + currentMM1 + "-" + currentYYYY1;
-            var currdateonmonth = currdate + "-" + currentMM1 + "-" + currentYYYY1;
-
-            if (currdateonmonth == clickeddate) {
-                $('#viewstatus').modal('show')
+            if (clickd_date == current_cldate) {
+                if (statusdeli.apidata.Data[0] == null) {
+                    $('#viewstatus').modal('show')
+                }
+                else {
+                    if (statusdeli.apidata.Data[0].Status == "DELIVERED") {
+                        this.GetBusiDeliveryStatus()
+                    }
+                    else if (statusdeli.apidata.Data[0].Status == "NOTDELIVERED") {
+                        this.GetBusiDeliveryStatus()
+                    }
+                }
             }
-            if (currdateonmonth < clickeddate) {
+            if (clickd_date > current_cldate) {
                 this.viewadvanccustomeredorder()
-            }
-            if (currdateonmonth > clickeddate) {
-                this.viewdeliverystatus()
             }
         }
     }
 
+    //Add Feedback of Customer User
     async exactstaus() {
         $('#exactstatus').modal('hide')
         if (this.chooseValue) {
@@ -310,16 +341,62 @@ export class CalendarComponent implements OnInit, OnChanges {
         }
     }
 
-    async GetDeliveryStatus() {
+    //Update Feedback of Customer User
+    async Update_Cus_feedback() {
+        $('#exactstatus').modal('hide')
+        if (this.chooseValue) {
+            if (this.chooseValue == 'COMPLAINT') {
+                if (this.complainMessage == "") {
+                    this.toastr.error('Please enter complaint');
+                }
+            }
+            else {
+                let saveexatdata = await ithours_client.update("Delivery", { User_Id: this.user._id },
+                    {
+                        "$set": {
+                            Status: this.chooseValue, Complaint: this.complainMessage
+                        }
+                    })
+                this.exactstaus = saveexatdata.apidata.Data
+                this.toastr.success('Data Updated');
+            }
+        }
+        else {
+            this.toastr.error('Please choose exact status');
+            $('#exactstatus').modal('show')
+        }
+    }
+
+    //Get Delivery Status / Feedback for Customer User
+    async GetCusDeliveryStatus() {
+        var todays = new Date(this.userdatestatus);
+        var mygtToday = new Date(todays.getFullYear(), todays.getMonth(), todays.getDate(), 0, 0, 0);
+        var mylessToday = new Date(todays.getFullYear(), todays.getMonth(), todays.getDate(), 23, 59, 59);
+        let getstatus = await ithours_client.get("Delivery", { User_Id: this.user._id, Date: { $gte: mygtToday, $lte: mylessToday } })
+        this.CusDeliveryStatusArray = getstatus.apidata.Data
+        $('#DeliveryStatus').modal('show')
+    }
+
+    //Get Delivery Status for Business User
+    async GetBusiDeliveryStatus() {
         var todays = new Date(this.userdatestatus);
         var mygtToday = new Date(todays.getFullYear(), todays.getMonth(), todays.getDate(), 0, 0, 0);
         var mylessToday = new Date(todays.getFullYear(), todays.getMonth(), todays.getDate(), 23, 59, 59);
         let getstatus = await ithours_client.get("Delivery", { User_Id: this.user._id, Date: { $gte: mygtToday, $lte: mylessToday } })
         this.DeliveryStatusArray = getstatus.apidata.Data
-        $('#DeliveryStatus').modal('show')
+        $('#B_U_viewstatus').modal('show')
     }
+
+    //GetAllDelivery used for changed the date color for Delivery/NoDelivery order. Business User
     async  GetAllDelivery() {
         this.AllDeliveries = await ithours_client.get("Delivery", { User_Id: this.user._id })
+        this.generateCalendar();
+    }
+
+    //Getadv_order used for changed date color for Advanced order in business User
+    async  Getadv_order() {
+        var sd = await ithours_client.get("AdvancedOrder", { ExtraRequire: "Extra" })
+        this.Getadvday_order = sd.apidata.Data
         this.generateCalendar();
     }
 
@@ -329,18 +406,21 @@ export class CalendarComponent implements OnInit, OnChanges {
         var mylessToday = new Date(todays.getFullYear(), todays.getMonth(), todays.getDate(), 23, 59, 59);
         let getstatus1 = await ithours_client.get("Delivery", { User_Id: this.user.user_by, Date: { $gte: mygtToday, $lte: mylessToday } })
         this.GetCostDeliverystatus = getstatus1.apidata.Data
-
         if (getstatus1.apidata.Data[0].Status == "DELIVERED") {
             $('#exactstatus').modal('show')
-            $('#CostomerDeliveryStatus').modal('hide')
         }
         if (getstatus1.apidata.Data[0].Status == "NOTDELIVERED") {
             $('#CostomerDeliveryStatus').modal('show')
         }
     }
-
-    async adddeliverystatus() {
+    // Add delivery Status for Business User 
+    async adddeliverystat() {
         $('#viewstatus').modal('hide')
+        var todays = new Date();
+        var mygtToday = new Date(todays.getFullYear(), todays.getMonth(), todays.getDate(), 0, 0, 0);
+        var mylessToday = new Date(todays.getFullYear(), todays.getMonth(), todays.getDate(), 23, 59, 59);
+        let getdelsta = await ithours_client.get("Delivery", { User_Id: this.user._id, Date: { $gte: mygtToday, $lte: mylessToday } })
+
         if (this.choosedeliverystatus) {
             let viewstatus1 = await ithours_client.add("Delivery", { User_Id: this.user._id, Date: new Date(), Status: this.choosedeliverystatus })
             this.adddeliverystatus = viewstatus1.apidata.Data
@@ -350,8 +430,36 @@ export class CalendarComponent implements OnInit, OnChanges {
             this.toastr.error('Please choose delivery status');
             $('#viewstatus').modal('show')
         }
+
+    }
+    // Update delivery Status for Business User 
+    async update_Busi_deliverystatus() {
+        var todays = new Date();
+        var mygtToday = new Date(todays.getFullYear(), todays.getMonth(), todays.getDate(), 0, 0, 0);
+        var mylessToday = new Date(todays.getFullYear(), todays.getMonth(), todays.getDate(), 23, 59, 59);
+        let getdelsta = await ithours_client.get("Delivery", { User_Id: this.user._id, Date: { $gte: mygtToday, $lte: mylessToday } })
+        if (getdelsta.apidata.Data[0].Status == "DELIVERED" || getdelsta.apidata.Data[0].Status == "NOTDELIVERED") {
+            if (this.choosedeliverystatus) {
+                let viewstatus1 = await ithours_client.update("Delivery", { User_Id: this.user._id },
+                    {
+                        "$set":
+                        {
+                            Status: this.choosedeliverystatus
+                        }
+                    })
+                this.adddeliverystatus = viewstatus1.apidata.Data
+                $('#B_U_viewstatus').modal('hide')
+                this.toastr.success('Data Updated ');
+            }
+            else {
+                this.toastr.error('Please choose delivery status');
+                $('#viewstatus').modal('show')
+            }
+        }
     }
 
+
+    //Viewdeliverystatus used for Open model Delivery Status (Business User)
     async viewdeliverystatus() {
         var today = new Date(this.userdatestatus);
         var mygtToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0);
@@ -361,21 +469,35 @@ export class CalendarComponent implements OnInit, OnChanges {
         $('#DeliveryStatus').modal('show')
     }
 
+    //View Customer Advanced order for Business User
     async viewadvanccustomeredorder() {
         var today = new Date(this.userdatestatus);
         var mygtToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0);
         var mylessToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59);
-        //let getadvancedstatus = await ithours_client.get("AdvancedOrder", { ToDate: { $gte: mygtToday, $lte: mylessToday } },'User_Id')
-        let getadvancedstatus = await ithours_client.get("AdvancedOrder", { ToDate: { $gte: mygtToday } }, 'User_Id')
+        let getadvancedstatus = await ithours_client.get("AdvancedOrder", { ToDate: { $gte: mygtToday, $lte: mylessToday } }, 'User_Id')
+        // let getadvancedstatus = await ithours_client.get("AdvancedOrder", { ToDate: { $gte: mygtToday } }, 'User_Id')
         this.viewadAllvanccustomeredorder = getadvancedstatus.apidata.Data
         $('#advanccustomeredorder').modal('show')
     }
 
-    async advancedorder() {
+    //Add Advanced order for Customer User
+    async addcusadvancedorder() {
         $('#advancedorder').modal('hide')
-        this.quantity = $('#Quantity').val()
-        let advancedorder1 = await ithours_client.add("AdvancedOrder", { User_Id: this.user._id, Date: new Date(), ExtraRequire:this.ExtraMilk, Quantity: this.qualityOption, ToDate: this.advancedordercalendar })
-        this.advancedorder = advancedorder1.apidata.Data
+
+        var diffdays = moment(this.advancedordercalendar).diff(moment(this.datefordeleivery), 'days');
+        for (var i = 0; i <= diffdays; i++) {
+
+            var todateselect2 = moment(this.datefordeleivery).add(i, 'days');
+            var a = todateselect2.format("DD-MM-YYYY")
+
+            this.quantity = $('#Quantity').val()
+            let advancedorder1 = await ithours_client.add("AdvancedOrder", {
+                User_Id: this.user._id,
+                Date: new Date(), ExtraRequire: this.ExtraMilk, Quantity: this.qualityOption,
+                FromDate: this.datefordeleivery, ToDate: a
+            })
+            this.addcusadvancedord = advancedorder1.apidata.Data
+        }
         this.toastr.success('Data Saved Successfully');
     }
 
@@ -387,5 +509,8 @@ export class CalendarComponent implements OnInit, OnChanges {
     }
     showBox2(val) {
         this.morethanoneday = val
+    }
+    showdelivery(val) {
+        this.showdeliveryforadd = val
     }
 }
