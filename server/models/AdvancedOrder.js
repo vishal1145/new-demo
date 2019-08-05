@@ -7,10 +7,15 @@ var AdvancedSchema = new mongoose.Schema({
     },
     Date:Date,
     Quantity:String,
-    FromDate:String,
-    ToDate:Date,
+    FromDate:Date,
+    ToDate:String,
+    //ToDate:Date,
     OneDay:Date,
-    ExtraRequire:String
+    ExtraRequire:String,
+    user_by: {
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User'
+    }
     // ExtraRequire : {
     //     type:Boolean,
     //     default:true

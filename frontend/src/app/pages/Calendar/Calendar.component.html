@@ -146,7 +146,6 @@
   </div>
 </div>
 
-
 <!-- Customer User Show Exact Status after submit feedback -->
 <div id="Cus_U_viewExactstatus" class="modal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
@@ -159,11 +158,13 @@
       </div>
       <div class="modal-body">
         <div class="row">
-          <div class="col-md-6">
-            <h3 style="color: green;" *ngIf="GetCostDeliverystatus && GetCostDeliverystatus[0]"> Status:
-              {{GetCostDeliverystatus[0].Status}}</h3>
+          <h4 style="text-align: center; color: black" *ngIf="Getbusideliverysta && Getbusideliverysta[0]"> Your Status:
+            {{Getbusideliverysta[0].Status}}</h4>
+          <br>
+          <div class="col-md-7">
+            <h4>Do you want Update Status?</h4>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-5">
             <div class="custom-control custom-radio">
               <input type="radio" (click)="showBox(false)" style="cursor:pointer;" class="custom-control-input"
                 id="defaultUnchecked1" [checked]='true' name="RECIEVEDINTIME" value="RECIEVEDINTIME"
@@ -206,39 +207,59 @@
   </div>
 </div>
 
-<!-- Delivery Status for Customer User -->
-<div id="CostomerDeliveryStatus" class="modal" tabindex="-1" role="dialog">
+
+<!-- Get business Staut for Customer User Curren date -->
+<div id="Getbusidelstaforcus" class="modal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Delivery status: {{datefordeleivery}}</h5>
+        <h5 class="modal-title">Delivery Status: {{today| date:'dd-MM-yyyy'}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <div style="margin-left: 8px;font-size: 15px">
-          <h3 style="color: green;" *ngIf="GetCostDeliverystatus && GetCostDeliverystatus[0]"> Status:
-            {{GetCostDeliverystatus[0].Status}}</h3>
-          <h4 style="color: red;" *ngIf="(GetCostDeliverystatus && !GetCostDeliverystatus[0])"> There are no information
-            available on this date
-          </h4>
-          <br />
-          <label id="labeexactstatus" class="modal" (click)="exactstaus()">Review</label>
+        <div class="row">
+          <h3 style="color: green;"> No any information available
+          </h3>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal"
-          style="background-color: #75c51f;border:none;cursor:pointer">Ok</button>
+          style="background-color:green;border:none;cursor:pointer">OK</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal"
           style="background-color:red;border:none;cursor:pointer">Close</button>
       </div>
-
     </div>
   </div>
 </div>
 
-<!-- Eexact status for Customer User -->
+<!-- Business user not deleiverd for customer -->
+<div id="busiUsernotdelforcus" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delivery Status: {{today| date:'dd-MM-yyyy'}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <h3 style="color: green;" *ngIf="Getbusideliverysta && !Getbusideliverysta[0]"> Not Delivered </h3>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          style="background-color:green;border:none;cursor:pointer">OK</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          style="background-color:red;border:none;cursor:pointer">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Eexact status for Customer User -->
 <div id="exactstatus" class="modal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -361,7 +382,7 @@
   </div>
 </div>
 
-<!-- Delivery Status Business User-->
+<!-- Delivery Status for Business User-->
 <div id="DeliveryStatus" class="modal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -399,7 +420,7 @@
       </div>
       <div class="modal-body">
 
-        <table class="advancedorder" >
+        <table class="advancedorder">
           <tr *ngFor="let data of viewadAllvanccustomeredorder">
             <th class="advorderdetails">Name</th>
             <th class="advorderdetails">Address</th>
@@ -424,3 +445,106 @@
     </div>
   </div>
 </div>
+
+<!-- For Business User Get advanced order -->
+<div id="getadva_dorder" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="width: 900px; margin-left: -140px;">
+      <div class="modal-header">
+        <h5 class="modal-title">Your Advanced Order {{datefordeleivery}}</h5>
+      </div>
+      <div class="modal-body">
+        <h5 *ngIf="getadvanced_Or && getadvanced_Or[0]">
+          <table>             
+            <tr>
+              <td style="width: 150px">ExtraRequire</td>
+              <td>{{getadvanced_Or[0].ExtraRequire}}</td>
+            </tr><br>
+            <tr>
+              <td> Quantity:</td>
+              <td>{{getadvanced_Or[0].Quantity}}</td>
+            </tr>            
+          </table>           
+        </h5>
+        <br><br>
+        <label (click)="openModalUpdate()">Do you want Update values</label>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          style="background-color: #75c51f;border:none;cursor:pointer">Ok</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          style="background-color:red;border:none;cursor:pointer">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Update Advanced order -->
+
+  <div id="Updateadvancedorder" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Update Advanced Order {{datefordeleivery}}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <br>
+            <div class="row">
+              <div class="custom-control custom-radio">
+                <input type="radio" (click)="showBox1(true)" style="cursor:pointer;" class="custom-control-input"
+                  id="defaultcheck" name="Updateradiogroup1" value="Extra" [(ngModel)]="ExtraMilk">
+                <label class="custom-control-label" for="defaultcheck">Extra</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </div>
+              <div class="custom-control custom-radio">
+                <input type="radio" (click)="showBox1(false)" style="cursor:pointer;" class="custom-control-input"
+                  id="defaultcheck2" name="Updateradiogroup1" value="NOMILK" [(ngModel)]="ExtraMilk">
+                <label class="custom-control-label" for="defaultcheck2">No Milk</label>
+              </div>
+            </div>
+    
+            <div class="form-group" *ngIf="displayadvancebox">
+              <div class="row">
+                <div class="custom-control custom-radio">
+                  <input type="radio" (click)="showBox2(false)" style="cursor:pointer;" class="custom-control-input"
+                    id="defaultchecked1" name="Uradiogroup" value="ONEDAY" [(ngModel)]="selectday">
+                  <label class="custom-control-label" for="defaultchecked1">One day </label>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+                <div class="custom-control custom-radio">
+                  <input type="radio" (click)="showBox2(true)" style="cursor:pointer;" class="custom-control-input"
+                    id="defaultchecked2" name="Uradiogroup" value="MOREDAY" [(ngModel)]="selectday">
+                  <label class="custom-control-label" for="defaultchecked2">More than one day</label>
+                </div>
+              </div>
+              <div class="form-group" *ngIf="morethanoneday">
+                <div class="row">
+                  <div class="col-md-12">
+                    From Date:- {{datefordeleivery}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To Date:-
+                    <input type="date" values="advancedordercalendar" [min]="mindate" [(ngModel)]="advancedordercalendar" />
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div style="font-size: 15px">
+                Quantity
+                <select [(ngModel)]="qualityOption">
+                  <option *ngFor="let quantity of quantitys" id="Quantity" value={{quantity.qua}}>
+                    {{quantity.qua}}
+                  </option>
+                </select>&nbsp; Ltr
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" name="Updateadvancedorder" (click)="Updatecusadvancedorder()" class="btn btn-primary"
+              style="background-color:#75c51f;border:none;cursor:pointer">Update</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+              style="background-color:red;border:none;cursor:pointer">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
