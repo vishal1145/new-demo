@@ -45,8 +45,7 @@ export class CalendarComponent implements OnInit, OnChanges {
     ExtraMilk: any;
     userstatus: any;
     user_id: any;
-    Getadvday_order: any;
-    mindate = moment(new Date()).format('YYYY-MM-DD');
+    Getadvday_order: any;     
     chooseValue: any;
     quantity: any;
     complainMessage: any = "";
@@ -282,7 +281,7 @@ export class CalendarComponent implements OnInit, OnChanges {
             }
         } return false;
     }
-
+    mindateforupadte = null;
     async openmodal(day) {
         var current_cldate = moment(new Date()).format("MM-DD-YYYY")
         var clickd_date = moment(day.mDate._d).format("MM-DD-YYYY")
@@ -310,6 +309,7 @@ export class CalendarComponent implements OnInit, OnChanges {
             }
             if (clickd_date > current_cldate) {
                 if (getadvanced_Order.apidata.Data[0] == null) {
+                    this.mindateforupadte = moment(this.datefordeleivery).format('YYYY-MM-DD')
                     $('#advancedorder').modal('show')
                 }
                 else {
@@ -317,8 +317,7 @@ export class CalendarComponent implements OnInit, OnChanges {
                     this.getcustadvord()
                 }
             }
-            if (clickd_date < current_cldate) {
-                // this.GetCusDeliveryStatus()
+            if (clickd_date < current_cldate) {                
                 this.viewdeliverystatus();
             }
         }
@@ -606,11 +605,13 @@ export class CalendarComponent implements OnInit, OnChanges {
     }
     openModalUpdate() {
         $('#getadva_dorder').modal('hide')
+        this.mindateforupadte = moment(this.datefordeleivery).format('YYYY-MM-DD')
         $('#Updateadvancedorder').modal('show')
     }
     //Update Advanced order for Customer User
-    async Updatecusadvancedorder() {
+    async Updatecusadvancedorder() {        
         var fromdate = new Date(this.datefordeleivery)
+        
         var todate = new Date(this.advancedordercalendar)
         var fromdeliverdate = new Date(fromdate.getFullYear(), fromdate.getMonth(), fromdate.getDate(), 0, 0, 0);
         var toDeliverydate = new Date(todate.getFullYear(), todate.getMonth(), todate.getDate(), 23, 59, 59);
@@ -621,7 +622,6 @@ export class CalendarComponent implements OnInit, OnChanges {
             for (var i = 0; i < all_Order.apidata.Data.length; i++) {
                 var id = all_Order.apidata.Data[i]._id;
                 idstodelete.push(id)
-
             }
             await ithours_client.shared("MailerController", "DELETEPREVIOUSRECORD", { allIds: idstodelete });
             this.addOrUpdateOrder(this.datefordeleivery, this.advancedordercalendar);
