@@ -47,7 +47,7 @@ export class CalendarComponent implements OnInit, OnChanges {
     user_id: any;
     Getadvday_order: any;
     chooseValue: any;
-    Clickedorderdate:any;
+    Clickedorderdate: any;
     quantity: any;
     complainMessage: any = "";
     choosedeliverystatus = "DELIVERED";
@@ -62,7 +62,7 @@ export class CalendarComponent implements OnInit, OnChanges {
     showdeliveryforadd: any;
     complainHide = false;
     displayadvancebox = false;
-    UpdateBoxopen=false;
+    UpdateBoxopen = false;
     updateshowbox = false;
     Upshowbox = false;
     morethanoneday = false;
@@ -277,7 +277,7 @@ export class CalendarComponent implements OnInit, OnChanges {
                 // else {
                 //     return false;
                 // }
-                 return true;
+                return true;
             }
             else {
                 return false;
@@ -289,7 +289,7 @@ export class CalendarComponent implements OnInit, OnChanges {
         var current_cldate = moment(new Date()).format("MM-DD-YYYY")
         var clickd_date = moment(day.mDate._d).format("MM-DD-YYYY")
         this.datefordeleivery = moment(clickd_date).format("DD-MMM-YYYY")
-        this.Clickedorderdate=moment(day.mDate._d).format("YYYY-MM-DD");
+        this.Clickedorderdate = moment(day.mDate._d).format("YYYY-MM-DD");
         this.userdatestatus = clickd_date
         var todays = new Date(this.userdatestatus);
         var mygtToday = new Date(todays.getFullYear(), todays.getMonth(), todays.getDate(), 0, 0, 0);
@@ -566,7 +566,7 @@ export class CalendarComponent implements OnInit, OnChanges {
                     Quantity: this.qualityOption.toString(),
                     OneDay: this.datefordeleivery,
                     FromDate: this.datefordeleivery,
-                    ToDate:this.Clickedorderdate,
+                    ToDate: this.Clickedorderdate,
                     user_by: loggedUser.user_by
                 })
                 this.addcusadvancedord = advancedorder2.apidata.Data
@@ -601,7 +601,7 @@ export class CalendarComponent implements OnInit, OnChanges {
             this.toastr.success('Data Saved Successfully');
         }
         else {
-            this.quantity = $('#Quantity').val()            
+            this.quantity = $('#Quantity').val()
             let advancedorder2 = await ithours_client.add("AdvancedOrder", {
                 User_Id: this.user._id,
                 Date: new Date(),
@@ -627,17 +627,24 @@ export class CalendarComponent implements OnInit, OnChanges {
 
         var todate = new Date(this.advancedordercalendar)
         var fromdeliverdate = new Date(fromdate.getFullYear(), fromdate.getMonth(), fromdate.getDate(), 0, 0, 0);
+        var selectDatefor_ONEREC = new Date(fromdate.getFullYear(), fromdate.getMonth(), fromdate.getDate(), 23, 59, 59);
         var toDeliverydate = new Date(todate.getFullYear(), todate.getMonth(), todate.getDate(), 23, 59, 59);
         let all_Order = await ithours_client.get("AdvancedOrder", { User_Id: this.user._id, ToDate: { $gte: fromdeliverdate, $lte: toDeliverydate } });
-
+        let one_reco = await ithours_client.get("AdvancedOrder", { User_Id: this.user._id, ToDate: { $gte: fromdeliverdate, $lte: selectDatefor_ONEREC } });
         if (this.ExtraMilk) {
-            var idstodelete = []
-            for (var i = 0; i < all_Order.apidata.Data.length; i++) {
-                var id = all_Order.apidata.Data[i]._id;
-                idstodelete.push(id)
+            if (this.selectday == "ONEDAY") {               
+                await ithours_client.delete("AdvancedOrder", { id: one_reco.apidata.Data[0]._id});
+                this.addOrUpdateOrder(this.datefordeleivery, this.advancedordercalendar);
             }
-            await ithours_client.shared("MailerController", "DELETEPREVIOUSRECORD", { allIds: idstodelete });
-            this.addOrUpdateOrder(this.datefordeleivery, this.advancedordercalendar);
+            else {
+                var idstodelete = []
+                for (var i = 0; i < all_Order.apidata.Data.length; i++) {
+                    var id = all_Order.apidata.Data[i]._id;
+                    idstodelete.push(id)
+                }
+                await ithours_client.shared("MailerController", "DELETEPREVIOUSRECORD", { allIds: idstodelete });
+                this.addOrUpdateOrder(this.datefordeleivery, this.advancedordercalendar);
+            }
         }
         else {
             this.toastr.error('Please choose Extra or No Milk');
@@ -651,8 +658,8 @@ export class CalendarComponent implements OnInit, OnChanges {
     showBox1(val) {
         this.displayadvancebox = val
     }
-    showBoxforUpdate(val){
-        this.UpdateBoxopen=val
+    showBoxforUpdate(val) {
+        this.UpdateBoxopen = val
     }
     showBox2(val) {
         this.morethanoneday = val
