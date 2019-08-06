@@ -45,8 +45,9 @@ export class CalendarComponent implements OnInit, OnChanges {
     ExtraMilk: any;
     userstatus: any;
     user_id: any;
-    Getadvday_order: any;     
+    Getadvday_order: any;
     chooseValue: any;
+    Clickedorderdate:any;
     quantity: any;
     complainMessage: any = "";
     choosedeliverystatus = "DELIVERED";
@@ -206,19 +207,19 @@ export class CalendarComponent implements OnInit, OnChanges {
                     delivered: delivered,
                     notdelivered: notdelivered,
                     nextday_Adv_ord: nextday_Adv_ord,
-                    isAllowed:isAllowed
+                    isAllowed: isAllowed
                 };
             });
     }
 
-    isAllowed(d, self1){
+    isAllowed(d, self1) {
 
-        var ma  = new Date().getMonth();
-        var mb  = ma+ 2;
+        var ma = new Date().getMonth();
+        var mb = ma + 2;
 
         var m1 = d.month();
 
-        if(m1 >= ma && m1 <= mb)
+        if (m1 >= ma && m1 <= mb)
             return true;
         else
             return false;
@@ -287,6 +288,7 @@ export class CalendarComponent implements OnInit, OnChanges {
         var current_cldate = moment(new Date()).format("MM-DD-YYYY")
         var clickd_date = moment(day.mDate._d).format("MM-DD-YYYY")
         this.datefordeleivery = moment(clickd_date).format("DD-MMM-YYYY")
+        this.Clickedorderdate=moment(day.mDate._d).format("YYYY-MM-DD");
         this.userdatestatus = clickd_date
         var todays = new Date(this.userdatestatus);
         var mygtToday = new Date(todays.getFullYear(), todays.getMonth(), todays.getDate(), 0, 0, 0);
@@ -318,7 +320,7 @@ export class CalendarComponent implements OnInit, OnChanges {
                     this.getcustadvord()
                 }
             }
-            if (clickd_date < current_cldate) {                
+            if (clickd_date < current_cldate) {
                 this.viewdeliverystatus();
             }
         }
@@ -422,7 +424,7 @@ export class CalendarComponent implements OnInit, OnChanges {
         this.getadvanced_Or = Geadvanced_Order.apidata.Data
     }
 
-   //Get Delivery Status for Business User
+    //Get Delivery Status for Business User
     async GetBusiDeliveryStatus() {
         var todays = new Date(this.userdatestatus);
         var mygtToday = new Date(todays.getFullYear(), todays.getMonth(), todays.getDate(), 0, 0, 0);
@@ -515,9 +517,9 @@ export class CalendarComponent implements OnInit, OnChanges {
         var today = new Date(this.userdatestatus);
         var mygtToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0);
         var mylessToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59);
-        
+
         //let getadvancedstatus = await ithours_client.get("AdvancedOrder", { ToDate: { $gte: mygtToday, $lte: mylessToday } }, 'User_Id')
-        let getadvancedstatus = await ithours_client.get("AdvancedOrder",{ user_by: this.user._id  },'User_Id');
+        let getadvancedstatus = await ithours_client.get("AdvancedOrder", { user_by: this.user._id }, 'User_Id');
         var orders = getadvancedstatus.apidata.Data;
 
         var filteredorders = orders.filter((e) => {
@@ -525,7 +527,7 @@ export class CalendarComponent implements OnInit, OnChanges {
         })
 
         // let getadvancedstatus = await ithours_client.get("AdvancedOrder", { ToDate: { $gte: mygtToday } }, 'User_Id')
-        
+
         this.viewadAllvanccustomeredorder = filteredorders || [];
         $('#advanccustomeredorder').modal('show')
     }
@@ -561,9 +563,9 @@ export class CalendarComponent implements OnInit, OnChanges {
                     Date: new Date(),
                     ExtraRequire: this.ExtraMilk.toString(),
                     Quantity: this.qualityOption.toString(),
-                    OneDay: new Date(this.datefordeleivery),
+                    OneDay: this.datefordeleivery,
                     FromDate: this.datefordeleivery,
-                    ToDate: this.datefordeleivery,
+                    ToDate:this.Clickedorderdate,
                     user_by: loggedUser.user_by
                 })
                 this.addcusadvancedord = advancedorder2.apidata.Data
@@ -598,7 +600,7 @@ export class CalendarComponent implements OnInit, OnChanges {
             this.toastr.success('Data Saved Successfully');
         }
         else {
-            this.quantity = $('#Quantity').val()
+            this.quantity = $('#Quantity').val()            
             let advancedorder2 = await ithours_client.add("AdvancedOrder", {
                 User_Id: this.user._id,
                 Date: new Date(),
@@ -606,7 +608,7 @@ export class CalendarComponent implements OnInit, OnChanges {
                 Quantity: this.qualityOption.toString(),
                 OneDay: new Date(datefordeleivery),
                 FromDate: datefordeleivery,
-                ToDate: datefordeleivery,
+                ToDate: this.Clickedorderdate,
                 user_by: loggedUser.user_by
             })
             this.addcusadvancedord = advancedorder2.apidata.Data
@@ -619,9 +621,9 @@ export class CalendarComponent implements OnInit, OnChanges {
         $('#Updateadvancedorder').modal('show')
     }
     //Update Advanced order for Customer User
-    async Updatecusadvancedorder() {        
+    async Updatecusadvancedorder() {
         var fromdate = new Date(this.datefordeleivery)
-        
+
         var todate = new Date(this.advancedordercalendar)
         var fromdeliverdate = new Date(fromdate.getFullYear(), fromdate.getMonth(), fromdate.getDate(), 0, 0, 0);
         var toDeliverydate = new Date(todate.getFullYear(), todate.getMonth(), todate.getDate(), 23, 59, 59);
