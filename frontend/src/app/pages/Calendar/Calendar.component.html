@@ -421,7 +421,7 @@
       </div>
       <div class="modal-body">
 
-        <table class="advancedorder">          
+        <table class="advancedorder" *ngIf="viewadAllvanccustomeredorder && viewadAllvanccustomeredorder.length > 0">          
           <tr>
             <th class="advorderdetails">Name</th>
             <th class="advorderdetails">Address</th>
@@ -434,8 +434,8 @@
             <td>{{data.Quantity}}</td>
             <td>{{data.ExtraRequire}}</td>
           </tr>
-        </table>
-        <h3 *ngIf="!viewadAllvanccustomeredorder[0]"> No Advanced Order</h3>
+        </table>        
+        <h3 *ngIf="!viewadAllvanccustomeredorder[0]" style="padding: 20px"> No Advanced Order</h3>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal"
