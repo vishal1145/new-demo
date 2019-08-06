@@ -25,6 +25,7 @@ export interface CalendarDate {
     delivered?: boolean;
     notdelivered?: boolean;
     nextday_Adv_ord?: boolean;
+    isAllowed?: boolean;
 }
 @Component({
     selector: 'pages-Calendar-cmp',
@@ -32,7 +33,6 @@ export interface CalendarDate {
     styleUrls: ['./Calendar.component.scss'],
 })
 export class CalendarComponent implements OnInit, OnChanges {
-    //ExtraMilk = 'Extra';
     selectday = "ONEDAY";
     status: any;
     showloader = true
@@ -41,46 +41,32 @@ export class CalendarComponent implements OnInit, OnChanges {
     user: any;
     adddeliverystatus: any;
     addcusadvancedord: any;
-    Updatecusadvancedord: any;
     Date: any;
     ExtraMilk: any;
-    UExtraMilk: any;
     userstatus: any;
     user_id: any;
     Getadvday_order: any;
     mindate = moment(new Date()).format('YYYY-MM-DD');
     chooseValue: any;
-    dateCur = new Date();
     quantity: any;
-    radiochecked: any;
     complainMessage: any = "";
     choosedeliverystatus = "DELIVERED";
     viewadAllvanccustomeredorder: any = [];
     DeliveryStatusArray: any = [];
-    CusDeliveryStatusArray: any = [];
     getadvanced_Or: any = [];
     Getbusideliverysta: any = [];
-    addadvancedorder: any;
-    getuserstatus: any;
     qua: any;
     advancedordercalendar: any;
-    selectdya: any;
-    getdatestatus: any;
     userdatestatus: any;
-    disablepreday: any;
     datefordeleivery: any;
     showdeliveryforadd: any;
-
     complainHide = false;
     displayadvancebox = false;
-
     updateshowbox = false;
     Upshowbox = false;
     morethanoneday = false;
     qualityOption = "1";
-    UpdatequalityOption = "1"
     currentDate = moment();
-
     quantitys = [
         { qua: '1' },
         { qua: '1.5' },
@@ -116,7 +102,6 @@ export class CalendarComponent implements OnInit, OnChanges {
         this.user = JSON.parse(window.localStorage.getItem('USER'));
         this.GetAllDelivery();
         this.Getadv_order();
-        //this.disabdate(day); 
     }
 
     ngOnInit(): void {
@@ -214,15 +199,31 @@ export class CalendarComponent implements OnInit, OnChanges {
                 var delivered = this.isDelivered(d, self);
                 var notdelivered = this.isnotdelivered(d, self);
                 var nextday_Adv_ord = this.isnextday_Adv_ord(d, self1);
+                var isAllowed = this.isAllowed(d, self1)
                 return {
                     today: this.isToday(d),
                     selected: this.isSelected(d),
                     mDate: d,
                     delivered: delivered,
                     notdelivered: notdelivered,
-                    nextday_Adv_ord: nextday_Adv_ord
+                    nextday_Adv_ord: nextday_Adv_ord,
+                    isAllowed:isAllowed
                 };
             });
+    }
+
+    isAllowed(d, self1){
+
+        var ma  = new Date().getMonth();
+        var mb  = ma+ 2;
+
+        var m1 = d.month();
+
+        if(m1 >= ma && m1 <= mb)
+            return true;
+        else
+            return false;
+
     }
 
     isDelivered(date, current) {
@@ -292,9 +293,7 @@ export class CalendarComponent implements OnInit, OnChanges {
         var mylessToday = new Date(todays.getFullYear(), todays.getMonth(), todays.getDate(), 23, 59, 59);
         let statusdeli = await ithours_client.get("Delivery", { User_Id: this.user._id, Date: { $gte: mygtToday, $lte: mylessToday } })
         let statuscusdel = await ithours_client.get("Delivery", { User_Id: this.user.user_by, Date: { $gte: mygtToday, $lte: mylessToday } })
-
         let getadvanced_Order = await ithours_client.get("AdvancedOrder", { User_Id: this.user._id, ToDate: { $gte: mygtToday, $lte: mylessToday } })
-
         if (this.user.role == 'CUSTOMER') {
             if (clickd_date == current_cldate) {
                 if (statuscusdel.apidata.Data[0] == null) {
@@ -302,13 +301,7 @@ export class CalendarComponent implements OnInit, OnChanges {
                 }
                 else {
                     if (statuscusdel.apidata.Data[0].Status == "DELIVERED") {
-                        // if (statusdeli.apidata.Data[0].Status == "RECIEVEDINTIME", statusdeli.apidata.Data[0].Status =="RECIEVEDBUTDELAYD", statusdeli.apidata.Data[0].Status =="NOTRECIEVED",statusdeli.apidata.Data[0].Status == "COMPLAINT") {
-                        //     $('#Cus_U_viewExactstatus').modal('show')
-                        //     this.customergetdeliverysta()
-                        // }
-                        // else {
                         $('#exactstatus').modal('show')
-                        //}
                     }
                     else {
                         $('#busiUsernotdelforcus').modal('show')
@@ -323,10 +316,10 @@ export class CalendarComponent implements OnInit, OnChanges {
                     $('#getadva_dorder').modal('show')
                     this.getcustadvord()
                 }
-
             }
             if (clickd_date < current_cldate) {
-                this.GetCusDeliveryStatus()
+                // this.GetCusDeliveryStatus()
+                this.viewdeliverystatus();
             }
         }
         if (this.user.role == 'BUSINESS') {
@@ -378,8 +371,7 @@ export class CalendarComponent implements OnInit, OnChanges {
                 var deliveries = all_order.apidata.Data || [];
                 for (var i = 0; i < deliveries.length; i++) {
                     if (this.getDateOnly(deliveries[i].Date) == this.fromToday()) {
-                       var id = deliveries[i]._id;
-                        //await ithours_client.delete("Delivery", { _id: id });
+                        var id = deliveries[i]._id;
                         var idstodelete = [id];
                         await ithours_client.shared("MailerController", "DELETERECORDF", { allIds: idstodelete });
                     }
@@ -430,17 +422,7 @@ export class CalendarComponent implements OnInit, OnChanges {
         this.getadvanced_Or = Geadvanced_Order.apidata.Data
     }
 
-    //Get Delivery Status / Feedback for Customer User
-    async GetCusDeliveryStatus() {
-        var todays = new Date(this.userdatestatus);
-        var mygtToday = new Date(todays.getFullYear(), todays.getMonth(), todays.getDate(), 0, 0, 0);
-        var mylessToday = new Date(todays.getFullYear(), todays.getMonth(), todays.getDate(), 23, 59, 59);
-        let getstatus = await ithours_client.get("Delivery", { User_Id: this.user._id, Date: { $gte: mygtToday, $lte: mylessToday } })
-        this.CusDeliveryStatusArray = getstatus.apidata.Data
-        $('#DeliveryStatus').modal('show')
-    }
-
-    //Get Delivery Status for Business User
+   //Get Delivery Status for Business User
     async GetBusiDeliveryStatus() {
         var todays = new Date(this.userdatestatus);
         var mygtToday = new Date(todays.getFullYear(), todays.getMonth(), todays.getDate(), 0, 0, 0);

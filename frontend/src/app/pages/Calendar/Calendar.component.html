@@ -52,7 +52,8 @@
           </div>
           <div class="week-date enabled" *ngIf="isSelectedMonth(day.mDate)" (click)="selectDate(day)"
             [ngClass]="{ today: day.today, selected: day.selected, delivered : day.delivered , notdelivered : day.notdelivered ,nextday_Adv_ord: day.nextday_Adv_ord}">
-            <span class="date-text" (click)="openmodal(day)" id="mdateshow"
+            <span class="date-text" style="color: grey;"  *ngIf="!day.isAllowed">{{ day.mDate.date() }}</span>
+              <span class="date-text" *ngIf="day.isAllowed" (click)="openmodal(day)" id="mdateshow"
               style="cursor:pointer;">{{ day.mDate.date() }}</span>
           </div>
         </ng-container>
