@@ -269,12 +269,13 @@ export class CalendarComponent implements OnInit, OnChanges {
                 return moment(e.ToDate).format("YYYY-MM-DD") == date.format("YYYY-MM-DD")
             })
             if (index1 > -1) {
-                if (advancedcurrdate.Getadvday_order[index1].ExtraRequire == "Extra") {
-                    return true;
-                }
-                else {
-                    return false;
-                }
+                // if (advancedcurrdate.Getadvday_order[index1].ExtraRequire == "Extra") {
+                //     return true;
+                // }
+                // else {
+                //     return false;
+                // }
+                return true;
             }
             else {
                 return false;
@@ -514,9 +515,18 @@ export class CalendarComponent implements OnInit, OnChanges {
         var today = new Date(this.userdatestatus);
         var mygtToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0);
         var mylessToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59);
-        let getadvancedstatus = await ithours_client.get("AdvancedOrder", { ToDate: { $gte: mygtToday, $lte: mylessToday } }, 'User_Id')
+        
+        //let getadvancedstatus = await ithours_client.get("AdvancedOrder", { ToDate: { $gte: mygtToday, $lte: mylessToday } }, 'User_Id')
+        let getadvancedstatus = await ithours_client.get("AdvancedOrder",{ user_by: this.user._id  },'User_Id');
+        var orders = getadvancedstatus.apidata.Data;
+
+        var filteredorders = orders.filter((e) => {
+            return moment(e.ToDate).format("YYYY-MM-DD") == moment(today).format("YYYY-MM-DD")
+        })
+
         // let getadvancedstatus = await ithours_client.get("AdvancedOrder", { ToDate: { $gte: mygtToday } }, 'User_Id')
-        this.viewadAllvanccustomeredorder = getadvancedstatus.apidata.Data
+        
+        this.viewadAllvanccustomeredorder = filteredorders || [];
         $('#advanccustomeredorder').modal('show')
     }
 
