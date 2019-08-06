@@ -62,6 +62,7 @@ export class CalendarComponent implements OnInit, OnChanges {
     showdeliveryforadd: any;
     complainHide = false;
     displayadvancebox = false;
+    UpdateBoxopen=false;
     updateshowbox = false;
     Upshowbox = false;
     morethanoneday = false;
@@ -276,7 +277,7 @@ export class CalendarComponent implements OnInit, OnChanges {
                 // else {
                 //     return false;
                 // }
-                return true;
+                 return true;
             }
             else {
                 return false;
@@ -649,6 +650,9 @@ export class CalendarComponent implements OnInit, OnChanges {
     }
     showBox1(val) {
         this.displayadvancebox = val
+    }
+    showBoxforUpdate(val){
+        this.UpdateBoxopen=val
     }
     showBox2(val) {
         this.morethanoneday = val

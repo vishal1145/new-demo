@@ -52,8 +52,8 @@
           </div>
           <div class="week-date enabled" *ngIf="isSelectedMonth(day.mDate)" (click)="selectDate(day)"
             [ngClass]="{ today: day.today, selected: day.selected, delivered : day.delivered , notdelivered : day.notdelivered ,nextday_Adv_ord: day.nextday_Adv_ord}">
-            <span class="date-text" style="color: grey;"  *ngIf="!day.isAllowed">{{ day.mDate.date() }}</span>
-              <span class="date-text" *ngIf="day.isAllowed" (click)="openmodal(day)" id="mdateshow"
+            <span class="date-text" style="color: grey;" *ngIf="!day.isAllowed">{{ day.mDate.date() }}</span>
+            <span class="date-text" *ngIf="day.isAllowed" (click)="openmodal(day)" id="mdateshow"
               style="cursor:pointer;">{{ day.mDate.date() }}</span>
           </div>
         </ng-container>
@@ -356,8 +356,9 @@
           <div class="form-group" *ngIf="morethanoneday">
             <div class="row">
               <div class="col-md-12">
-                From Date:- {{datefordeleivery}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To Date:- 
-                <input type="date" values="advancedordercalendar" [min]="mindateforupadte" [(ngModel)]="advancedordercalendar" />
+                From Date:- {{datefordeleivery}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To Date:-
+                <input type="date" values="advancedordercalendar" [min]="mindateforupadte"
+                  [(ngModel)]="advancedordercalendar" />
               </div>
             </div>
           </div>
@@ -422,6 +423,7 @@
 
         <table class="advancedorder">
           <tr *ngFor="let data of viewadAllvanccustomeredorder">
+          <!-- <tr> -->
             <th class="advorderdetails">Name</th>
             <th class="advorderdetails">Address</th>
             <th class="advorderdetails">Quantity</th>
@@ -455,7 +457,7 @@
       </div>
       <div class="modal-body">
         <h5 *ngIf="getadvanced_Or && getadvanced_Or[0]">
-          <table>             
+          <table>
             <tr>
               <td style="width: 150px">ExtraRequire</td>
               <td>{{getadvanced_Or[0].ExtraRequire}}</td>
@@ -463,8 +465,8 @@
             <tr>
               <td> Quantity:</td>
               <td>{{getadvanced_Or[0].Quantity}}</td>
-            </tr>            
-          </table>           
+            </tr>
+          </table>
         </h5>
         <br><br>
         <label (click)="openModalUpdate()">Do you want Update values</label>
@@ -481,70 +483,71 @@
 
 <!-- Update Advanced order -->
 
-  <div id="Updateadvancedorder" class="modal" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Update Advanced Order {{datefordeleivery}}</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+<div id="Updateadvancedorder" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update Advanced Order {{datefordeleivery}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <br>
+        <div class="row">
+          <div class="custom-control custom-radio">
+            <input type="radio" (click)="showBoxforUpdate(true)" style="cursor:pointer;" class="custom-control-input"
+              id="defaultcheckU" name="Updateradiogroup1" value="Extra" [(ngModel)]="ExtraMilk">
+            <label class="custom-control-label" for="defaultcheckU">Extra</label>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </div>
-          <div class="modal-body">
-            <br>
+          <div class="custom-control custom-radio">
+            <input type="radio" (click)="showBoxforUpdate(true)" style="cursor:pointer;" class="custom-control-input"
+              id="defaultcheck2U" name="Updateradiogroup1" value="NOMILK" [(ngModel)]="ExtraMilk">
+            <label class="custom-control-label" for="defaultcheck2U">No Milk</label>
+          </div>
+        </div>
+
+        <div class="form-group" *ngIf="UpdateBoxopen">
+          <div class="row">
+            <div class="custom-control custom-radio">
+              <input type="radio" (click)="showBox2(false)" style="cursor:pointer;" class="custom-control-input"
+                id="defaultchecked1U" name="Uradiogroup" value="ONEDAY" [(ngModel)]="selectday">
+              <label class="custom-control-label" for="defaultchecked1U">One day </label>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+            <div class="custom-control custom-radio">
+              <input type="radio" (click)="showBox2(true)" style="cursor:pointer;" class="custom-control-input"
+                id="defaultchecked2U" name="Uradiogroup" value="MOREDAY" [(ngModel)]="selectday">
+              <label class="custom-control-label" for="defaultchecked2U">More than one day</label>
+            </div>
+          </div>
+          <div class="form-group" *ngIf="morethanoneday">
             <div class="row">
-              <div class="custom-control custom-radio">
-                <input type="radio" (click)="showBox1(true)" style="cursor:pointer;" class="custom-control-input"
-                  id="defaultcheck" name="Updateradiogroup1" value="Extra" [(ngModel)]="ExtraMilk">
-                <label class="custom-control-label" for="defaultcheck">Extra</label>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              </div>
-              <div class="custom-control custom-radio">
-                <input type="radio" (click)="showBox1(false)" style="cursor:pointer;" class="custom-control-input"
-                  id="defaultcheck2" name="Updateradiogroup1" value="NOMILK" [(ngModel)]="ExtraMilk">
-                <label class="custom-control-label" for="defaultcheck2">No Milk</label>
-              </div>
-            </div>
-    
-            <div class="form-group" *ngIf="displayadvancebox">
-              <div class="row">
-                <div class="custom-control custom-radio">
-                  <input type="radio" (click)="showBox2(false)" style="cursor:pointer;" class="custom-control-input"
-                    id="defaultchecked1" name="Uradiogroup" value="ONEDAY" [(ngModel)]="selectday">
-                  <label class="custom-control-label" for="defaultchecked1">One day </label>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                </div>
-                <div class="custom-control custom-radio">
-                  <input type="radio" (click)="showBox2(true)" style="cursor:pointer;" class="custom-control-input"
-                    id="defaultchecked2" name="Uradiogroup" value="MOREDAY" [(ngModel)]="selectday">
-                  <label class="custom-control-label" for="defaultchecked2">More than one day</label>
-                </div>
-              </div>
-              <div class="form-group" *ngIf="morethanoneday">
-                <div class="row">
-                  <div class="col-md-12">
-                    From Date:- {{datefordeleivery}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To Date:-
-                    <input type="date" values="advancedordercalendar" [min]="mindateforupadte" [(ngModel)]="advancedordercalendar" />
-                  </div>
-                </div>
-              </div>
-              <br>
-              <div style="font-size: 15px">
-                Quantity
-                <select [(ngModel)]="qualityOption">
-                  <option *ngFor="let quantity of quantitys" id="Quantity" value={{quantity.qua}}>
-                    {{quantity.qua}}
-                  </option>
-                </select>&nbsp; Ltr
+              <div class="col-md-12">
+                From Date:- {{datefordeleivery}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To Date:-
+                <input type="date" values="advancedordercalendar" [min]="mindateforupadte"
+                  [(ngModel)]="advancedordercalendar" />
               </div>
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" name="Updateadvancedorder" (click)="Updatecusadvancedorder()" class="btn btn-primary"
-              style="background-color:#75c51f;border:none;cursor:pointer">Update</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal"
-              style="background-color:red;border:none;cursor:pointer">Close</button>
+          <br>
+          <div style="font-size: 15px">
+            Quantity
+            <select [(ngModel)]="qualityOption">
+              <option *ngFor="let quantity of quantitys" id="Quantity" value={{quantity.qua}}>
+                {{quantity.qua}}
+              </option>
+            </select>&nbsp; Ltr
           </div>
         </div>
       </div>
+      <div class="modal-footer">
+        <button type="button" name="Updateadvancedorder" (click)="Updatecusadvancedorder()" class="btn btn-primary"
+          style="background-color:#75c51f;border:none;cursor:pointer">Update</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          style="background-color:red;border:none;cursor:pointer">Close</button>
+      </div>
     </div>
+  </div>
+</div>
