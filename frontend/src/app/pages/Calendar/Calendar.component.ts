@@ -214,17 +214,13 @@ export class CalendarComponent implements OnInit, OnChanges {
     }
 
     isAllowed(d, self1) {
-
         var ma = new Date().getMonth();
         var mb = ma + 2;
-
         var m1 = d.month();
-
         if (m1 >= ma && m1 <= mb)
             return true;
         else
             return false;
-
     }
 
     isDelivered(date, current) {
@@ -366,10 +362,22 @@ export class CalendarComponent implements OnInit, OnChanges {
             if (this.chooseValue == 'COMPLAINT') {
                 if (this.complainMessage == "") {
                     this.toastr.error('Please enter complaint');
+                    $('#exactstatus').modal('show')
                 }
+                var all_order = await ithours_client.get("Delivery", { User_Id: this.user._id });
+                var deliveries = all_order.apidata.Data || [];
+                for (var i = 0; i < deliveries.length; i++) {
+                    if (this.getDateOnly(deliveries[i].Date) == this.fromToday()) {
+                        var id = deliveries[i]._id;
+                        var idstodelete = [id];
+                        await ithours_client.shared("MailerController", "DELETERECORDF", { allIds: idstodelete });
+                    }
+                }
+                let saveexatdata = await ithours_client.add("Delivery", { User_Id: this.user._id, Date: new Date(), Status: this.chooseValue, Complaint: this.complainMessage })
+                this.exactstaus = saveexatdata.apidata.Data
+                this.toastr.success('Data Saved Successfully');                
             }
             else {
-                // FIRST DELTE THE ENTRY FO THE DATE
                 var all_order = await ithours_client.get("Delivery", { User_Id: this.user._id });
                 var deliveries = all_order.apidata.Data || [];
                 for (var i = 0; i < deliveries.length; i++) {
@@ -578,7 +586,7 @@ export class CalendarComponent implements OnInit, OnChanges {
             $('#advancedorder').modal('show')
         }
     }
-
+    //Add/Update Advanced order for Customer User
     async addOrUpdateOrder(datefordeleivery, advancedordercalendar) {
         var loggedUser = JSON.parse(window.localStorage.getItem('USER'));
         if (datefordeleivery && advancedordercalendar) {
@@ -632,8 +640,8 @@ export class CalendarComponent implements OnInit, OnChanges {
         let all_Order = await ithours_client.get("AdvancedOrder", { User_Id: this.user._id, ToDate: { $gte: fromdeliverdate, $lte: toDeliverydate } });
         let one_reco = await ithours_client.get("AdvancedOrder", { User_Id: this.user._id, ToDate: { $gte: fromdeliverdate, $lte: selectDatefor_ONEREC } });
         if (this.ExtraMilk) {
-            if (this.selectday == "ONEDAY") {               
-                await ithours_client.delete("AdvancedOrder", { id: one_reco.apidata.Data[0]._id});
+            if (this.selectday == "ONEDAY") {
+                await ithours_client.delete("AdvancedOrder", { id: one_reco.apidata.Data[0]._id });
                 this.addOrUpdateOrder(this.datefordeleivery, this.advancedordercalendar);
             }
             else {
