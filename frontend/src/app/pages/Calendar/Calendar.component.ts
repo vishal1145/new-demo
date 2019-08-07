@@ -338,6 +338,9 @@ export class CalendarComponent implements OnInit, OnChanges {
             if (clickd_date > current_cldate) {
                 this.viewadvanccustomeredorder()
             }
+            if(clickd_date<current_cldate){
+                this.viewdeliverystatus();
+            }
         }
     }
 
