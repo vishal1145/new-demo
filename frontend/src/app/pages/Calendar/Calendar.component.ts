@@ -531,12 +531,12 @@ export class CalendarComponent implements OnInit, OnChanges {
                         ToDate: a,
                         user_by: loggedUser.user_by
                     })
-                    this.addcusadvancedord = advancedorder1.apidata.Data
-                    this.brand = "";
-                    this.qualityOption = "1";
-                    this.advancedordercalendar = "";
+                    this.addcusadvancedord = advancedorder1.apidata.Data                   
                 }
                 this.toastr.success(Messages.DATASAVEMESSAGE);
+                this.brand = "";
+                this.qualityOption = "1";
+                this.advancedordercalendar = "";
             }
             else {
                 this.quantity = $('#Quantity').val()
@@ -552,10 +552,10 @@ export class CalendarComponent implements OnInit, OnChanges {
                     user_by: loggedUser.user_by
                 })
                 this.addcusadvancedord = advancedorder2.apidata.Data
+                this.toastr.success(Messages.DATASAVEMESSAGE);
                 this.brand = "";
                 this.qualityOption = "1";
                 this.advancedordercalendar = "";
-                this.toastr.success(Messages.DATASAVEMESSAGE);
             }
         }
         else {
@@ -582,12 +582,12 @@ export class CalendarComponent implements OnInit, OnChanges {
                     ToDate: a,
                     user_by: loggedUser.user_by
                 })
-                this.addcusadvancedord = advancedorder1.apidata.Data
-                this.brand = "";
-                this.qualityOption = "1";
-                this.advancedordercalendar = "";
+                this.addcusadvancedord = advancedorder1.apidata.Data               
             }
             this.toastr.success(Messages.DATASAVEMESSAGE);
+            this.brand = "";
+            this.qualityOption = "1";
+            this.advancedordercalendar = "";
         }
         else {
             this.quantity = $('#Quantity').val()
@@ -603,10 +603,10 @@ export class CalendarComponent implements OnInit, OnChanges {
                 user_by: loggedUser.user_by
             })
             this.addcusadvancedord = advancedorder2.apidata.Data
+            this.toastr.success(Messages.DATASAVEMESSAGE);
             this.brand = "";
             this.qualityOption = "1";
             this.advancedordercalendar = "";
-            this.toastr.success(Messages.DATASAVEMESSAGE);
         }
     }
     openModalUpdate() {
