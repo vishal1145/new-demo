@@ -249,34 +249,34 @@ export class CalendarComponent implements OnInit, OnChanges {
         this.Clickedorderdate = moment(day.mDate._d, 'MM-DD-YYYY').format("YYYY-MM-DD");
         this.userdatestatus = clickd_date
 
-        var todays = moment(this.userdatestatus,'MM-DD-YYYY');//.month() ;new Date(this.userdatestatus);
+        var todays = moment(this.userdatestatus, 'MM-DD-YYYY');//.month() ;new Date(this.userdatestatus);
         var mygtToday = new Date(todays.year(), todays.month(), todays.date(), 0, 0, 0);
         var mylessToday = new Date(todays.year(), todays.month(), todays.date(), 23, 59, 59);
 
-        
-        let statusdelitemp = await ithours_client.get("Delivery", { User_Id: this.user._id }) ;//, Date: { $gte: mygtToday, $lte: mylessToday } })
-        let statuscusdeltemp = await ithours_client.get("Delivery", { User_Id: this.user.user_by});//, Date: { $gte: mygtToday, $lte: mylessToday } })
+
+        let statusdelitemp = await ithours_client.get("Delivery", { User_Id: this.user._id });//, Date: { $gte: mygtToday, $lte: mylessToday } })
+        let statuscusdeltemp = await ithours_client.get("Delivery", { User_Id: this.user.user_by });//, Date: { $gte: mygtToday, $lte: mylessToday } })
         let getadvanced_Order = await ithours_client.get("AdvancedOrder", { User_Id: this.user._id, ToDate: { $gte: mygtToday, $lte: mylessToday } })
-        
+
         let statusdelifilterd = (statusdelitemp.apidata.Data || []).filter((one) => {
             //put data ran
-              return new Date(one.Date) >= mygtToday && new Date(one.Date) <= mylessToday;
+            return new Date(one.Date) >= mygtToday && new Date(one.Date) <= mylessToday;
         })
 
         let statusdeli = {
-            apidata : {
-                Data:statusdelifilterd
+            apidata: {
+                Data: statusdelifilterd
             }
         }
 
         let statuscusdelfilterd = (statuscusdeltemp.apidata.Data || []).filter((one) => {
             //put data ran
-              return new Date(one.Date) >= mygtToday && new Date(one.Date) <= mylessToday;
+            return new Date(one.Date) >= mygtToday && new Date(one.Date) <= mylessToday;
         })
 
         let statuscusdel = {
-            apidata : {
-                Data:statuscusdelfilterd
+            apidata: {
+                Data: statuscusdelfilterd
             }
         }
 
@@ -364,7 +364,7 @@ export class CalendarComponent implements OnInit, OnChanges {
                 }
                 let saveexatdata = await ithours_client.add("Delivery", { User_Id: this.user._id, Date: new Date(), Status: this.chooseValue, Complaint: this.complainMessage })
                 this.exactstaus = saveexatdata.apidata.Data
-                this.complainMessage="";
+                this.complainMessage = "";
                 this.toastr.success(Messages.DATASAVEMESSAGE);
             }
             else {
@@ -404,7 +404,7 @@ export class CalendarComponent implements OnInit, OnChanges {
                         }
                     })
                 this.exactstaus = saveexatdata.apidata.Data
-                this.complainMessage="";
+                this.complainMessage = "";
                 this.toastr.success(Messages.DATAUPDATEMSG);
             }
         }
@@ -415,7 +415,7 @@ export class CalendarComponent implements OnInit, OnChanges {
     }
     //Customer_User Get Advanced order for update 
     async  getcustadvord() {
-        var todays = moment(this.userdatestatus,'MM-DD-YYYY');//.month() ;new Date(this.userdatestatus);
+        var todays = moment(this.userdatestatus, 'MM-DD-YYYY');//.month() ;new Date(this.userdatestatus);
         var mygtToday = new Date(todays.year(), todays.month(), todays.date(), 0, 0, 0);
         var mylessToday = new Date(todays.year(), todays.month(), todays.date(), 23, 59, 59);
         let Geadvanced_Order = await ithours_client.get("AdvancedOrder", { User_Id: this.user._id, ToDate: { $gte: mygtToday, $lte: mylessToday } })
@@ -423,7 +423,7 @@ export class CalendarComponent implements OnInit, OnChanges {
     }
     //Get Delivery Status for Business User
     async GetBusiDeliveryStatus() {
-        var todays = moment(this.userdatestatus,'MM-DD-YYYY');//.month() ;new Date(this.userdatestatus);
+        var todays = moment(this.userdatestatus, 'MM-DD-YYYY');//.month() ;new Date(this.userdatestatus);
         var mygtToday = new Date(todays.year(), todays.month(), todays.date(), 0, 0, 0);
         var mylessToday = new Date(todays.year(), todays.month(), todays.date(), 23, 59, 59);
         let getstatus = await ithours_client.get("Delivery", { User_Id: this.user._id, Date: { $gte: mygtToday, $lte: mylessToday } })
@@ -443,7 +443,7 @@ export class CalendarComponent implements OnInit, OnChanges {
     }
     //Get business delivery status for Customer
     async  customergetdeliverysta() {
-    var todays = moment(this.userdatestatus,'MM-DD-YYYY');//.month() ;new Date(this.userdatestatus);
+        var todays = moment(this.userdatestatus, 'MM-DD-YYYY');//.month() ;new Date(this.userdatestatus);
         var mygtToday = new Date(todays.year(), todays.month(), todays.date(), 0, 0, 0);
         var mylessToday = new Date(todays.year(), todays.month(), todays.date(), 23, 59, 59);
         let getstatus2 = await ithours_client.get("Delivery", { User_Id: this.user._id, Date: { $gte: mygtToday, $lte: mylessToday } })
@@ -514,12 +514,17 @@ export class CalendarComponent implements OnInit, OnChanges {
     async addcusadvancedorder() {
         var loggedUser = JSON.parse(window.localStorage.getItem('USER'));
         $('#advancedorder').modal('hide')
+
         if (this.ExtraMilk) {
             if (this.datefordeleivery && this.advancedordercalendar) {
-                var diffdays = moment(this.advancedordercalendar).diff(moment(this.datefordeleivery), 'days');
+
+                var diffdays = moment(this.advancedordercalendar, 'YYYY-MM-DD').diff(moment(this.datefordeleivery, 'DD-MMM-YYYY'), 'days');
+
                 for (var i = 0; i <= diffdays; i++) {
-                    var todateselect2 = moment(this.datefordeleivery).add(i, 'days');
-                    var a = todateselect2
+
+                    var todateselect2 = moment(this.datefordeleivery,'DD-MMM-YYYY').add(i, 'days');
+                    var a = todateselect2; 
+                    
                     this.quantity = $('#Quantity').val()
                     let advancedorder1 = await ithours_client.add("AdvancedOrder", {
                         User_Id: this.user._id,
@@ -531,7 +536,7 @@ export class CalendarComponent implements OnInit, OnChanges {
                         ToDate: a,
                         user_by: loggedUser.user_by
                     })
-                    this.addcusadvancedord = advancedorder1.apidata.Data                   
+                    this.addcusadvancedord = advancedorder1.apidata.Data
                 }
                 this.toastr.success(Messages.DATASAVEMESSAGE);
                 this.brand = "";
@@ -567,9 +572,11 @@ export class CalendarComponent implements OnInit, OnChanges {
     async addOrUpdateOrder(datefordeleivery, advancedordercalendar) {
         var loggedUser = JSON.parse(window.localStorage.getItem('USER'));
         if (datefordeleivery && advancedordercalendar) {
-            var diffdays = moment(advancedordercalendar).diff(moment(datefordeleivery), 'days');
+            // var diffdays = moment(advancedordercalendar).diff(moment(datefordeleivery), 'days');
+            var diffdays = moment(this.advancedordercalendar, 'YYYY-MM-DD').diff(moment(this.datefordeleivery, 'DD-MMM-YYYY'), 'days');
             for (var i = 0; i <= diffdays; i++) {
-                var todateselect2 = moment(datefordeleivery).add(i, 'days');
+                //var todateselect2 = moment(datefordeleivery).add(i, 'days');
+                var todateselect2 = moment(this.datefordeleivery,'DD-MMM-YYYY').add(i, 'days');
                 var a = todateselect2
                 this.quantity = $('#Quantity').val()
                 let advancedorder1 = await ithours_client.add("AdvancedOrder", {
@@ -582,7 +589,7 @@ export class CalendarComponent implements OnInit, OnChanges {
                     ToDate: a,
                     user_by: loggedUser.user_by
                 })
-                this.addcusadvancedord = advancedorder1.apidata.Data               
+                this.addcusadvancedord = advancedorder1.apidata.Data
             }
             this.toastr.success(Messages.DATASAVEMESSAGE);
             this.brand = "";
