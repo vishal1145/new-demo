@@ -9,17 +9,13 @@ var AdvancedSchema = new mongoose.Schema({
     Quantity:String,
     FromDate:Date,
     ToDate:String,
-    //ToDate:Date,
     OneDay:Date,
     ExtraRequire:String,
+    Brand:String,
     user_by: {
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'
     }
-    // ExtraRequire : {
-    //     type:Boolean,
-    //     default:true
-    // }
 })
 
 mongoose.model("AdvancedOrder",AdvancedSchema)

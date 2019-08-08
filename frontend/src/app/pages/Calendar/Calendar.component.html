@@ -18,6 +18,10 @@
   .advorderdetails {
     width: 100px;
   }
+
+  .disabled-date {
+    color: grey;
+  }
 </style>
 
 <!-- Calendar for both Customer and Business User -->
@@ -52,7 +56,8 @@
           </div>
           <div class="week-date enabled" *ngIf="isSelectedMonth(day.mDate)" (click)="selectDate(day)"
             [ngClass]="{ today: day.today, selected: day.selected, delivered : day.delivered , notdelivered : day.notdelivered ,nextday_Adv_ord: day.nextday_Adv_ord}">
-            <span class="date-text" style="color: grey;" *ngIf="!day.isAllowed">{{ day.mDate.date() }}</span>
+            <span class="date-text" class="disabled-date" *ngIf="!day.isAllowed">{{ day.mDate.date() }}</span>
+           
             <span class="date-text" *ngIf="day.isAllowed" (click)="openmodal(day)" id="mdateshow"
               style="cursor:pointer;">{{ day.mDate.date() }}</span>
           </div>
@@ -371,6 +376,11 @@
               </option>
             </select>&nbsp; Ltr
           </div>
+          <br> 
+          <div>
+            Brand &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="text" [(ngModel)]="brand">
+          </div>
+
         </div>
       </div>
       <div class="modal-footer">
@@ -421,20 +431,22 @@
       </div>
       <div class="modal-body">
 
-        <table class="advancedorder" *ngIf="viewadAllvanccustomeredorder && viewadAllvanccustomeredorder.length > 0">          
+        <table class="advancedorder" *ngIf="viewadAllvanccustomeredorder && viewadAllvanccustomeredorder.length > 0">
           <tr>
             <th class="advorderdetails">Name</th>
             <th class="advorderdetails">Address</th>
             <th class="advorderdetails">Quantity</th>
+            <th class="advorderdetails">Brand</th>
             <th class="advorderdetails">Query</th>
           </tr>
           <tr *ngFor="let data of viewadAllvanccustomeredorder">
             <td>{{data.User_Id.name}}</td>
             <td>{{data.User_Id.location}}</td>
             <td>{{data.Quantity}}</td>
+            <td>{{data.Brand}}</td>
             <td>{{data.ExtraRequire}}</td>
           </tr>
-        </table>        
+        </table>
         <h3 *ngIf="!viewadAllvanccustomeredorder[0]" style="padding: 20px"> No Advanced Order</h3>
       </div>
       <div class="modal-footer">
@@ -464,6 +476,10 @@
             <tr>
               <td> Quantity:</td>
               <td>{{getadvanced_Or[0].Quantity}}</td>
+            </tr><br>
+            <tr>
+              <td> Brand:</td>
+              <td>{{getadvanced_Or[0].Brand}}</td>
             </tr>
           </table>
         </h5>
@@ -538,6 +554,10 @@
                 {{quantity.qua}}
               </option>
             </select>&nbsp; Ltr
+          </div>
+          <br>
+          <div>
+            Brand &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="text" value="brand" name="brand" [(ngModel)]="brand">
           </div>
         </div>
       </div>
