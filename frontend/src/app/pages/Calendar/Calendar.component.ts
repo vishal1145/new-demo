@@ -253,24 +253,19 @@ export class CalendarComponent implements OnInit, OnChanges {
         var mygtToday = new Date(todays.year(), todays.month(), todays.date(), 0, 0, 0);
         var mylessToday = new Date(todays.year(), todays.month(), todays.date(), 23, 59, 59);
 
-
         let statusdelitemp = await ithours_client.get("Delivery", { User_Id: this.user._id });//, Date: { $gte: mygtToday, $lte: mylessToday } })
         let statuscusdeltemp = await ithours_client.get("Delivery", { User_Id: this.user.user_by });//, Date: { $gte: mygtToday, $lte: mylessToday } })
         let getadvanced_Order = await ithours_client.get("AdvancedOrder", { User_Id: this.user._id, ToDate: { $gte: mygtToday, $lte: mylessToday } })
 
         let statusdelifilterd = (statusdelitemp.apidata.Data || []).filter((one) => {
-            //put data ran
             return new Date(one.Date) >= mygtToday && new Date(one.Date) <= mylessToday;
         })
-
         let statusdeli = {
             apidata: {
                 Data: statusdelifilterd
             }
         }
-
         let statuscusdelfilterd = (statuscusdeltemp.apidata.Data || []).filter((one) => {
-            //put data ran
             return new Date(one.Date) >= mygtToday && new Date(one.Date) <= mylessToday;
         })
 
@@ -279,8 +274,6 @@ export class CalendarComponent implements OnInit, OnChanges {
                 Data: statuscusdelfilterd
             }
         }
-
-
         if (this.user.role == 'CUSTOMER') {
             if (clickd_date == current_cldate) {
                 if (statuscusdel.apidata.Data[0] == null) {
@@ -297,7 +290,7 @@ export class CalendarComponent implements OnInit, OnChanges {
             }
             if (clickd_date > current_cldate) {
                 if (getadvanced_Order.apidata.Data[0] == null) {
-                    this.mindateforupadte = moment(this.datefordeleivery).format('YYYY-MM-DD')
+                    this.mindateforupadte = moment(this.datefordeleivery, 'DD-MMM-YYYY').format('YYYY-MM-DD')
                     $('#advancedorder').modal('show')
                 }
                 else {
@@ -415,7 +408,7 @@ export class CalendarComponent implements OnInit, OnChanges {
     }
     //Customer_User Get Advanced order for update 
     async  getcustadvord() {
-        var todays = moment(this.userdatestatus, 'MM-DD-YYYY');//.month() ;new Date(this.userdatestatus);
+        var todays = moment(this.userdatestatus, 'MM-DD-YYYY'); 
         var mygtToday = new Date(todays.year(), todays.month(), todays.date(), 0, 0, 0);
         var mylessToday = new Date(todays.year(), todays.month(), todays.date(), 23, 59, 59);
         let Geadvanced_Order = await ithours_client.get("AdvancedOrder", { User_Id: this.user._id, ToDate: { $gte: mygtToday, $lte: mylessToday } })
@@ -423,7 +416,7 @@ export class CalendarComponent implements OnInit, OnChanges {
     }
     //Get Delivery Status for Business User
     async GetBusiDeliveryStatus() {
-        var todays = moment(this.userdatestatus, 'MM-DD-YYYY');//.month() ;new Date(this.userdatestatus);
+        var todays = moment(this.userdatestatus, 'MM-DD-YYYY'); 
         var mygtToday = new Date(todays.year(), todays.month(), todays.date(), 0, 0, 0);
         var mylessToday = new Date(todays.year(), todays.month(), todays.date(), 23, 59, 59);
         let getstatus = await ithours_client.get("Delivery", { User_Id: this.user._id, Date: { $gte: mygtToday, $lte: mylessToday } })
@@ -443,7 +436,7 @@ export class CalendarComponent implements OnInit, OnChanges {
     }
     //Get business delivery status for Customer
     async  customergetdeliverysta() {
-        var todays = moment(this.userdatestatus, 'MM-DD-YYYY');//.month() ;new Date(this.userdatestatus);
+        var todays = moment(this.userdatestatus, 'MM-DD-YYYY'); 
         var mygtToday = new Date(todays.year(), todays.month(), todays.date(), 0, 0, 0);
         var mylessToday = new Date(todays.year(), todays.month(), todays.date(), 23, 59, 59);
         let getstatus2 = await ithours_client.get("Delivery", { User_Id: this.user._id, Date: { $gte: mygtToday, $lte: mylessToday } })
@@ -500,11 +493,10 @@ export class CalendarComponent implements OnInit, OnChanges {
     }
     //View Customer Advanced order for Business User
     async viewadvanccustomeredorder() {
-        var today = this.userdatestatus; //new Date(this.userdatestatus);
+        var today = this.userdatestatus; 
         let getadvancedstatus = await ithours_client.get("AdvancedOrder", { user_by: this.user._id }, 'User_Id');
         var orders = getadvancedstatus.apidata.Data;
         var filteredorders = orders.filter((e) => {
-            // return moment(e.ToDate ).format("YYYY-MM-DD") == moment(today).format("YYYY-MM-DD")
             return moment(e.ToDate).format("YYYY-MM-DD") == moment(today, 'MM-DD-YYYY').format("YYYY-MM-DD")
         })
         this.viewadAllvanccustomeredorder = filteredorders || [];
@@ -514,17 +506,12 @@ export class CalendarComponent implements OnInit, OnChanges {
     async addcusadvancedorder() {
         var loggedUser = JSON.parse(window.localStorage.getItem('USER'));
         $('#advancedorder').modal('hide')
-
         if (this.ExtraMilk) {
             if (this.datefordeleivery && this.advancedordercalendar) {
-
                 var diffdays = moment(this.advancedordercalendar, 'YYYY-MM-DD').diff(moment(this.datefordeleivery, 'DD-MMM-YYYY'), 'days');
-
                 for (var i = 0; i <= diffdays; i++) {
-
-                    var todateselect2 = moment(this.datefordeleivery,'DD-MMM-YYYY').add(i, 'days');
-                    var a = todateselect2; 
-                    
+                    var todateselect2 = moment(this.datefordeleivery, 'DD-MMM-YYYY').add(i, 'days');
+                    var a = todateselect2;
                     this.quantity = $('#Quantity').val()
                     let advancedorder1 = await ithours_client.add("AdvancedOrder", {
                         User_Id: this.user._id,
@@ -572,11 +559,9 @@ export class CalendarComponent implements OnInit, OnChanges {
     async addOrUpdateOrder(datefordeleivery, advancedordercalendar) {
         var loggedUser = JSON.parse(window.localStorage.getItem('USER'));
         if (datefordeleivery && advancedordercalendar) {
-            // var diffdays = moment(advancedordercalendar).diff(moment(datefordeleivery), 'days');
             var diffdays = moment(this.advancedordercalendar, 'YYYY-MM-DD').diff(moment(this.datefordeleivery, 'DD-MMM-YYYY'), 'days');
             for (var i = 0; i <= diffdays; i++) {
-                //var todateselect2 = moment(datefordeleivery).add(i, 'days');
-                var todateselect2 = moment(this.datefordeleivery,'DD-MMM-YYYY').add(i, 'days');
+                var todateselect2 = moment(this.datefordeleivery, 'DD-MMM-YYYY').add(i, 'days');
                 var a = todateselect2
                 this.quantity = $('#Quantity').val()
                 let advancedorder1 = await ithours_client.add("AdvancedOrder", {
@@ -618,18 +603,21 @@ export class CalendarComponent implements OnInit, OnChanges {
     }
     openModalUpdate() {
         $('#getadva_dorder').modal('hide')
-        this.mindateforupadte = moment(this.datefordeleivery).format('YYYY-MM-DD')
+        this.mindateforupadte = moment(this.datefordeleivery, 'DD-MMM-YYYY').format('YYYY-MM-DD')
         $('#Updateadvancedorder').modal('show')
     }
     //Update Advanced order for Customer User
-    async Updatecusadvancedorder() {
-        var fromdate = new Date(this.datefordeleivery)
-        var todate = new Date(this.advancedordercalendar)
-        var fromdeliverdate = new Date(fromdate.getFullYear(), fromdate.getMonth(), fromdate.getDate(), 0, 0, 0);
-        var selectDatefor_ONEREC = new Date(fromdate.getFullYear(), fromdate.getMonth(), fromdate.getDate(), 23, 59, 59);
-        var toDeliverydate = new Date(todate.getFullYear(), todate.getMonth(), todate.getDate(), 23, 59, 59);
+    async Updatecusadvancedorder() {        
+        var fromdate = moment(this.datefordeleivery,'DD-MMM-YYYY')
+        var todate = moment(this.advancedordercalendar,'YYYY-MM-DD')
+        
+        var fromdeliverdate = new Date(fromdate.year(), fromdate.month(), fromdate.date(), 0, 0, 0);
+        var selectDatefor_ONEREC = new Date(fromdate.year(), fromdate.month(), fromdate.date(), 23, 59, 59);
+        var toDeliverydate = new Date(todate.year(), todate.month(), todate.date(), 23, 59, 59);
+    
         let all_Order = await ithours_client.get("AdvancedOrder", { User_Id: this.user._id, ToDate: { $gte: fromdeliverdate, $lte: toDeliverydate } });
         let one_reco = await ithours_client.get("AdvancedOrder", { User_Id: this.user._id, ToDate: { $gte: fromdeliverdate, $lte: selectDatefor_ONEREC } });
+       
         if (this.ExtraMilk) {
             if (this.selectday == "ONEDAY") {
                 await ithours_client.delete("AdvancedOrder", { id: one_reco.apidata.Data[0]._id });
