@@ -55,7 +55,7 @@
             <span class="date-text">{{ day.mDate.date() }}</span>
           </div>
           <div class="week-date enabled" *ngIf="isSelectedMonth(day.mDate)" (click)="selectDate(day)"
-            [ngClass]="{ today: day.today, selected: day.selected, delivered : day.delivered , notdelivered : day.notdelivered ,nextday_Adv_ord: day.nextday_Adv_ord}">
+            [ngClass]="{ today: day.today, selected: day.selected, delivered : day.delivered , notdelivered : day.notdelivered ,nextday_Adv_ord: day.nextday_Adv_ord ,backday_Adv_ord:day.backday_Adv_ord}">
             <span class="date-text" class="disabled-date" *ngIf="!day.isAllowed">{{ day.mDate.date() }}</span>
            
             <span class="date-text" *ngIf="day.isAllowed" (click)="openmodal(day)" id="mdateshow"
@@ -511,18 +511,17 @@
         <br>
         <div class="row">
           <div class="custom-control custom-radio">
-            <input type="radio" (click)="showBoxforUpdate(true)" style="cursor:pointer;" class="custom-control-input"
+            <input type="radio" (click)="showBoxforUpdate(true)" (click)="showNomilkforUpdate(false)" style="cursor:pointer;" class="custom-control-input"
               id="defaultcheckU" name="Updateradiogroup1" value="Extra" [(ngModel)]="ExtraMilk">
             <label class="custom-control-label" for="defaultcheckU">Extra</label>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </div>
           <div class="custom-control custom-radio">
-            <input type="radio" (click)="showBoxforUpdate(true)" style="cursor:pointer;" class="custom-control-input"
+            <input type="radio" (click)="showNomilkforUpdate(true)" (click)="showBoxforUpdate(false)" style="cursor:pointer;" class="custom-control-input"
               id="defaultcheck2U" name="Updateradiogroup1" value="NOMILK" [(ngModel)]="ExtraMilk">
             <label class="custom-control-label" for="defaultcheck2U">No Milk</label>
           </div>
         </div>
-
         <div class="form-group" *ngIf="UpdateBoxopen">
           <div class="row">
             <div class="custom-control custom-radio">
@@ -550,16 +549,43 @@
           <div style="font-size: 15px">
             Quantity
             <select [(ngModel)]="qualityOption">
-              <option *ngFor="let quantity of quantitys" id="Quantity" value={{quantity.qua}}>
+              <option *ngFor="let quantity of quantitys" id="Quantity"  value={{quantity.qua}}>
                 {{quantity.qua}}
               </option>
             </select>&nbsp; Ltr
           </div>
           <br>
-          <div>
+          <div> 
             Brand &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="text" value="brand" name="brand" [(ngModel)]="brand">
           </div>
         </div>
+      
+        <div class="form-group" *ngIf="showNomilkUpstatus">
+          <div class="row">
+            <div class="custom-control custom-radio">
+              <input type="radio" (click)="showBox3(false)" style="cursor:pointer;" class="custom-control-input"
+                id="defaultchecked1nU" name="Uradiogroupn" value="ONEDAY" [(ngModel)]="selectday">
+              <label class="custom-control-label" for="defaultchecked1nU">One day </label>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+            <div class="custom-control custom-radio">
+              <input type="radio" (click)="showBox3(true)" style="cursor:pointer;" class="custom-control-input"
+                id="defaultchecked2nU" name="Uradiogroupn" value="MOREDAY" [(ngModel)]="selectday">
+              <label class="custom-control-label" for="defaultchecked2nU">More than one day</label>
+            </div>
+          </div>
+          <div class="form-group" *ngIf="morethanoneday2">
+            <div class="row">
+              <div class="col-md-12">
+                From Date:- {{datefordeleivery}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To Date:-
+                <input type="date" values="advancedordercalendar" [min]="mindateforupadte"
+                  [(ngModel)]="advancedordercalendar" />
+              </div>
+            </div>
+          </div>
+          <br>           
+        </div>
+
       </div>
       <div class="modal-footer">
         <button type="button" name="Updateadvancedorder" (click)="Updatecusadvancedorder()" class="btn btn-primary"
