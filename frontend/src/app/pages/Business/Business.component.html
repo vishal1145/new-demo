@@ -34,34 +34,36 @@
     color: red;
 
   }
-  
-  .card-padding
-  {
-    padding-bottom:20px;
+
+  .card-padding {
+    padding-bottom: 20px;
   }
+
   .loader {
-  border: 8px solid #f3f3f3;
-  border-radius: 40%;
-  border-top: 16px solid #3498db;
-  width: 40px;
-  height: 40px;
-  top: 140px;
-  /* -webkit-animation: spin 2s linear infinite; /* Safari */
-  /* animation: spin 2s linear infinite;  */
-}
-table {
-  border-collapse: collapse;
-  border:1px solid grey;
-  width: 100%;
-}
+    border: 8px solid #f3f3f3;
+    border-radius: 40%;
+    border-top: 16px solid #3498db;
+    width: 40px;
+    height: 40px;
+    top: 140px;
+    /* -webkit-animation: spin 2s linear infinite; /* Safari */
+    /* animation: spin 2s linear infinite;  */
+  }
 
- th, td {
-  border: 1px solid gray;
-  height: 50px;
-  text-align:center;
-}
+  table {
+    border-collapse: collapse;
+    border: 1px solid grey;
+    width: 100%;
+  }
 
-  
+  th,
+  td {
+    border: 1px solid gray;
+    height: 50px;
+    text-align: center;
+  }
+
+
 
 
   @-webkit-keyframes spin {
@@ -89,56 +91,61 @@ table {
 <h2 style="position:relative;color:white;"></h2>
 <div class="row" style="position:relative;top:28px;justify-content: flex-end; ">
   <div>
-    
-    <a id="" style="float:right; margin-right: 20px; color:white;cursor:pointer;background:#00b9f5;border-color: #00b9f5" class="btn btn-primary forcolor" (click)="addCustomer()">
-        <i class="fa fa-plus" style="color:white;
+
+    <a id=""
+      style="float:right; margin-right: 20px; color:white;cursor:pointer;background:#00b9f5;border-color: #00b9f5"
+      class="btn btn-primary forcolor" (click)="addCustomer()">
+      <i class="fa fa-plus" style="color:white;
         margin-right: 0px; cursor:pointer;" aria-hidden="true"></i> Add Customers</a>
   </div>
 </div>
 
-<p style="font-size: 20px;text-align: center"*ngIf="noDataAvailable"><b>No Data Available</b></p>
+<p style="font-size: 20px;text-align: center" *ngIf="noDataAvailable"><b>No Data Available</b></p>
 
 <div class="row" *ngIf="showloader">
-    <div class="spinner-border" style="margin-top:140px" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
+  <div class="spinner-border" style="margin-top:140px" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
 </div>
 
 <div class="row" *ngIf="!showloader">
-    <div class="col-md-6 card-padding" *ngFor="let user of allUsers"  >
-  <div class="card" >
-    
+  <div class="col-md-6 card-padding" *ngFor="let user of allUsers">
+    <div class="card">
+
       <div class="card-body">
         <div class="row">
-        <div class="col-9">
-        <h5 class="card-title" style="text-transform:capitalize;">{{user.name}} (Mobile No:{{user.phone}})</h5>
-          <h6 class="card-text">{{user.location}}</h6>
-          <h6 class="card-text">{{user.flat_no}}</h6>
-          <h6 class="card-text">{{user.landmark}}</h6>
-          <h6 class="card-text">{{user.city}}</h6>
-          <!-- <h6 class="card-text">Mobile No:{{user.phone}}</h6> -->
+          <div class="col-9">
+            <h5 class="card-title" style="text-transform:capitalize;">{{user.name}} (Mobile No:{{user.phone}})</h5>
+            <h6 class="card-text">{{user.location}}</h6>
+            <h6 class="card-text">{{user.flat_no}}</h6>
+            <h6 class="card-text">{{user.landmark}}</h6>
+            <h6 class="card-text">{{user.city}}</h6>
+            <!-- <h6 class="card-text">Mobile No:{{user.phone}}</h6> -->
           </div>
           <div class="col-3">
-        
-              <i class="fa fa-edit" style="font-size:24px;cursor:pointer;padding-left: 30px; color:#377bc1;" (click)="gotoEditCustomer(user)"></i>
-             <i class="fa fa-trash " style="font-size:24px; padding-left:20px;cursor:pointer; padding-left: 6px;color:#a4303b;"  (click)= "openModalDeleteCustomer(user)" aria-hidden="true"></i> 
-            </div>
-            </div>
-         
-          <!-- <h6 class="card-text">{{}}</h6> -->
+
+            <i class="fa fa-edit" style="font-size:24px;cursor:pointer;padding-left: 30px; color:#377bc1;"
+              (click)="gotoEditCustomer(user)"></i>
+            <i class="fa fa-trash "
+              style="font-size:24px; padding-left:20px;cursor:pointer; padding-left: 6px;color:#a4303b;"
+              (click)="openModalDeleteCustomer(user)" aria-hidden="true"></i>
+          </div>
+        </div>
+
+        <!-- <h6 class="card-text">{{}}</h6> -->
 
       </div>
-      <div >
-        <p style="margin-left:133px;margin-bottom:19px;cursor:pointer;font-size:15px;color:#00b9f5 !important;" (click)="viewconsumption(user)" ><u>Click Here To View the Consumption</u></p>
+      <div>
+        <p style="margin-left:133px;margin-bottom:19px;cursor:pointer;font-size:15px;color:#00b9f5 !important;"
+          (click)="viewconsumption(user)"><u>Click Here To View the Consumption</u></p>
 
-        <p style="margin-left:133px;margin-bottom:19px;cursor:pointer;font-size:15px;color:#00b9f5 !important;" (click)="viewcahrt(user)" ><u>Click Here To View the Reporting</u></p>
+        <p style="margin-left:133px;margin-bottom:19px;cursor:pointer;font-size:15px;color:#00b9f5 !important;"
+          (click)="viewcahrt(user)"><u>Click Here To View the Reporting</u></p>
 
-        <!-- <h5 *ngFor="let quan getQuantity">
-          Total Ltr={{quan.Quantity}}
-        </h5> -->
+        <h5 style="text-align:center">Total : {{ShowTotalQuan}} ltr / &nbsp;{{ShowTotalPrice}} ₹</h5>
 
       </div>
-      
+
     </div>
   </div>
 </div>
@@ -177,26 +184,27 @@ table {
         </button>
       </div>
       <div class="modal-body">
-        <table >
+        <table>
           <tr>
             <th>Brand</th>
             <th>Price</th>
-           <th>Quantity</th> 
+            <th>Quantity</th>
           </tr>
-          <tr *ngFor="let data of cunsumptionData" >
+          <tr *ngFor="let data of cunsumptionData">
             <td>{{data.brand}}</td>
             <td>{{data.prize}}</td>
             <td>{{data.quantity}}</td>
-         </tr>
+          </tr>
         </table>
-        <div> 
-            <label style="margin-top:14px">Commission:{{commisiion}}</label>
-            
-            </div>
+        <div>
+          <label style="margin-top:14px">Commission:{{commisiion}}</label>
+
+        </div>
       </div>
-      
+
       <div class="modal-footer">
-        <button type="button"  style="background-color:red"class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" style="background-color:red" class="btn btn-secondary"
+          data-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>

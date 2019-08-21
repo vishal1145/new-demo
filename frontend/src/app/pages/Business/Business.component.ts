@@ -3,6 +3,7 @@ import { Http } from "@angular/http";
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from "@angular/router";
 import { async } from 'q';
+import * as moment from 'moment';
 declare var $: any;
 declare var ithours_client: any
 
@@ -25,6 +26,8 @@ export class BusinessComponent implements OnInit {
     this.userData = JSON.parse(localStorage.getItem("USER"))
     this.getAllUsers();
    // this.viewTotalQuantity();
+    // this.getChartData();
+
   }
 
   ngOnInit() {
@@ -94,4 +97,68 @@ export class BusinessComponent implements OnInit {
   //   var getQuantity=totalQuan.apidata.Data;
   //   console.log(getQuantity);
   // }
+
+  customer: any = [];
+  delivery: any = [];
+  advanceOrder = [];
+  ShowTotalQuan: any;
+  ShowTotalPrice: any;
+
+  getChartData() {
+      var total = 0;
+      var totalPrice = 0;
+      let quantity = 0;
+      let quantityPrice = 0;
+
+      var m = moment(new Date());
+      const startOfMonth = m.clone().startOf('month');
+      const endOfMonth = m.clone();
+      var days = endOfMonth.diff(startOfMonth, 'days');
+
+      for (var i1 = 0; i1 < this.customer.consumption.length; i1++) {
+          quantity = quantity + parseInt(this.customer.consumption[i1].quantity);
+          quantityPrice = quantityPrice + parseInt(this.customer.consumption[i1].prize);
+      }
+
+      for (var i = 0; i <= days; i++) {
+          var dnew = startOfMonth.clone().add(i, 'day');
+          var iscurrentdate = dnew.toDate();
+          var index = this.delivery.findIndex(function (element: any) {
+              return moment(element.Date).format("DD MM YYYY") == moment(iscurrentdate).format("DD MM YYYY")
+          })
+          if (index > -1) {
+              var adv_index = this.advanceOrder.findIndex(function (element: any) {
+                  return moment(element.ToDate).format("DD MM YYYY") == moment(iscurrentdate).format("DD MM YYYY")
+              })
+              if (adv_index > -1) {
+                  var element = this.advanceOrder[adv_index];
+                  if (element.ExtraRequire == "Extra") {
+                      quantity = quantity + parseInt(element.Quantity);
+                      total = total + quantity;
+                      totalPrice = totalPrice + quantityPrice;
+                  }
+              }
+              else {
+                  total = total + quantity;
+                  totalPrice = totalPrice + quantityPrice;
+              }
+          }
+      }
+      this.ShowTotalQuan = total;
+      this.ShowTotalPrice = totalPrice;
+  }
+
+  async getQuantity() {
+
+      // let customer = await ithours_client.getOne("User", { _id: this.user._id });
+      // this.customer = customer.apidata.Data;
+
+      // let alldelivery = await ithours_client.get("Delivery", { User_Id: this.customer.user_by, Status: "DELIVERED" });
+      // this.delivery = alldelivery.apidata.Data;
+
+      // let getquan = await ithours_client.get("AdvancedOrder", { User_Id: this.user._id });
+      // this.advanceOrder = getquan.apidata.Data;
+      // this.getChartData();
+  }
+
 }

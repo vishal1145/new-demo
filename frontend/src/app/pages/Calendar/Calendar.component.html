@@ -67,8 +67,14 @@
   </div>
 </div>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<p style="text-align: center;text-decoration: underline;font-size: 20px;cursor: pointer;color: #00b9f5;" *ngIf="user.role=='CUSTOMER'" (click)="chartopen()">View Consumptionn and Price</p>
+<div style="text-align:center;">
+  <span style="font-size: 20px; margin-right: 10px;" *ngIf="user.role=='CUSTOMER'">
+    Total : {{ShowTotalQuan}} ltr / &nbsp;{{ShowTotalPrice}} ₹
+  </span>
+  <span style="text-decoration: underline;font-size: 20px;cursor: pointer;color: #00b9f5;" *ngIf="user.role=='CUSTOMER'"
+    (click)="chartopen()"> View all Previous data
+  </span>
+</div>
 
 <!-- Add delivery Status for Business User -->
 <div id="viewstatus" class="modal fade" role="dialog">

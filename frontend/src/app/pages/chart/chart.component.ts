@@ -13,21 +13,23 @@ declare var ithours_client: any;
 })
 export class ChartComponent implements OnInit {
   quan: any = [];
-  TotalQuan: any = 0;
+  ShowTotalQuan: any = 0;
   ShowTotalPrice: any = 0;
   calendar: any;
   user: any;
   ToQuantity: any = [];
   customer: any = [];
   delivery: any = [];
-  totalquantity: any;
+  advanceOrder = [];
   ToDateAdvOrd: any = [];
+  totalquantity: any;
   mon: any;
   chartmonth = moment(new Date).format("MMMM");
   months: any
   orders: any = [];
   graphdate = new Date();
   showloader = false;
+  customerid = "-1";
 
   constructor(private route: ActivatedRoute) {
     this.user = JSON.parse(window.localStorage.getItem('User'));
@@ -51,20 +53,15 @@ export class ChartComponent implements OnInit {
 
   DisplayGraph() {
     console.log(this.chartmonth);
-
     var a1 = moment(new Date).format("YYYY");
-
     var selectmonth = new Date("" + this.chartmonth + " 1 " + a1 + "");
-
     var d = new Date(selectmonth);
-    this.graphdate = d;//new Date(d.getFullYear(), d.getMonth(), 1);
+    this.graphdate = d;
     this.renderChart();
   }
 
   renderChart() {
     var datatoshow = this.getData();
-    //var priceData = this.getPricedata();
-
     var chart = new CanvasJS.Chart("chartContainer", {
       animationEnabled: true,
       title: {
@@ -77,9 +74,6 @@ export class ChartComponent implements OnInit {
       axisY: {
         title: "Quantity & Price",
         includeZero: true,
-        // scaleBreaks: {
-        //   autoCalculate: true
-        // }
       },
 
       data: datatoshow
@@ -106,20 +100,20 @@ export class ChartComponent implements OnInit {
     this.months = months1.splice(0, m + 1);
   }
 
-
   getData() {
     var datelist = [];
     var pricelist = [];
     var today = this.graphdate;
-    var m = moment(today);
     var total = 0;
     var totalPrice = 0;
+    let quantity = 0;
+    let quantityPrice = 0;
+
+    var m = moment(today);
     const startOfMonth = m.clone().startOf('month');
     const endOfMonth = m.clone().endOf('month');
     var days = endOfMonth.diff(startOfMonth, 'days');
 
-    let quantity = 0;
-    let quantityPrice = 0;
     for (var i1 = 0; i1 < this.customer.consumption.length; i1++) {
       quantity = quantity + parseInt(this.customer.consumption[i1].quantity);
       quantityPrice = quantityPrice + parseInt(this.customer.consumption[i1].prize);
@@ -128,7 +122,7 @@ export class ChartComponent implements OnInit {
     for (var i = 0; i <= days; i++) {
       var dnew = startOfMonth.clone().add(i, 'day');
       var xaxis = dnew.toDate();
-
+      
       var index = this.delivery.findIndex(function (element: any) {
         return moment(element.Date).format("DD MM YYYY") == moment(xaxis).format("DD MM YYYY")
       })
@@ -142,7 +136,6 @@ export class ChartComponent implements OnInit {
           if (element.ExtraRequire == "Extra") {
             quantity = quantity + parseInt(element.Quantity);
             datelist.push({ x: xaxis, y: quantity })
-
             pricelist.push({ x: xaxis, y: quantityPrice })
 
             total = total + quantity;
@@ -165,7 +158,8 @@ export class ChartComponent implements OnInit {
         pricelist.push({ x: xaxis, y: 0 })
       }
     }
-    this.TotalQuan = total;
+
+    this.ShowTotalQuan = total;
     this.ShowTotalPrice = totalPrice;
 
     var toreturn = [{
@@ -180,17 +174,11 @@ export class ChartComponent implements OnInit {
       color: "#8888a5",
       dataPoints: pricelist
     }];
-
     return toreturn;
   }
 
-  getPricedata() {
-
-  }
-
-  customerid = "-1";
-  advanceOrder = [];
   async getQuantity() {
+
     this.route.params.subscribe(params => {
       this.customerid = params['customerid']
     });
