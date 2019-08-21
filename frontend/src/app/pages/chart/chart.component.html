@@ -7,8 +7,6 @@
     padding: 10px;
     text-transform: capitalize;
   }
-
-
   .loader {
     border: 5px solid #f3f3f3;
     border-radius: 50%;
@@ -22,23 +20,18 @@
     -webkit-animation: spin 2s linear infinite;
     animation: spin 0.8s linear infinite;
   }
-
   .forcolor {
     margin-top: 8px;
     background-color: red;
     border: none;
-
   }
 
   .card-link {
     color: red;
-
   }
-
   .card-padding {
     padding-bottom: 20px;
   }
-
   .loader {
     border: 8px solid #f3f3f3;
     border-radius: 40%;
@@ -49,25 +42,21 @@
     /* -webkit-animation: spin 2s linear infinite; /* Safari */
     /* animation: spin 2s linear infinite;  */
   }
-
   table {
     border-collapse: collapse;
     border: 1px solid grey;
     width: 100%;
   }
-
   th,
   td {
     border: 1px solid gray;
     height: 50px;
     text-align: center;
   }
-
   @-webkit-keyframes spin {
     0% {
       -webkit-transform: rotate(0deg);
     }
-
     100% {
       -webkit-transform: rotate(360deg);
     }
@@ -83,29 +72,26 @@
     }
   }
 </style>
-
-
 <h2 style="position:relative;color:white;"></h2>
-
-
-
-
 <div class="row" style="position:relative;top:28px;justify-content: flex-end; ">
 
-  <h3>
-    Total Quantity : {{TotalQuan}} ltr
-  </h3>
-  &nbsp;&nbsp;
-  <select [(ngModel)]="chartmonth" style="width: 100px; height:40px; font-size: 15px;">
+  
+  <select [(ngModel)]="chartmonth" style="width: 140px;
+  height: 34px;
+  font-size: 15px;
+  padding: 5px 10px;
+  margin-top: 10px;
+  text-align: center;
+  border-radius: 5px;margin-right: 10px;">
     <option *ngFor="let month of months" id="month" value="{{month.mon}}">
       {{month.mon}}
     </option>
   </select>
-  &nbsp;
+ 
   <a id="" style="float:right; margin-right: 20px; color:white;cursor:pointer;background:#00b9f5;border-color: #00b9f5"
     class="btn btn-primary forcolor" (click)="DisplayGraph()">
-    <i class="fa fa-plus" style="color:white;
-    margin-right: 0px; cursor:pointer;" aria-hidden="true"></i> Display </a>
+    <i class="fa fa-refresh" style="color:white;
+    margin-right: 0px; cursor:pointer;" aria-hidden="true"></i> Refresh Data </a>
 
   &nbsp;
 </div>
@@ -121,3 +107,6 @@
   <div id="chartContainer" style="height: 300px; width: 100%;"></div>
 
 </div>
+<h3 style="text-align: center" *ngIf="!showloader">
+  Total : {{TotalQuan}} ltr / &nbsp;{{ShowTotalPrice}} ₹
+</h3>

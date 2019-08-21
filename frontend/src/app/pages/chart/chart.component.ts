@@ -14,6 +14,7 @@ declare var ithours_client: any;
 export class ChartComponent implements OnInit {
   quan: any = [];
   TotalQuan: any = 0;
+  ShowTotalPrice: any = 0;
   calendar: any;
   user: any;
   ToQuantity: any = [];
@@ -26,7 +27,7 @@ export class ChartComponent implements OnInit {
   months: any
   orders: any = [];
   graphdate = new Date();
-  showloader= false;
+  showloader = false;
 
   constructor(private route: ActivatedRoute) {
     this.user = JSON.parse(window.localStorage.getItem('User'));
@@ -62,29 +63,26 @@ export class ChartComponent implements OnInit {
 
   renderChart() {
     var datatoshow = this.getData();
+    //var priceData = this.getPricedata();
+
     var chart = new CanvasJS.Chart("chartContainer", {
       animationEnabled: true,
       title: {
-        text: "ltr Price"
+        text: "Comparasion chart of quantity and Price",
       },
       axisX: {
         valueFormatString: "DD MMM",
         includeZero: true
       },
       axisY: {
-        title: "Quantity",
+        title: "Quantity & Price",
         includeZero: true,
         // scaleBreaks: {
         //   autoCalculate: true
         // }
       },
 
-      data: [{
-        type: "line",
-        xValueFormatString: "DD MMM",
-        color: "#F08080",
-        dataPoints: datatoshow
-      }]
+      data: datatoshow
     });
     chart.render();
   }
@@ -111,16 +109,20 @@ export class ChartComponent implements OnInit {
 
   getData() {
     var datelist = [];
+    var pricelist = [];
     var today = this.graphdate;
     var m = moment(today);
     var total = 0;
+    var totalPrice = 0;
     const startOfMonth = m.clone().startOf('month');
     const endOfMonth = m.clone().endOf('month');
     var days = endOfMonth.diff(startOfMonth, 'days');
 
     let quantity = 0;
+    let quantityPrice = 0;
     for (var i1 = 0; i1 < this.customer.consumption.length; i1++) {
       quantity = quantity + parseInt(this.customer.consumption[i1].quantity);
+      quantityPrice = quantityPrice + parseInt(this.customer.consumption[i1].prize);
     }
 
     for (var i = 0; i <= days; i++) {
@@ -128,39 +130,62 @@ export class ChartComponent implements OnInit {
       var xaxis = dnew.toDate();
 
       var index = this.delivery.findIndex(function (element: any) {
-        // return new Date(element.Date).getTime() == xaxis.getTime()
         return moment(element.Date).format("DD MM YYYY") == moment(xaxis).format("DD MM YYYY")
       })
 
       if (index > -1) {
         var adv_index = this.advanceOrder.findIndex(function (element: any) {
-          //return new Date(element.ToDate).getTime() == xaxis.getTime()
           return moment(element.ToDate).format("DD MM YYYY") == moment(xaxis).format("DD MM YYYY")
         })
-
         if (adv_index > -1) {
           var element = this.advanceOrder[adv_index];
           if (element.ExtraRequire == "Extra") {
             quantity = quantity + parseInt(element.Quantity);
             datelist.push({ x: xaxis, y: quantity })
-            total= total+ quantity;
-          } else {
-            datelist.push({ x: xaxis, y: 0 })
+
+            pricelist.push({ x: xaxis, y: quantityPrice })
+
+            total = total + quantity;
+            totalPrice = totalPrice + quantityPrice;
+          }
+          else {
+            datelist.push({ x: xaxis, y: 0 });
+            pricelist.push({ x: xaxis, y: 0 })
           }
         }
         else {
           datelist.push({ x: xaxis, y: quantity })
-          total= total+ quantity;
+          pricelist.push({ x: xaxis, y: quantityPrice })
+          total = total + quantity;
+          totalPrice = totalPrice + quantityPrice;
         }
       }
       else {
-        datelist.push({ x: xaxis, y: 0 })
+        datelist.push({ x: xaxis, y: 0 });
+        pricelist.push({ x: xaxis, y: 0 })
       }
-      //datelist[datelist.length -1] = {x:xaxis, y: 100 };
     }
-
     this.TotalQuan = total;
-    return datelist;
+    this.ShowTotalPrice = totalPrice;
+
+    var toreturn = [{
+      type: "line",
+      xValueFormatString: "DD MMM",
+      color: "#00b9f5",
+      dataPoints: datelist
+    },
+    {
+      type: "line",
+      xValueFormatString: "DD MMM",
+      color: "#8888a5",
+      dataPoints: pricelist
+    }];
+
+    return toreturn;
+  }
+
+  getPricedata() {
+
   }
 
   customerid = "-1";
