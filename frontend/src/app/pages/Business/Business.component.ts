@@ -1,15 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Http } from "@angular/http";
-import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from "@angular/router";
-import { RlTagInputModule } from 'angular2-tag-input';
-import { Angular2CsvModule } from 'angular2-csv';
+import { async } from 'q';
 declare var $: any;
-declare var AWS: any;
 declare var ithours_client: any
-declare var xlsExport: any;
-declare var encodeURI: any;
 
 @Component({
   selector: 'pages-Business-cmp',
@@ -23,20 +18,17 @@ export class BusinessComponent implements OnInit {
   customerId: any;
   cunsumptionData: any = [];
   noDataAvailable =false
-
-
   showloader: boolean = true;
+
   constructor(private http: Http, private router: Router,
     private route: ActivatedRoute, public toastr: ToastrService) {
     this.userData = JSON.parse(localStorage.getItem("USER"))
-    this.getAllUsers()
+    this.getAllUsers();
+   // this.viewTotalQuantity();
   }
 
   ngOnInit() {
-
   }
-
-
   async getAllUsers() {
     this.showloader = true
     this.allUsers = [];
@@ -93,4 +85,13 @@ export class BusinessComponent implements OnInit {
     $('#consumptionModal').modal('show')
   }
 
+  viewcahrt(customer){
+    this.router.navigate(["/pages/chart/"+ customer._id]);
+  }
+
+  // async viewTotalQuantity(){
+  //   const totalQuan=await ithours_client.get("AdvancedOrder",{UserId:customer._id})
+  //   var getQuantity=totalQuan.apidata.Data;
+  //   console.log(getQuantity);
+  // }
 }

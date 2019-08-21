@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 import Messages from './msg'
 declare var $: any;
 declare var ithours_client: any
+
 export interface CalendarDate {
     mDate: moment.Moment;
     selected?: boolean;
@@ -49,7 +50,6 @@ export class CalendarComponent implements OnInit, OnChanges {
     userdatestatus: any;
     datefordeleivery: any;
     showdeliveryforadd: any;
-    // NOMILK: any;
     complainHide = false;
     displayadvancebox = false;
     UpdateBoxopen = false;
@@ -61,9 +61,20 @@ export class CalendarComponent implements OnInit, OnChanges {
     qualityOption = "1";
     brand: any;
     currentDate = moment();
+    brandOption = "Amul Gold";
     quantitys = [
         { qua: '1' }, { qua: '1.5' }, { qua: '2' }, { qua: '2.5' }, { qua: '3' }, { qua: '3.5' }, { qua: '4' }, { qua: '4.5' }, { qua: '5' }, { qua: '5.5' }, { qua: '6' }, { qua: '6.5' }, { qua: '7' }, { qua: '7.5' }, { qua: '8' }, { qua: '8.5' }, { qua: '9' }, { qua: '9.5' }, { qua: '10' }, { qua: '10.5' }
     ];
+
+    brands = [
+        { brand: "Amul Gold" },
+        { brand: "Patanjali" },
+        { brand: "Nandini Toned" },
+        { brand: "Jersey" },
+        { brand: "Golden Cow" },
+        { brand: "Cavins" },
+        { brand: "Priya" }
+    ]
     dayNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
     weeks: CalendarDate[][] = [];
     sortedDates: CalendarDate[] = [];
@@ -325,6 +336,7 @@ export class CalendarComponent implements OnInit, OnChanges {
             if (clickd_date < current_cldate) {
                 this.viewdeliverystatus();
             }
+            
         }
         if (this.user.role == 'BUSINESS') {
             if (clickd_date == current_cldate) {
@@ -724,4 +736,8 @@ export class CalendarComponent implements OnInit, OnChanges {
         this.morethanoneday2 = val
     }
 
+    chartopen(){
+        var user =JSON.parse(window.localStorage.getItem('USER'));
+        this.router.navigate(["/pages/chart/"+ user._id]);
+    }
 }

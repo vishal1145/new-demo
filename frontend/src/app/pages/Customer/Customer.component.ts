@@ -23,12 +23,7 @@ export class CustomerComponent implements OnInit {
   constructor(private http: Http, private router: Router,
     private route: ActivatedRoute, public toastr: ToastrService) {
     this.userData = JSON.parse(localStorage.getItem("USER"));
-  }
-
-  ngOnInit() {
-    
-  }
-
-  
-
+  } 
+  ngOnInit() { 
+  } 
 }

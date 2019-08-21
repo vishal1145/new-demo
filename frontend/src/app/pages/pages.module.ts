@@ -12,7 +12,7 @@ import { BusinessComponent } from './Business/Business.component';
 import { AddCustomerComponent } from './AddCustomer/AddCustomer.component';
 import { Angular2CsvModule } from 'angular2-csv';
 import {CalendarComponent} from './Calendar/Calendar.component';
-
+import { ChartComponent } from './chart/chart.component';
 
 @NgModule({
   imports: [
@@ -28,7 +28,8 @@ import {CalendarComponent} from './Calendar/Calendar.component';
     BusinessComponent,
     CustomerComponent,
     AddCustomerComponent,
-    CalendarComponent
+    CalendarComponent,
+    ChartComponent
   ],
   exports: [
   ]
