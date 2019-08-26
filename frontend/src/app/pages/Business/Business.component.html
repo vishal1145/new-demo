@@ -142,7 +142,7 @@
         <p style="margin-left:133px;margin-bottom:19px;cursor:pointer;font-size:15px;color:#00b9f5 !important;"
           (click)="viewcahrt(user)"><u>Click Here To View the Reporting</u></p>
 
-        <h5 style="text-align:center">Total : {{ShowTotalQuan}} ltr / &nbsp;{{ShowTotalPrice}} ₹</h5>
+          <h5 style="text-align:center" *ngIf= "user && user.pricing">Total : {{user.pricing.total}} ltr / &nbsp;{{user.pricing.totalPrice}} ₹</h5> 
 
       </div>
 

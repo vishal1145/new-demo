@@ -83,17 +83,17 @@
 <h2 style="position:relative;color:white;"></h2>
 <div class="row" style="position:relative;top:28px;justify-content: flex-end; ">
 
-  <select [(ngModel)]="chartmonth"
+  <select [(ngModel)]="chartmonth" (change)="onmonthchange()"
     style="width: 140px;  height: 34px;  font-size: 15px;  padding: 5px 10px;  margin-top: 10px;  text-align: center;  border-radius: 5px;margin-right: 10px;">
     <option *ngFor="let month of months" id="month" value="{{month.mon}}">
       {{month.mon}}
     </option>
   </select>
 
-  <a id="" style="float:right; margin-right: 20px; color:white;cursor:pointer;background:#00b9f5;border-color: #00b9f5"
+  <!-- <a id="" style="float:right; margin-right: 20px; color:white;cursor:pointer;background:#00b9f5;border-color: #00b9f5"
     class="btn btn-primary forcolor" (click)="DisplayGraph()">
     <i class="fa fa-refresh" style="color:white;
-    margin-right: 0px; cursor:pointer;" aria-hidden="true"></i> Refresh Data </a>
+    margin-right: 0px; cursor:pointer;" aria-hidden="true"></i> Refresh Data </a> -->
 
   &nbsp;
 </div>

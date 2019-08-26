@@ -100,6 +100,10 @@ export class ChartComponent implements OnInit {
     this.months = months1.splice(0, m + 1);
   }
 
+  onmonthchange(){
+    this.DisplayGraph();
+  }
+
   getData() {
     var datelist = [];
     var pricelist = [];
